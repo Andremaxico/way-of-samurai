@@ -15,8 +15,8 @@ export default function Profile() {
 			</div>
 		</div>
 		<NewPost />
-		<Post text="My first post"/>
-		<Post text="My second post(Want to made own s. n.)"/>
+		<Post text="My first post" likes="3"/>
+		<Post text="My second post(Want to made own s. n.)" likes='1'/>
 	</div>
   )
 }
