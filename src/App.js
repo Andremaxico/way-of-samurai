@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.scss';
-import Header from './components/Header';
-import Sidenav from './components/Sidebar'
-import Profile from './components/Profile';
+import Header from './components/Header/Header';
+import Sidenav from './components/Sidebar/Sidebar'
+import Profile from './components/Profile/Profile';
 
 function App() {
   return (
