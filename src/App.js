@@ -1,16 +1,14 @@
 import logo from './logo.svg';
 import './App.scss';
 import Header from './components/Header';
-import Sidenav from './components/Sidenav'
+import Sidenav from './components/Sidebar'
 import Profile from './components/Profile';
 
 function App() {
   return (
     <div className="app-wrapper">
       <Header />
-      <aside className='sidebar'>
-        <Sidenav />
-      </aside>
+      <Sidenav />
       <div className='content'>
         <Profile />
       </div>

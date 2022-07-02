@@ -1,0 +1,15 @@
+@import '../global-styles';
+
+.header {
+	padding: 15px 0;
+	grid-column-start: 1;
+	grid-column-end: 3;
+	background-color: $mainCol;
+	.body {}
+	.logo {
+	  max-width: 75px;
+	  img {
+		 width: 100%;
+	  }
+	}
+ }

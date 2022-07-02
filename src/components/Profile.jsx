@@ -1,4 +1,5 @@
 import React from 'react'
+import './Profile.module.scss'
 
 export default function Profile() {
   return (
@@ -8,7 +9,7 @@ export default function Profile() {
 		</div>
 		<div className='ProfileInfo'>
 			<div className="ProfileInfo__avatar">
-				
+
 			</div>
 		</div>
 		<div className='new-post'>
