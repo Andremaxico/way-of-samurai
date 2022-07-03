@@ -3,6 +3,7 @@ import './App.scss';
 import Header from './components/Header/Header';
 import Sidenav from './components/Sidebar/Sidebar'
 import Profile from './components/Profile/Profile';
+import Messages from './components/Messages/Messages';
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <Header />
       <Sidenav />
       <div className='content'>
-        <Profile />
+        {/*<Profile />*/}
+        <Messages />
       </div>
     </div>
   );

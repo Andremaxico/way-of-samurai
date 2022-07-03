@@ -5,8 +5,8 @@ function Sidebar(props) {
 	return (
 		<aside className={classes.sidebar}>
 			<nav className={classes.nav}>
-				<a>Profile</a>
-				<a>Messsages</a>
+				<a className={classes._active}>Profile</a>
+				<a>Messages</a>
 				<a>News</a>
 				<a>Music</a>
 				<a>Settings</a>

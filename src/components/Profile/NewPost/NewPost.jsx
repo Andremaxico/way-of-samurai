@@ -6,8 +6,8 @@ export default function NewPost() {
 	<div className={classes.newPost}>
 		<h2 className={classes.title}>My posts</h2>
 		<form className={classes.form}>
-			<textarea></textarea>
-			<button></button>
+			<textarea placeholder='Add message'></textarea>
+			<button>Add Post</button>
 		</form>
 	</div>
   )
