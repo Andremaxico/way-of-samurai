@@ -1,3 +1,17 @@
 @import '../../global-styles';
 
-.messages {}
+.messages {
+	.title {}
+}
+.content {
+	display: flex;
+	.chats {
+		height: 100%;
+	}
+	.chat {}
+
+	.currChatWrap {
+		height: 100%;
+		.message {}
+	}
+}
