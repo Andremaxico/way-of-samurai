@@ -16,13 +16,13 @@
 	}
 	.message {
 		.name {
-			@include font-style(18px, 140%, 700);
+			@include bigText;
 		}
 		.text {
-			@include font-style(15px, 140%);
+			@include text;
 		}
 		.sendDate {
-			@include font-style(14px, 140%);
+			@include smallText;
 		}
 	}
 }

@@ -1,1 +1,7 @@
 @import '../../../global-styles';
+
+.message {
+	.text {
+		@include text;
+	}
+}

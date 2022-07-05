@@ -5,18 +5,40 @@ import Post from './Post/Post'
 import classes from './Profile.module.scss'
 
 export default function Profile() {
-	console.log(classes);
-  return (
-	<div className={classes.profile}>
-		<div className={classes.cover}>
-			<img src='https://timelinecovers.pro/facebook-cover/download/life-cycle-facebook-cover.jpg'/>
+	const postsData = [
+		{
+			text: 'Hi',
+			likesCount: 0,
+		},
+		{
+			text: 'How are you?',
+			likesCount: 0,
+		},
+		{
+			text: 'Where are you?',
+			likesCount: 5,
+		},
+		{
+			text: 'Want to home?...',
+			likesCount: 8,
+		},
+		{
+			text: 'Me too...:(',
+			likesCount: 6,
+		},
+	]
+	return (
+		<div className={classes.profile}>
+			<div className={classes.cover}>
+				<img src='https://timelinecovers.pro/facebook-cover/download/life-cycle-facebook-cover.jpg'/>
+			</div>
+			<Info />
+			<NewPost />
+			<div className={classes.myPosts}>
+				{
+					postsData.map((data, index) => <Post text={data.text} likes={data.likesCount}/>)
+				}
+			</div>
 		</div>
-		<Info />
-		<NewPost />
-		<div className={classes.myPosts}>
-			<Post text="My first post" likes="3"/>
-			<Post text="My second post(Want to made own s. n.)" likes='1'/>
-		</div>
-	</div>
-  )
+	)
 }
