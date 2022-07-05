@@ -1,11 +1,28 @@
 @import '../../../global-styles';
 
 .chat {
+	display: flex;
+	text-decoration: none;
 	.userAvatar {
-		img {}
+		margin-right: 20px;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		overflow: hidden;
+		img {
+			width: 100%;
+			height: 100%;
+		}
 	}
 	.message {
-		.text {}
-		.sendDate {}
+		.name {
+			@include font-style(18px, 140%, 700);
+		}
+		.text {
+			@include font-style(15px, 140%);
+		}
+		.sendDate {
+			@include font-style(14px, 140%);
+		}
 	}
 }

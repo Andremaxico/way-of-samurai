@@ -13,8 +13,10 @@ export default function Profile() {
 		</div>
 		<Info />
 		<NewPost />
-		<Post text="My first post" likes="3"/>
-		<Post text="My second post(Want to made own s. n.)" likes='1'/>
+		<div className={classes.myPosts}>
+			<Post text="My first post" likes="3"/>
+			<Post text="My second post(Want to made own s. n.)" likes='1'/>
+		</div>
 	</div>
   )
 }

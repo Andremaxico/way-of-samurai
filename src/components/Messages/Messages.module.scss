@@ -1,7 +1,10 @@
 @import '../../global-styles';
 
 .messages {
-	.title {}
+	.title {
+		margin-bottom: 24px;
+		@include font-style(44px, 140%, 700);
+	}
 }
 .content {
 	display: flex;
