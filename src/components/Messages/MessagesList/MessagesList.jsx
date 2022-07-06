@@ -6,7 +6,13 @@ export const MessagesList = (props) => {
   return (
 	<div className={classes.currChatWrap}> 
 		{
-			props.messagesData.map(data => <Message data={data} />)
+			props.messagesData.map((data, index) => {
+				if(data.isMy) {
+					return <Message isMy data={data} key={index}/>
+				} else {
+					return <Message data={data} key={index}/>
+				}
+			})
 		}
 	</div>
   )

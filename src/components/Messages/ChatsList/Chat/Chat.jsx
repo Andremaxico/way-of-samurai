@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 const Chat = (props) => {
 
 	return (
-		<NavLink to={`/messages/${props.userInfo.id}`} className={classes.chat}>
+		<NavLink to={`/messages/${props.userInfo.id}`} className={`${classes.chat} ${classes._active}`}>
 			<div className={classes.userAvatar}>
 				<img src={props.userInfo.avatarUrl} alt="user that send a message avatar" />
 			</div>

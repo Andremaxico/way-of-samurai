@@ -12,7 +12,7 @@ export default function Profile(props) {
 			<ProfileCover url={url}/>
 			<Info />
 			<NewPost />
-			<MyPosts postsData={props.data}/>
+			<MyPosts postsData={props.data.postsData}/>
 		</div>
 	)
 }

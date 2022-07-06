@@ -1,13 +1,14 @@
 @import '../../global-styles';
 .sidebar {
 	grid-row-start: 2;
-	padding-left: 20px;
+	padding: 0 15px;
 	background-color: $mainCol;
 	.nav {
 	  display: flex;
 	  flex-direction: column;
 	  align-items: flex-start;
 	  padding: 15px 0;
+	  margin-bottom: 32px;
 	  a {
 			position: relative;
 			display: block;

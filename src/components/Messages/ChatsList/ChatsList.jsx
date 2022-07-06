@@ -7,9 +7,7 @@ export const ChatsList = (props) => {
 		<div className={classes.chatsList}>
 			{
 				props.usersInfo.map(info => (
-					<div className={classes.chat} key={info.id}>
-						<Chat userInfo={info}/>
-					</div>
+					<Chat userInfo={info} key={info.id}/>
 				))
 			}
 		</div>

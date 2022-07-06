@@ -1,7 +1,7 @@
 
 import './App.scss';
 import Header from './components/Header/Header';
-import Sidenav from './components/Sidebar/Sidebar'
+import Sidebar from './components/Sidebar/Sidebar'
 import Profile from './components/Profile/Profile';
 import Messages from './components/Messages/Messages';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
@@ -14,11 +14,11 @@ function App(props) {
     <BrowserRouter>
       <div className="app-wrapper">
         <Header />
-        <Sidenav />
+        <Sidebar data={props.data.sidebar}/>
         <div className='content'>
           <Routes>
-            <Route path='/profile/*' element={<Profile data={props.data.profile}/>} />
-            <Route path='/messages/*' element={<Messages data={props.data.messages}/>} />
+            <Route path='/profile/*' element={<Profile data={props.data.profilePage}/>} />
+            <Route path='/messages/*' element={<Messages data={props.data.messagesPage}/>} />
             <Route path='/news/*' element={<News />} />
             <Route path='/music/*' element={<Music />} />
             <Route path='/settings/*' element={<Settings />} />

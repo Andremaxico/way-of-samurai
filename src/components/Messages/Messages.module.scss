@@ -8,13 +8,14 @@
 }
 .content {
 	display: flex;
-	.chats {
+	.chatsList {
 		height: 100%;
+		margin-right: 24px;
 	}
-	.chat {}
 
 	.currChatWrap {
 		height: 100%;
+		flex: 1 1 auto;
 		.message {}
 	}
 }
