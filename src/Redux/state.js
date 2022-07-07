@@ -1,4 +1,4 @@
-import renderTree from '../render';
+let rerenderTree = () => {}
 let state = {
 	profilePage: {
 		postsData: [
@@ -28,6 +28,7 @@ let state = {
 				id: 1,
 			},
 		],
+		newPostText: '',
 	},
 	messagesPage: {
 		usersInfo: [
@@ -74,6 +75,7 @@ let state = {
 				isMy: false,
 			},
 		],
+		newMessageValue: '',
 	},
 	sidebar: {
 		friendsData: [
@@ -124,8 +126,9 @@ let state = {
 }
 
 //
-export const addPost = (postText) => {
+export const addPost = () => {
 	const id = state.profilePage.postsData.length+1;
+	const postText = state.profilePage.newPostText;
 	const newPostData = {
 		text: postText,
 		likesCount: 0,
@@ -133,15 +136,39 @@ export const addPost = (postText) => {
 	}
 
 	state.profilePage.postsData.unshift(newPostData);
-	renderTree(state);
+	state.profilePage.newPostText = '';
+
+	rerenderTree(state);
 } 
-export const addMessage = (messageText) => {
+
+//pushs message-data to state
+export const addMessage = () => {
+	const messageText = state.messagesPage.newMessageValue;
 	const newMessageData = {
 		text: messageText,
 		isMy: true,
 	}
 
 	state.messagesPage.messagesData.push(newMessageData);
-	renderTree(state);
+	state.messagesPage.newMessageValue = '';
+
+	rerenderTree(state);
+}
+
+//updates current new post value
+export const updateNewPostValue = (value) => {
+	state.profilePage.newPostText = value;
+	rerenderTree(state);
+}
+
+//update current new message value
+export const updateNewMessageValue = (value) => {
+	state.messagesPage.newMessageValue = value;
+
+	rerenderTree(state);
+}
+
+export const setRerenderFn = (observer) => {
+	rerenderTree = observer;
 }
 export default state;

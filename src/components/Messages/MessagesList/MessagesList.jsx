@@ -14,7 +14,11 @@ export const MessagesList = (props) => {
 	return (
 		<div className={classes.currChatWrap}> 
 			{ list }
-			<WriteForm addMessage={props.addMessage}/>
+			<WriteForm 
+				addMessage={props.addMessage} 
+				updateNewMessageValue={props.updateNewMessageValue}
+				newMessageValue={props.newMessageValue}
+			/>
 		</div>
 	)
 }

@@ -9,7 +9,12 @@ export default function Messages(props) {
 			<h2 className={classes.title}>Messages</h2>
 			<div className={classes.content}>
 				<ChatsList usersInfo={props.data.usersInfo}/>
-				<MessagesList messagesData={props.data.messagesData} addMessage={props.methods.addMessage}/>
+				<MessagesList 
+					messagesData={props.data.messagesData} 
+					newMessageValue={props.data.newMessageValue}
+					addMessage={props.methods.addMessage}
+					updateNewMessageValue={props.methods.updateNewMessageValue}
+				/>
 			</div>
 		</div>
 	)
