@@ -6,7 +6,7 @@ export const MyPosts = (props) => {
 	return (
 		<div className={classes.myPosts}>
 			{
-				props.postsData.map(data => <Post text={data.text} likes={data.likesCount}/>)
+				props.postsData.map((data, index) => <Post text={data.text} key={index} likes={data.likesCount}/>)
 			}
 		</div>
 	)

@@ -11,7 +11,7 @@ export default function Profile(props) {
 		<div className={classes.profile}>
 			<ProfileCover url={url}/>
 			<Info />
-			<NewPost />
+			<NewPost addPost={props.methods.addPost}/>
 			<MyPosts postsData={props.data.postsData}/>
 		</div>
 	)

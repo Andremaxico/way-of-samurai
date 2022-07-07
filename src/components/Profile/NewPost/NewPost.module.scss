@@ -22,14 +22,7 @@
 			box-sizing: border-box;
 		}
 		button {
-			padding: 9px 15px;
-			background-color: $mainCol;
-			color: #fff;
-			font-weight: 500;
-			transition: 0.2s;
-			border-radius: 6px;
-			border: 0;
-			cursor: pointer;
+			@include formBtn;
 		}
 	}
 }

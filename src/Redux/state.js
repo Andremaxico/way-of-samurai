@@ -1,25 +1,31 @@
-const state = {
+import renderTree from '../render';
+let state = {
 	profilePage: {
 		postsData: [
 			{
 				text: 'Hi',
 				likesCount: 0,
+				id: 5,
 			},
 			{
 				text: 'How are you?',
 				likesCount: 0,
+				id: 4,
 			},
 			{
 				text: 'Where are you?',
 				likesCount: 5,
+				id: 3,
 			},
 			{
 				text: 'Want to home?...',
 				likesCount: 8,
+				id: 2,
 			},
 			{
 				text: 'Me too...:(',
 				likesCount: 6,
+				id: 1,
 			},
 		],
 	},
@@ -115,5 +121,27 @@ const state = {
 			},
 		]
 	}
+}
+
+//
+export const addPost = (postText) => {
+	const id = state.profilePage.postsData.length+1;
+	const newPostData = {
+		text: postText,
+		likesCount: 0,
+		id: id,
+	}
+
+	state.profilePage.postsData.unshift(newPostData);
+	renderTree(state);
+} 
+export const addMessage = (messageText) => {
+	const newMessageData = {
+		text: messageText,
+		isMy: true,
+	}
+
+	state.messagesPage.messagesData.push(newMessageData);
+	renderTree(state);
 }
 export default state;

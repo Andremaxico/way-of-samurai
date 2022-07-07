@@ -38,6 +38,8 @@ $md3: 767px;
 
 $mainCol: rgb(185, 41, 41);
 $black: rgb(51, 51, 51);
+$grayBg: #fefefe;
+$gray: rgb(131, 131, 131);
 //mixins
 @mixin font-style($fz, $lh, $fw: 400, $col: $black) {
     font-size: $fz;
@@ -75,4 +77,14 @@ $black: rgb(51, 51, 51);
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: content-box;
+}
+@mixin formBtn() {
+  padding: 9px 15px;
+  background-color: $mainCol;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.2s;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
 }
