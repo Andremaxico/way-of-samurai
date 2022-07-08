@@ -1,15 +1,16 @@
-import React from 'react'
-import { updateNewPostValue } from '../../../Redux/state';
+import React from 'react';
 import classes from './NewPost.module.scss';
 
 export default function NewPost(props) {
 	//creating ref(no bene)
 	let currentEl = React.createRef();
 
+	console.log(props);
+
 	//when user click button "addPost"
-	const addPost = (event) => {
+	function addPost(event) {
 		const text = currentEl.current.value;
-		if(text.length > 1) {
+		if (text.length > 1) {
 			props.addPost();
 		}
 		event.preventDefault();
@@ -17,7 +18,7 @@ export default function NewPost(props) {
 
 	const changeTextarea = event => {
 		const value = event.target.value;
-		updateNewPostValue(value);
+		props.updateNewPostValue(value);
 	}
 
 	return (

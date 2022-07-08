@@ -1,26 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-import state, { setRerenderFn } from './Redux/state';
+import store from './Redux/state';
 import App from './App';
-import { 
-	addPost, 
-	addMessage, 
-	updateNewPostValue,
-	updateNewMessageValue,
-} from './Redux/state';
 
 const methods = {
 	profilePage: {
-		addPost,
-		updateNewPostValue,
+		addPost: store.addPost.bind(store),
+		updateNewPostValue: store.updateNewPostValue.bind(store),
 	},
 	messagesPage: {
-		addMessage,
-		updateNewMessageValue,
+		addMessage: store.addMessage.bind(store),
+		updateNewMessageValue: store.updateNewMessageValue.bind(store),
 	}
 }
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const renderTree = (state) => {
@@ -30,6 +23,6 @@ const renderTree = (state) => {
 	  </React.StrictMode>
 	);
 }
-renderTree(state);
-setRerenderFn(renderTree);
+renderTree(store.getState());
+store.subscribe(renderTree);
 
