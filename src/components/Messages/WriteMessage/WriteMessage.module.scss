@@ -1,0 +1,26 @@
+@import '../../../global-styles';
+
+.form {
+	position: absolute;
+	top: calc(100% + 24px);
+	left: 0;
+	@include column-align;
+	align-items: flex-end;
+	width: 100%;
+	z-index: 2;
+	.textarea {
+		padding: 13px 17px;
+		margin-bottom: 12px;
+		min-height: 50px;
+		max-height: 150px;
+		width: 100%;
+		@include text;
+		background-color: $grayBg;
+		border-radius: 16px 16px 0 16px;
+		border: 1px solid $gray;
+		resize: none;
+	}
+	.button {
+		@include formBtn();
+	}
+}

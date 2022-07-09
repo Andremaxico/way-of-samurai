@@ -1,16 +1,13 @@
-import React, { Component } from 'react'
-import classes from './Sidebar.module.scss'
+import React from 'react';
+import { FriendsList } from './FriendsList/FriendsList';
+import classes from './Sidebar.module.scss';
+import { Sidenav } from './Sidenav/Sidenav';
 
 function Sidebar(props) {
 	return (
 		<aside className={classes.sidebar}>
-			<nav className={classes.nav}>
-				<a>Profile</a>
-				<a>Messsages</a>
-				<a>News</a>
-				<a>Music</a>
-				<a>Settings</a>
-			</nav>
+			<Sidenav linksData={props.data.linksData}/>
+			<FriendsList friendsData={props.data.friendsData}/>
 		</aside>
 	);
 }

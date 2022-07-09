@@ -1,0 +1,22 @@
+@import '../../global-styles';
+
+.messages {
+	.title {
+		margin-bottom: 24px;
+		@include font-style(44px, 140%, 700);
+	}
+}
+.content {
+	display: flex;
+	.chatsList {
+		height: 100%;
+		margin-right: 24px;
+	}
+
+	.currChatWrap {
+		position: relative;
+		height: 100%;
+		flex: 1 1 auto;
+		.message {}
+	}
+}

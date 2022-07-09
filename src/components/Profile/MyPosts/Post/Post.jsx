@@ -9,6 +9,7 @@ export default function (props) {
 		</div>
 		<div className={classes.text}>
 			<p>{props.text}</p>
+			<p>Likes count: {props.likes}</p>
 		</div>	
 	 </div>
   )
