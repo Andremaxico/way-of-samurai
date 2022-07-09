@@ -12,8 +12,7 @@ export default function Messages(props) {
 				<MessagesList 
 					messagesData={props.data.messagesData} 
 					newMessageValue={props.data.newMessageValue}
-					addMessage={props.methods.addMessage}
-					updateNewMessageValue={props.methods.updateNewMessageValue}
+					dispatch={props.dispatch}
 				/>
 			</div>
 		</div>

@@ -1,3 +1,34 @@
+const ADD_POST = 'ADD-POST';
+const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
+const ADD_MESSAGE = 'ADD-MESSAGE';
+const UPDATE_NEW_MESSAGE_VALUE = 'UPDATE-NEW-MESSAGE-VALUE';
+
+export const addPostActionCreator = () => {
+	return {
+		type: ADD_POST,
+	}
+}
+
+export const addMessageActionCreator = () => {
+	return {
+		type: ADD_MESSAGE,
+	}
+}
+
+export const updateNewPostValueActionCreator = (value) => {
+	return {
+		type: UPDATE_NEW_POST_VALUE,
+		value: value
+	}
+}
+
+export const updateNewMessageValueActionCreator = (value) => {
+	return {
+		type: UPDATE_NEW_MESSAGE_VALUE,
+		value: value
+	}
+}
+
 const store = {
 	_rerenderTree() {
 		console.error('set subscriber fn');
@@ -131,50 +162,47 @@ const store = {
 	getState() {
 		return this._state;
 	},
-
-	addPost() {
-		const id = this._state.profilePage.postsData.length+1;
-		const postText = this._state.profilePage.newPostText;
-		const newPostData = {
-			text: postText,
-			likesCount: 0,
-			id: id,
-		}
-
-		this._state.profilePage.postsData.unshift(newPostData);
-		this._state.profilePage.newPostText = '';
-
-		this._rerenderTree(this._state);
-	},
-
-	addMessage() {
-		const messageText = this._state.messagesPage.newMessageValue;
-		const newMessageData = {
-			text: messageText,
-			isMy: true,
-		}
-	
-		this._state.messagesPage.messagesData.push(newMessageData);
-		this._state.messagesPage.newMessageValue = '';
-	
-		this._rerenderTree(this._state);
-	},
-	
-	//updates current new post value
-	updateNewPostValue(value)  {
-		this._state.profilePage.newPostText = value;
-		this._rerenderTree(this._state);
-	},
-	
-	//update current new message value
-	updateNewMessageValue (value)  {
-		this._state.messagesPage.newMessageValue = value;
-		this._rerenderTree(this._state);
-	},
-
 	subscribe(observer) {
 		this._rerenderTree = observer;
 	},
+
+	//methods
+	dispatch(action) {
+		//add post
+		if(action.type === ADD_POST) {
+			const id = this._state.profilePage.postsData.length+1;
+			const postText = this._state.profilePage.newPostText;
+			const newPostData = {
+				text: postText,
+				likesCount: 0,
+				id: id,
+			}
+
+			this._state.profilePage.postsData.unshift(newPostData);
+			this._state.profilePage.newPostText = '';
+
+		}
+		//add post
+		else if(action.type === ADD_MESSAGE) {
+			const messageText = this._state.messagesPage.newMessageValue;
+			const newMessageData = {
+				text: messageText,
+				isMy: true,
+			}
+		
+			this._state.messagesPage.messagesData.push(newMessageData);
+			this._state.messagesPage.newMessageValue = '';
+		}
+		//updateNewPostValue
+		else if(action.type === UPDATE_NEW_POST_VALUE) {
+			this._state.profilePage.newPostText = action.value;
+		}
+		//
+		else if(action.type === UPDATE_NEW_MESSAGE_VALUE) {
+			this._state.messagesPage.newMessageValue = action.value;
+		}
+		this._rerenderTree(this._state);
+	}
 }
 
 export default store;

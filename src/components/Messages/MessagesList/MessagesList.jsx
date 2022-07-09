@@ -16,8 +16,7 @@ export const MessagesList = (props) => {
 			{ list }
 			<WriteForm 
 				addMessage={props.addMessage} 
-				updateNewMessageValue={props.updateNewMessageValue}
-				newMessageValue={props.newMessageValue}
+				dispatch={props.dispatch}
 			/>
 		</div>
 	)

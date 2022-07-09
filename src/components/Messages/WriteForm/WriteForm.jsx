@@ -1,4 +1,5 @@
 import React from 'react';
+import { addMessageActionCreator, updateNewMessageValueActionCreator } from '../../../Redux/state';
 import classes from './WriteForm.module.scss';
 
 export const WriteForm = (props) => {
@@ -6,7 +7,7 @@ export const WriteForm = (props) => {
 	const addMessage = (event) => {
 		const text = currentRef.current.value;
 		if(text.length > 0) {
-			props.addMessage();
+			props.dispatch(addMessageActionCreator());
 		}
 
 		event.preventDefault();
@@ -14,7 +15,7 @@ export const WriteForm = (props) => {
 
 	const changeTextareaValue = event => {
 		const value = event.target.value;
-		props.updateNewMessageValue(value);
+		props.dispatch(updateNewMessageValueActionCreator(value));
 	}
 	return (
 		<form action='#' className={classes.form} onSubmit={ addMessage }>
