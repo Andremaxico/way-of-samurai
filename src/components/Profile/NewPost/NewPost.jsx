@@ -1,25 +1,23 @@
 import React from 'react';
-import { addPostActionCreator, updateNewPostValueActionCreator } from '../../../Redux/state';
+import { addPostCreator, updateNewPostValueCreator } from '../../../Redux/profile-reducer';
 import classes from './NewPost.module.scss';
 
 export default function NewPost(props) {
 	//creating ref(no bene)
 	let currentEl = React.createRef();
 
-	console.log(props);
-
 	//when user click button "addPost"
 	const addPost = (event) => {
 		const text = currentEl.current.value;
 		if (text.length > 1) {
-			props.dispatch(addPostActionCreator());
+			props.dispatch(addPostCreator());
 		}
 		event.preventDefault();
 	}
-
+	//when user inout smt in textarea
 	const changeTextarea = event => {
 		const value = event.target.value;
-		props.dispatch(updateNewPostValueActionCreator(value));
+		props.dispatch(updateNewPostValueCreator(value));
 	}
 
 	return (

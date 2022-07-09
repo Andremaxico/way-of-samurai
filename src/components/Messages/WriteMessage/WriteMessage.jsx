@@ -1,13 +1,13 @@
 import React from 'react';
-import { addMessageActionCreator, updateNewMessageValueActionCreator } from '../../../Redux/state';
-import classes from './WriteForm.module.scss';
+import { addMessageCreator, updateNewMessageValueCreator } from '../../../Redux/messages-reducer';
+import classes from './WriteMessage.module.scss';
 
 export const WriteForm = (props) => {
 	const currentRef = React.createRef();
 	const addMessage = (event) => {
 		const text = currentRef.current.value;
 		if(text.length > 0) {
-			props.dispatch(addMessageActionCreator());
+			props.dispatch(addMessageCreator());
 		}
 
 		event.preventDefault();
@@ -15,7 +15,7 @@ export const WriteForm = (props) => {
 
 	const changeTextareaValue = event => {
 		const value = event.target.value;
-		props.dispatch(updateNewMessageValueActionCreator(value));
+		props.dispatch(updateNewMessageValueCreator(value));
 	}
 	return (
 		<form action='#' className={classes.form} onSubmit={ addMessage }>

@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from '../Messages.module.scss';
-import { WriteForm } from '../WriteForm/WriteForm';
+import { WriteForm } from '../WriteMessage/WriteMessage';
 import Message from './Message/Message';
 
 export const MessagesList = (props) => {
@@ -15,8 +15,8 @@ export const MessagesList = (props) => {
 		<div className={classes.currChatWrap}> 
 			{ list }
 			<WriteForm 
-				addMessage={props.addMessage} 
 				dispatch={props.dispatch}
+				newMessageValue={props.newMessageValue}
 			/>
 		</div>
 	)
