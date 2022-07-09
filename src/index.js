@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-import store from './Redux/store';
+import store from './Redux/redux-store';
 import App from './App';
+
+console.log(store.getState());
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const renderTree = (state) => {
@@ -13,5 +15,8 @@ const renderTree = (state) => {
 	);
 }
 renderTree(store.getState());
-store.subscribe(renderTree);
+store.subscribe(() => {
+	const state = store.getState();
+	renderTree(state);
+});
 

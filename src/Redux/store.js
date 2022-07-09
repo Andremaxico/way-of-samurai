@@ -131,7 +131,7 @@ const store = {
 			]
 		}
 	},
-
+  
 	getState() {
 		return this._state;
 	},
