@@ -29,6 +29,12 @@ const initialState = {
 			id: 1,
 		},
 	],
+	profileInfo: {
+		name: 'Andriy Solomko',
+		age: 13,
+		avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
+		coverUrl: 'https://www.trendycovers.com/covers/make_a_wish_facebook_cover_1484111405.jpg',
+	},
 	newPostText: '',
 }
 

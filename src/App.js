@@ -10,7 +10,6 @@ import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 
 function App(props) {
-  console.log(props);
   return (
     <BrowserRouter>
       <div className="app-wrapper">

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './Messages.module.scss';
-import { ChatsList } from './ChatsList/ChatsList';
-import { MessagesList } from './MessagesList/MessagesList';
+import ChatsList from './ChatsList';
+import MessagesList from './MessagesList';
 
 export default function Messages(props) {
 	return (

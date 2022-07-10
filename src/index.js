@@ -4,8 +4,6 @@ import './index.scss';
 import store from './Redux/redux-store';
 import App from './App';
 
-console.log(store.getState());
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const renderTree = (state) => {
 	root.render(
@@ -15,6 +13,7 @@ const renderTree = (state) => {
 	);
 }
 renderTree(store.getState());
+
 store.subscribe(() => {
 	const state = store.getState();
 	renderTree(state);

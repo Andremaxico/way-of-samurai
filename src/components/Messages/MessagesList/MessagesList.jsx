@@ -1,9 +1,9 @@
 import React from 'react'
 import classes from '../Messages.module.scss';
-import { WriteForm } from '../WriteMessage/WriteMessage';
-import Message from './Message/Message';
+import WriteMessageContainer from '../WriteMessage';
+import Message from './Message';
 
-export const MessagesList = (props) => {
+const MessagesList = (props) => {
 	const list = props.messagesData.map((data, index) => {
 		if(data.isMy) {
 			return <Message isMy data={data} key={index}/>
@@ -14,10 +14,12 @@ export const MessagesList = (props) => {
 	return (
 		<div className={classes.currChatWrap}> 
 			{ list }
-			<WriteForm 
+			<WriteMessageContainer
 				dispatch={props.dispatch}
 				newMessageValue={props.newMessageValue}
 			/>
 		</div>
 	)
 }
+
+export default MessagesList;

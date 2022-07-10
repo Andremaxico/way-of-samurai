@@ -4,12 +4,13 @@ import messagesReducer from './messages-reducer';
 import profileReducer from './profile-reducer';
 import sidebarReducer from './sidebar-reducer';
 
-const reducers = combineReducers({
-	profilePage: profileReducer,
-	messagesPage: messagesReducer,
-	sidebar: sidebarReducer,
+const reducer = combineReducers({
+	profilePage: profileReducer, //profile reducer returns state
+	messagesPage: messagesReducer, //messages reducer returns messages propfile state
+	sidebar: sidebarReducer, //sidebar reducer returns sidebar state
 });
 
-const store  = configureStore(reducers);
+
+const store  = createStore(reducer);
 
 export default store;

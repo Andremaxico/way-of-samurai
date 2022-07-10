@@ -1,5 +1,4 @@
 import React from 'react';
-import { addPostCreator, updateNewPostValueCreator } from '../../../Redux/profile-reducer';
 import classes from './NewPost.module.scss';
 
 export default function NewPost(props) {
@@ -9,15 +8,12 @@ export default function NewPost(props) {
 	//when user click button "addPost"
 	const addPost = (event) => {
 		const text = currentEl.current.value;
-		if (text.length > 1) {
-			props.dispatch(addPostCreator());
-		}
-		event.preventDefault();
+		props.onAddPost(event, text);
 	}
+	
 	//when user inout smt in textarea
 	const changeTextarea = event => {
-		const value = event.target.value;
-		props.dispatch(updateNewPostValueCreator(value));
+		props.onTextareaChange(event);
 	}
 
 	return (

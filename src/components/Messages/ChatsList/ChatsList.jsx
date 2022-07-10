@@ -1,8 +1,8 @@
 import React from 'react';
-import Chat from './Chat/Chat';
+import Chat from './Chat';
 import classes from '../Messages.module.scss';
 
-export const ChatsList = (props) => {
+const ChatsList = (props) => {
 	return (
 		<div className={classes.chatsList}>
 			{
@@ -13,3 +13,5 @@ export const ChatsList = (props) => {
 		</div>
 	)
 }
+
+export default ChatsList;
