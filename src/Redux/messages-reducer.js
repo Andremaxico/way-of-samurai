@@ -67,6 +67,7 @@ const messagesReducer = (state = initalState, action) => {
 			state.newMessageValue = action.value;
 			break;
 	}
+	debugger;
 	return state;
 }
 

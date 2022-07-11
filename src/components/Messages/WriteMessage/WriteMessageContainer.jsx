@@ -1,27 +1,28 @@
 import React from 'react';
 import { addMessageCreator, updateNewMessageValueCreator } from '../../../Redux/messages-reducer';
-import WriteMessage from './WriteMessage';
+import WriteMessage from './WriteMessage'; 
+import { connect } from 'react-redux';
 
-const WriteMessageContainer = (props) => {
-	const addMessage = (text, event) => {
-		if(text.length > 0) {
-			props.dispatch(addMessageCreator());
-		}
-
-		event.preventDefault();
+const mapStateToProps = (state) => {
+	return {
+		newMessageValue: state.messagesPage.newMessageValue,
 	}
-
-	const changeTextareaValue = event => {
-		const value = event.target.value;
-		const action = updateNewMessageValueCreator(value);
-		props.dispatch(action);
-	}
-	return (
-		<WriteMessage 
-			onTextareaChange={changeTextareaValue} 
-			onAddMessage={addMessage}
-			newMessageValue={props.newMessageValue}
-		/>);
 }
+
+const mapDispatchToProps = dispatch => {
+	return {
+		updateNewMessageValue: (value) => {
+			const action = updateNewMessageValueCreator(value);
+			debugger;
+			dispatch(action);
+		},
+		addMessage: () => {
+			const action = addMessageCreator();
+			dispatch(action);
+		}
+	}
+}
+
+const WriteMessageContainer = connect(mapStateToProps, mapDispatchToProps)(WriteMessage);
 
 export default WriteMessageContainer;

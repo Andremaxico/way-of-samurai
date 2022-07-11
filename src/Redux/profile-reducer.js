@@ -55,8 +55,8 @@ const profileReducer = (state = initialState, action) => {
 			break;
 
 		case UPDATE_NEW_POST_VALUE:
-			debugger;
 			state.newPostText = action.value;
+			debugger;
 			break;
 	}
 
