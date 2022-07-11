@@ -2,6 +2,7 @@ import React from 'react';
 import classes from './NewPost.module.scss';
 
 export default function NewPost(props) {
+	console.log(props.newPostText);
 	//creating ref(no bene)
 	let currentEl = React.createRef();
 
@@ -13,7 +14,7 @@ export default function NewPost(props) {
 	
 	//when user inout smt in textarea
 	const changeTextarea = event => {
-		props.onTextareaChange(event);
+		props.updateNewPostValue(event);
 	}
 
 	return (
