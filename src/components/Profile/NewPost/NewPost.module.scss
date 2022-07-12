@@ -1,10 +1,24 @@
 @import '../../../global-styles';
 
 .title {
-
+	margin-bottom: 28px;
+	@include title;
 }
 .newPost {
+	margin-bottom: 24px;
 	.form {
-		
+		@include column-align;
+		align-items: flex-end;
+		max-width: 600px;
+		.textarea {
+			max-height: 300px;
+			min-height: 150px;
+			margin-bottom: 16px;
+			@include input;
+			resize: vertical;
+		}
+		.submitBtn {
+			@include formBtn();
+		}	
 	}
 }

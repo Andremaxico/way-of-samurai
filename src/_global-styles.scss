@@ -81,15 +81,19 @@ $gray: rgb(131, 131, 131);
 @mixin formBtn() {
   padding: 9px 15px;
   background-color: $mainCol;
-  color: #fff;
-  font-weight: 500;
-  transition: 0.2s;
+  @include font-style(15px, 140%, 500, #fff);
   border-radius: 6px;
   border: 0;
+  transition: 0.2s;
   cursor: pointer;
 }
 @mixin input() {
   padding: 12px 15px;
+  width: 100%;
   border: 1px solid $gray;
+  border-radius: 6px;
   transition: 0.2s;
+  &:focus {
+    border-color: $mainCol;
+  }
 }
