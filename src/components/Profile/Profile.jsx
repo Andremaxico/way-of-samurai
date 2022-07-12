@@ -1,7 +1,7 @@
-import React from 'react'
-import NewPost from './NewPost/NewPost'
-import Post from './Post/Post'
-import classes from './Profile.module.scss'
+import React from 'react';
+import NewPost from './NewPost/NewPost';
+import Post from './Post/Post';
+import classes from './Profile.module.scss';
 
 export default function Profile() {
   return (

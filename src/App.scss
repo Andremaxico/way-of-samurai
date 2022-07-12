@@ -3,14 +3,14 @@
 .app-wrapper {
   display: grid;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 3fr 11fr;
+  grid-template-columns: 18% 82%;
   gap: 15px;
 
   height: 100vh;
 }
 
 .content {
-  width: 100%;
+  max-width: 100%;
   padding-right: 20px;
 }
 

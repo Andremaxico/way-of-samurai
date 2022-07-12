@@ -1,7 +1,8 @@
 @import '../../global-styles';
 //prifile
 .profile {
-	&__cover {
+	max-width: 100%;
+	.cover {
 	  width: 100%;
 	  height: 250px;
 	  overflow: hidden;
