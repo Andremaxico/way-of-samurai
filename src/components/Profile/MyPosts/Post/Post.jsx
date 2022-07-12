@@ -8,8 +8,8 @@ function Post (props) {
 			<img src={props.avatarUrl}/>
 		</div>
 		<div className={classes.text}>
-			<p>{props.text}</p>
-			<p>Likes count: {props.likes}</p>
+			<p>{props.data.text}</p>
+			<p>Likes count: {props.data.likes}</p>
 		</div>	
 	 </div>
   )

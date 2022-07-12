@@ -14,10 +14,7 @@ const MessagesList = (props) => {
 	return (
 		<div className={classes.currChatWrap}> 
 			{ list }
-			<WriteMessageContainer
-				dispatch={props.dispatch}
-				newMessageValue={props.newMessageValue}
-			/>
+			<WriteMessageContainer />
 		</div>
 	)
 }

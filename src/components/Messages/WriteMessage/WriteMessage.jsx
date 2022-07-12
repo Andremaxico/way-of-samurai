@@ -3,10 +3,8 @@ import classes from './WriteMessage.module.scss';
 
 
 const WriteMessage = (props) => {
-	const currentRef = React.createRef();
 	const onAddMessage = (event) => {
-		const text = currentRef.current.value;
-		props.addMessage(text);
+		props.addMessage();
 		event.preventDefault();
 	}
 
@@ -14,10 +12,9 @@ const WriteMessage = (props) => {
 		const text = event.target.value;
 		props.updateNewMessageValue(text);
 	}
-	debugger;
 	return (
 		<form action='#' className={classes.form} onSubmit={ onAddMessage }>
-			<textarea onChange={ onTextareaChange } value={props.newMessageValue} ref={ currentRef } placeholder='Input your message...' className={classes.textarea} ref={currentRef}></textarea>
+			<textarea onChange={ onTextareaChange } value={props.newMessageValue} placeholder='Input your message...' className={classes.textarea}></textarea>
 			<button className={classes.button}>Send</button>
 		</form>
 	)

@@ -4,6 +4,7 @@ import { addPostCreator, updateNewPostValueCreator } from '../../../Redux/profil
 import NewPost from './NewPost';
 
 const mapStateToProps = state => {
+	console.log(state.profilePage.newPostText);
 	return {
 		newPostText: state.profilePage.newPostText
 	}
@@ -12,9 +13,13 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		updateNewPostValue: (value) => {
-			dispatch(updateNewPostValueCreator(value))
+			const action = updateNewPostValueCreator(value);
+			dispatch(action);
 		},
-		addPost: () => dispatch(addPostCreator()),
+		addPost: () => {
+			const action = addPostCreator();
+			dispatch(action);
+		},
 	}
 }
 
