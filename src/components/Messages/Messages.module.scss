@@ -9,4 +9,7 @@
 	.CurrentChat {
 		flex: 1 1  auto;
 	}
+	.MessagesList {
+		@include column-align;
+	}
 }
