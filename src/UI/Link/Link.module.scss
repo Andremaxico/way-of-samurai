@@ -1,0 +1,16 @@
+@import '../../global-styles';
+
+.navLink {
+	display: block;
+	margin-bottom: 10px;
+	font-size: 18px;
+	font-weight: 700;
+	color: #fff;
+	transition: 0.2s;
+	&:hover, &._active {
+		opacity: 0.8;
+	}
+	&:last-child {
+		margin-bottom: 0;
+	}
+}

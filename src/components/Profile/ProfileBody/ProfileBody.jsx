@@ -1,5 +1,5 @@
 import React from 'react'
-import ProfileInfo from '../../../UI/ProfileInfo/ProfileInfo';
+import ProfileInfo from '../../../UI/ProfileInfo';
 import classes from '../Profile.module.scss';
 
 
