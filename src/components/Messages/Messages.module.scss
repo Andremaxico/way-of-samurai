@@ -1,1 +1,12 @@
 @import '../../global-styles';
+
+.Messages {
+	display: flex;
+	.ChatsList {
+		flex: 0 0 250px;
+		margin-right: 24px;
+	}
+	.CurrentChat {
+		flex: 1 1  auto;
+	}
+}

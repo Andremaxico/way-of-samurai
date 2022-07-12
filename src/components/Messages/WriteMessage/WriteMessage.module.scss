@@ -1,0 +1,14 @@
+@import '../../../global-styles';
+
+.WriteMessage {
+	@include column-align;
+	align-items: flex-end;
+	.textarea {
+		margin-bottom: 12px;
+		@include input;
+		resize: none;
+	}
+	.btn {
+		@include formBtn;
+	}
+}
