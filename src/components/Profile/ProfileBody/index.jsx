@@ -1,1 +1,1 @@
-export { default } from './ProfileBody';
+export { default } from './ProfileBodyContainer';

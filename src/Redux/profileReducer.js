@@ -4,8 +4,9 @@ const ADD_POST = 'add-post';
 const initialState = {
 	profileInfo: {
 		name: 'Andriy',
-		avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
 		age: 13,
+		coverUrl: 'https://timelinecovers.pro/facebook-cover/download/life-cycle-facebook-cover.jpg',
+		avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
 	},
 	postsData: [
 		{
@@ -27,7 +28,7 @@ const initialState = {
 			id: 1,
 		},
 	],
-	newPostValue: '',
+	newPostText: '',
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -36,7 +37,7 @@ const profileReducer = (state = initialState, action) => {
 
 	switch (action.type) {
 		case ADD_POST:
-			const value = stateCopy.newPostValue;
+			const value = stateCopy.newPostText;
 			const id = stateCopy.postsData.length + 1;
 			const newPost = {
 				text: value,
@@ -45,13 +46,12 @@ const profileReducer = (state = initialState, action) => {
 				avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
 			}
 
-			stateCopy.postsData.push(newPost);
-			console.log(stateCopy.postsData);
-			stateCopy.newPostValue = '';
+			stateCopy.postsData.unshift(newPost);
+			stateCopy.newPostText = '';
 
 			break;
 		case UPDATE_NEW_POST_VALUE:
-			stateCopy.newPostValue = action.value;
+			stateCopy.newPostText = action.value;
 
 			break;
 	}

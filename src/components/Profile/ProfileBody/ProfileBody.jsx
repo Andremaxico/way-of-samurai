@@ -1,20 +1,18 @@
 import React from 'react'
+import ProfileInfo from '../../../UI/ProfileInfo/ProfileInfo';
 import classes from '../Profile.module.scss';
 
 
-export const Info = (props) => {
-  return (
-	<div className={classes.Info}>
-		<div className={classes.cover}>
-			<img src='https://timelinecovers.pro/facebook-cover/download/life-cycle-facebook-cover.jpg'/>
-		</div>
-		<div className={classes.info}>
-			<div className={classes.avatar}>
-					
+const ProfileBody = (props) => {
+	console.log(props);
+	return (
+		<div className={classes.ProfileBody}>
+			<div className={classes.cover}>
+				<img src={props.profileInfo.coverUrl}/>
 			</div>
+			<ProfileInfo info={props.profileInfo}/>
 		</div>
-	</div>
-  )
+	)
 }
 
-export default Info;
+export default ProfileBody;

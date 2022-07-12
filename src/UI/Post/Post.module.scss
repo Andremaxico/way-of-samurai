@@ -1,0 +1,21 @@
+@import '../../global-styles';
+
+.Post {
+	display: flex;
+	align-items: center;
+	margin-bottom: 16px;
+	.avatar {
+		@include profileAvatar;
+		margin-right: 12px;
+	}
+	p {
+		margin-bottom: 4px;
+		@include text;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	&:last-child {
+		margin-bottom: 0;
+	}
+}

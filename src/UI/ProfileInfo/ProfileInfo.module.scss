@@ -1,0 +1,15 @@
+@import '../../global-styles';
+
+.Info {
+	display: flex;
+
+	.avatar {
+		@include profileAvatar;
+		margin-right: 12px;
+	}
+	.description {
+		p {
+			@include text;
+		}
+	}
+}
