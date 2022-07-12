@@ -90,6 +90,7 @@ $gray: rgb(131, 131, 131);
 @mixin input() {
   padding: 12px 15px;
   width: 100%;
+  @include text();
   border: 1px solid $gray;
   border-radius: 6px;
   transition: 0.2s;

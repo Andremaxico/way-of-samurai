@@ -9,6 +9,9 @@
 	}
 	.description {
 		p {
+			&:first-child {
+				@include bigText;
+			}
 			@include text;
 		}
 	}

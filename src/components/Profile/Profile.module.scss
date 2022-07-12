@@ -2,16 +2,18 @@
 //prifile
 .profile {
 	max-width: 100%;
-	.cover {
-	  width: 100%;
-	  height: 250px;
-	  overflow: hidden;
-	  img {
-		 width: 100%;
-		 height: 100%;
-	  }
-	}
 }
 .ProfileBody {
+	margin-bottom: 32px;
+	.cover {
+		margin-bottom: 28px;
+		width: 100%;
+		height: 250px;
+		overflow: hidden;
+		img {
+		  width: 100%;
+		  height: 100%;
+		}
+	}
 	.info {}
 }
