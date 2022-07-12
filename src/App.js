@@ -1,8 +1,10 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.scss';
+import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Sidenav from './components/Sidebar/Sidebar'
 import Profile from './components/Profile/Profile';
+import Messages from './components/Messages/Messages';
 
 function App() {
   return (
@@ -10,7 +12,10 @@ function App() {
       <Header />
       <Sidenav />
       <div className='content'>
-        <Profile />
+        <Routes>
+          <Route path='/profile/*' element={<Profile />}/>
+          <Route  path='/messages/*' element={ <Messages /> }/>
+        </Routes>
       </div>
     </div>
   );
