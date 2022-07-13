@@ -1,0 +1,49 @@
+@import '../../../global-styles';
+
+.user {
+	position: relative;
+	display: flex;
+	padding: 12px 15px;
+	margin-bottom: 24px;
+	border: 1px solid $gray;
+	border-radius: 6px;
+	&:last-child {
+		margin-bottom: 0;
+	}
+	.avatar {
+		@include userAvatar;
+		margin-right: 16px;
+		img {}
+	}
+	.info {
+		.title {
+			@include row-align;
+			margin-bottom: 16px;
+			.name {
+				margin-right: 8px;
+				@include bigText;
+			}
+			.location {
+				@include row-align;
+				.country {
+					margin-right: 4px;
+					@include text;
+					color: $gray;
+				}
+				.city {
+					@include smallText;
+					color: $gray;
+				}
+			}
+		}
+		.description {
+			@include text;
+		}
+	}
+	.followBtn {
+		position: absolute;
+		top: 12px;
+		right: 15px;
+		@include formBtn;
+	}
+}

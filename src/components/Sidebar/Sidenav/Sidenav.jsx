@@ -22,6 +22,14 @@ export const Sidenav = (props) => {
 			Messages
 		</NavLink>
 		<NavLink 
+			to='users'
+			className={({isActive}) =>
+				isActive ? classes._active : undefined
+			}
+			>
+			Users
+		</NavLink>
+		<NavLink 
 			to='news'
 			className={({isActive}) =>
 				isActive ? classes._active : undefined

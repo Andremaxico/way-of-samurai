@@ -1,0 +1,9 @@
+@import '../../global-styles';
+
+.Users {
+	.title {
+		@include title;
+		margin-bottom: 28px;
+	}
+}
+.UsersList {}
