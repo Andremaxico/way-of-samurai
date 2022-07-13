@@ -4,7 +4,6 @@ import { addPostCreator, updateNewPostValueCreator } from '../../../Redux/profil
 import NewPost from './NewPost';
 
 const mapStateToProps = state => {
-	console.log(state.profilePage.newPostText);
 	return {
 		newPostText: state.profilePage.newPostText
 	}

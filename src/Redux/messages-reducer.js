@@ -50,28 +50,29 @@ const initalState = {
 }
 
 const messagesReducer = (state = initalState, action) => {
-	const stateCopy = {...state};
-
-	//stateCopy.usersInfo = [...state.usersInfo];
 	//add post
 	switch (action.type) {
 		case ADD_MESSAGE:
-			const messageText = stateCopy.newMessageValue;
+			const messageText = state.newMessageValue;
 			const newMessageData = {
 				text: messageText,
 				isMy: true,
 			}
-			stateCopy.messagesData = [...state.messagesData];
-			stateCopy.messagesData.push(newMessageData);
 
-			stateCopy.newMessageValue = '';
-			break;
+			return {
+				...state,
+				messagesData: [...state.messagesData, newMessageData],
+				newMessageValue: '',
+			}
 	
 		case UPDATE_NEW_MESSAGE_VALUE:
-			stateCopy.newMessageValue = action.value;
-			break;
+			return {
+				...state,
+				newMessageValue: action.value,
+			}
+		default:
+			return state
 	}
-	return stateCopy;
 }
 
 //Action creators
