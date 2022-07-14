@@ -13,6 +13,7 @@
 	.avatar {
 		@include userAvatar;
 		margin-right: 16px;
+		background-color: $mainCol;
 		img {}
 	}
 	.info {

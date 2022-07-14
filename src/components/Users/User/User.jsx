@@ -1,8 +1,9 @@
 import React from 'react';
 import classes from './User.module.scss';
+import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 
 const User = (props) => {
-	const {name: name, location: location, id: id, description: description, avatarUrl: avatarUrl, isFollowed: isFollowed} = props.info;
+	const {name: name, id: id, status: description, photos: photos, followed: isFollowed} = props.info;
 	const follow = () => {
 		props.follow(id);
 	};
@@ -12,14 +13,14 @@ const User = (props) => {
 	return (
 		<div className={classes.user}>
 			<div className={classes.avatar}>
-				<img src={avatarUrl} alt="user avatar" />
+				<img src={photos.small || defaultAvatar} alt="user avatar" />
 			</div>
 			<div className={classes.info}>
 				<div className={classes.title}>
 					<h3 className={classes.name}>{name}</h3>
 					<p className={classes.location}>
-						<span className={classes.country}>{location.country}</span>
-						<span className={classes.city}>{location.city}</span>
+						<span className={classes.country}>{'location.country'}</span>
+						<span className={classes.city}>{'location.city'}</span>
 					</p>
 				</div>
 				<p className={classes.description}>{description}</p>
