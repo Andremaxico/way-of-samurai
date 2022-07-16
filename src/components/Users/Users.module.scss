@@ -16,14 +16,13 @@
 	.paginationBtn {
 		@include text;
 		transition: 0.15s;
+		margin-right: 8px;
+		&:last-child {
+			margin-right: 0;
+		}
 		&._active, &:hover {
 			font-weight: 500;
 			color: $mainCol;
 		}
 	}
-}
-.loadingText {
-	@include title;
-	text-align: center;
-	font-style: italic;
 }

@@ -10,13 +10,18 @@ class UsersPaginationContainer extends Component {
 		this.setCurrentPage = this.setCurrentPage.bind(this);
 	}
 	setCurrentPage (num)  {
-		//chancges users-page number
+		//sets preloader
+		this.props.methods.toggleIsFetching(true);
+
+		//changes users-page number
 		this.props.methods.setCurrentPage(num);
 
 		//get current users-page with number
 		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${num}&count=${this.props.state.pagesSize}`)
 				.then(res => {
-					this.props.methods.setUsers(res.data.items)
+					this.props.methods.setUsers(res.data.items);
+
+					this.props.methods.toggleIsFetching(false);
 				})
 	}
 
