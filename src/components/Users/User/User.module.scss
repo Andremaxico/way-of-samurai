@@ -3,6 +3,7 @@
 .user {
 	position: relative;
 	display: flex;
+	align-items: flex-start;
 	padding: 12px 15px;
 	margin-bottom: 24px;
 	border: 1px solid $gray;
@@ -12,11 +13,14 @@
 	}
 	.avatar {
 		@include userAvatar;
+		flex: 0 0 70px;
 		margin-right: 16px;
 		background-color: $mainCol;
 		img {}
 	}
 	.info {
+		margin-right: 16px;
+		flex: 1 1 auto;
 		.title {
 			@include row-align;
 			margin-bottom: 16px;
@@ -42,9 +46,6 @@
 		}
 	}
 	.followBtn {
-		position: absolute;
-		top: 12px;
-		right: 15px;
 		@include formBtn;
 	}
 }

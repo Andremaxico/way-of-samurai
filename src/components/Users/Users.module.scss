@@ -7,3 +7,23 @@
 	}
 }
 .UsersList {}
+.UsersPagination {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 24px;
+	max-width: 600px;
+	overflow: hidden;
+	.paginationBtn {
+		@include text;
+		transition: 0.15s;
+		&._active, &:hover {
+			font-weight: 500;
+			color: $mainCol;
+		}
+	}
+}
+.loadingText {
+	@include title;
+	text-align: center;
+	font-style: italic;
+}

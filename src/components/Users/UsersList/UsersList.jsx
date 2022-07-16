@@ -1,26 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
 import User from '../User';
 import classes from '../Users.module.scss';
-import * as axios from 'axios';
+import UsersPaginationContainer from '../UsersPagination';
 
-class UsersList extends React.Component {
-	componentDidMount() {
-		if(this.props.usersData.length < 1) {
-			axios.get('https://social-network.samuraijs.com/api/1.0/users')
-				.then(res => {
-					this.props.setUsers(res.data.items)
-				})
-		}
-	}
-	render() {
-		const list = this.props.usersData.map(data => <User info={data} key={data.id} follow={this.props.follow} unfollow={this.props.unfollow}/>);
-
+const UsersList = (props) => {
+	const list = props.state.usersData.map(data => {
 		return (
-			<div className={classes.UsersList}>
-				{ list }
-			</div>
+			<User 
+				info={data} key={data.id} 
+				follow={props.methods.follow} unfollow={props.methods.unfollow}
+			/>
 		)
+	});
+
+	const pagesCount = Math.ceil(props.state.totalUsersCount / props.state.pagesSize);
+	let pagesNumbers = [];
+	for(let i = 1; i <= pagesCount; i++) {
+		pagesNumbers.push(i);
 	}
+
+	if(props.state.usersData.length < 1) {
+		return <h2 className={classes.loadingText}>Loading...</h2>
+	}
+	return (
+		<div className={classes.UsersList}>
+
+			<UsersPaginationContainer 
+				state={{
+					...props.state,
+					pagesNumbers: pagesNumbers,
+				}}
+				methods={{
+					setUsers: props.methods.setUsers,
+					setCurrentPage: props.methods.setCurrentPage,
+				}}
+			/>
+			{ list }
+		</div>
+	)
 }
 
 export default UsersList;
