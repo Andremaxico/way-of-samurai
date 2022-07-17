@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import UsersList from './UsersList';
+import Preloader from '../../../UI/Preloader';
 import { connect } from 'react-redux';
 import {
 	follow,
@@ -10,6 +11,7 @@ import {
 	toggleIsFetching,
 	setCurrentPage,
 } from '../../../Redux/usersReducer';
+import PaginationContainer from '../../../UI/Pagination/PaginationContainer';
 
 class UsersListContainer extends Component {
 	componentDidMount() {
@@ -25,11 +27,22 @@ class UsersListContainer extends Component {
 	}
 
 	render() {
+		const pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+		let pagesNumbers = [];
+		for(let i = 1; i <= pagesCount; i++) pagesNumbers = [...pagesNumbers, i];
+
+
+		if(this.props.isFetching) {
+			return <Preloader />
+		}
 		return (
-			<UsersList
-				usersData={this.props.usersData} 
-				follow={this.props.follow} unfollow={this.props.unfollow}
-			/>
+			<>
+				<PaginationContainer pagesNumbers={pagesNumbers} currentPage={this.props.currentPage}/>
+				<UsersList
+					usersData={this.props.usersData} 
+					follow={this.props.follow} unfollow={this.props.unfollow}
+				/>
+			</>
 		)
 	}
 }
@@ -39,6 +52,8 @@ const mapStateToProps = (state) => {
 		currentPage: state.usersPage.currentPage,
 		pageSize: state.usersPage.pageSize,
 		usersData: state.usersPage.usersData,
+		totalUsersCount: state.usersPage.totalUsersCount,
+		isFetching: state.usersPage.isFetching,
 	}
 }
 

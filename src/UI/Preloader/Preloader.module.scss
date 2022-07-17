@@ -1,0 +1,12 @@
+@import '../../global-styles';
+
+.Preloader {
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+	overflow: hidden;
+	user-select: none;
+	img {
+		width: 100%;
+	}
+}

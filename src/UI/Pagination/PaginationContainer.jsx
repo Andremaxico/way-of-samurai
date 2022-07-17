@@ -1,25 +1,44 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Pagination from './Pagination';
+import axios from 'axios';
+import {
+	setCurrentPage,
+	toggleIsFetching,
+	setUsers,
+} from '../../Redux/usersReducer';
+
 
 class PaginationContainer extends Component {
-	componentDidMount() {
-
-	}
-
-	changePage(num) {
+	setCurrentPage = (num) => {
 		//change current page
 		this.props.setCurrentPage(num);
 
 		//toggle is fetching
 		this.props.toggleIsFetching(true);
 
+		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${num}&count=${this.props.pageSize}`)
+			.then(res => {
+				this.props.setUsers(res.data.items)
+				this.props.toggleIsFetching(false);
+			})
+
 	}
 
 	render() {
 		return (
-			<Pagination />
+			<Pagination 
+				pagesNumbers={this.props.pagesNumbers} 
+				setCurrentPage={ this.setCurrentPage } currentPage={this.props.currentPage}
+			/>
 		)
 	}
 }
 
-export default PaginationContainer;
+const methods = {
+	setCurrentPage,
+	toggleIsFetching,
+	setUsers,
+}
+
+export default connect(null, methods)(PaginationContainer);
