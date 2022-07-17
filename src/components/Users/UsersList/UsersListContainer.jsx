@@ -20,22 +20,7 @@ class UsersListContainer extends React.Component {
 	
 	render() {
 		return (
-			<UsersList 
-				state={{
-					currentPage: this.props.currentPage, 
-					pagesSize: this.props.pagesSize,
-					usersData: this.props.usersData,
-					totalUsersCount: this.props.totalUsersCount,
-					isFetching: this.props.isFetching
-				}}
-				methods={{
-					setCurrentPage: this.props.setCurrentPage,
-					setUsers: this.props.setUsers,
-					follow: this.props.follow,
-					unfollow: this.props.unfollow,
-					toggleIsFetching: this.props.toggleIsFetching,
-				}}
-			/>
+			<UsersList {...this.props}/>
 		)
 	}
 }

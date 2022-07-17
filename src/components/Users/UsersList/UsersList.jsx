@@ -5,36 +5,35 @@ import UsersPaginationContainer from '../UsersPagination';
 import Preloader from '../../../UI/Preloader/Preloader';
 
 const UsersList = (props) => {
-	const list = props.state.usersData.map(data => {
+	const list = props.usersData.map(data => {
 		return (
 			<User 
 				info={data} key={data.id} 
-				follow={props.methods.follow} unfollow={props.methods.unfollow}
+				follow={props.follow} unfollow={props.unfollow}
 			/>
 		)
 	});
 
-	const pagesCount = Math.ceil(props.state.totalUsersCount / props.state.pagesSize);
+	const pagesCount = Math.ceil(props.totalUsersCount / props.pagesSize);
 	let pagesNumbers = [];
 	for(let i = 1; i <= pagesCount; i++) {
 		pagesNumbers.push(i);
 	} 
 
-	if(props.state.isFetching) {
+	if(props.isFetching) {
 		return <Preloader />
 	}
 	return (
 		<div className={classes.UsersList}>
-
 			<UsersPaginationContainer 
 				state={{
-					...props.state,
+					...props,
 					pagesNumbers: pagesNumbers,
 				}}
 				methods={{
-					setUsers: props.methods.setUsers,
-					setCurrentPage: props.methods.setCurrentPage,
-					toggleIsFetching: props.methods.toggleIsFetching,
+					setUsers: props.setUsers,
+					setCurrentPage: props.setCurrentPage,
+					toggleIsFetching: props.toggleIsFetching,
 				}}
 			/>
 			{ list }
