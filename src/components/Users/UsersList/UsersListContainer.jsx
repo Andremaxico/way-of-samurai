@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => {
+/*const mapDispatchToProps = (dispatch) => {
 	return {
 		follow: (userId) => {
 			const action = followAC(userId);
@@ -78,6 +78,14 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(action);
 		}
 	}
-}
+}*/
 
-export default  connect(mapStateToProps, mapDispatchToProps)(UsersListContainer);
+const mdtp = {
+	follow: followAC,
+	unfollow: unfollowAC,
+	setUsers: setUsersAC,
+	setTotalCount: setTotalUsersCountAC,
+	setCurrentPage: setCurrentPageAC,
+	toggleIsFetching: toggleIsFetchingAC,
+}
+export default  connect(mapStateToProps, mdtp)(UsersListContainer);
