@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { Component } from 'react'
 import UsersList from './UsersList';
+import { connect } from 'react-redux';
 import {
 	follow,
 	unfollow,
@@ -13,12 +14,12 @@ import {
 class UsersListContainer extends Component {
 	componentDidMount() {
 		//set preloader
-		props.toggleIsFetching(true);
+		this.props.toggleIsFetching(true);
 
 		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
 			.then(res => {
 				this.props.setTotalUsersCount(res.data.totalCount);
-				this.props.setUsers(res.data.items);
+				this.props.setUsers(res.data.items)
 				this.props.toggleIsFetching(false);
 			})
 	}
@@ -27,6 +28,7 @@ class UsersListContainer extends Component {
 		return (
 			<UsersList
 				usersData={this.props.usersData} 
+				follow={this.props.follow} unfollow={this.props.unfollow}
 			/>
 		)
 	}

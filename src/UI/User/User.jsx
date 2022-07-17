@@ -4,10 +4,11 @@ import defaultAvatar from '../../assets/images/default-avatar-img.png';
 
 
 const User = (props) => {
-	const {name, photos, status, followed: isFollowed} = props.info;
+	const {name, photos, status, followed: isFollowed, id} = props.info;
 	const avatarImg = photos.small;
-	const follow = () => props.follow();
-	const unfollow = () => props.unfollow();
+	
+	const follow = (event, userId = id) => props.follow(userId);
+	const unfollow = (event, userId = id) => props.unfollow(userId);
 
 	return (
 		<div className={classes.User}>

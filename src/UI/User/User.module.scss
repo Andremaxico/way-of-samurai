@@ -1,6 +1,6 @@
-@import '../../../global-styles';
+@import '../../global-styles';
 
-.user {
+.User {
 	position: relative;
 	display: flex;
 	align-items: flex-start;
@@ -14,6 +14,7 @@
 	.avatar {
 		@include userAvatar;
 		flex: 0 0 70px;
+		height: 70px;
 		margin-right: 16px;
 		background-color: $mainCol;
 		img {}

@@ -4,7 +4,7 @@
 	display: flex;
 
 	.avatar {
-		@include profileAvatar;
+		@include userAvatar;
 		margin-right: 12px;
 	}
 	.description {

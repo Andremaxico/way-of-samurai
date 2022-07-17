@@ -16,7 +16,7 @@
 	}
 	.userAvatar {
 		margin-right: 12px;
-		@include profileAvatar;
+		@include userAvatar;
 	}
 	.body {
 		.name {

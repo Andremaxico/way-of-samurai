@@ -5,7 +5,7 @@
 	align-items: center;
 	margin-bottom: 16px;
 	.avatar {
-		@include profileAvatar;
+		@include userAvatar;
 		margin-right: 12px;
 	}
 	p {

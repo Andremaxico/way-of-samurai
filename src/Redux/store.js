@@ -6,7 +6,7 @@ import usersReducer from './usersReducer';
 const reducer = combineReducers({
 	profilePage: profileReducer,
 	messagesPage: messagesReducer,
-	usersPgae: usersReducer,
+	usersPage: usersReducer,
 	sidebar: sidebarReducer,
 });
 
