@@ -11,19 +11,24 @@ const initialState = {
 			id: 2,
 		},
 		{
+			text: 'Users',
+			path: '/users',
+			id: 3
+		},
+		{
 			text: 'News',
 			path: '/news',
-			id: 3,
+			id: 4,
 		},
 		{
 			text: 'Music',
 			path: '/music',
-			id: 4,
+			id: 5,
 		},
 		{
 			text: 'Settings',
 			path: '/settings',
-			id: 5,
+			id: 6,
 		},
 	]
 }

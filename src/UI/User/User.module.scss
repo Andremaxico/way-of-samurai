@@ -1,0 +1,50 @@
+@import '../../../global-styles';
+
+.user {
+	position: relative;
+	display: flex;
+	align-items: flex-start;
+	padding: 12px 15px;
+	margin-bottom: 24px;
+	border: 1px solid $gray;
+	border-radius: 6px;
+	&:last-child {
+		margin-bottom: 0;
+	}
+	.avatar {
+		@include userAvatar;
+		flex: 0 0 70px;
+		margin-right: 16px;
+		background-color: $mainCol;
+		img {}
+	}
+	.info {
+		margin-right: 16px;
+		flex: 1 1 auto;
+		.name {
+			margin-bottom: 16px;
+			@include bigText;
+		}
+		/*.title {
+			@include row-align;
+			.location {
+				@include row-align;
+				.country {
+					margin-right: 4px;
+					@include text;
+					color: $gray;
+				}
+				.city {
+					@include smallText;
+					color: $gray;
+				}
+			}
+		}*/
+		.description {
+			@include text;
+		}
+	}
+	.followBtn {
+		@include formBtn;
+	}
+}

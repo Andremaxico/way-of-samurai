@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Sidenav from './components/Sidebar/Sidebar'
 import Profile from './components/Profile/Profile';
 import Messages from './components/Messages/Messages';
+import Users from './components/Users/Users';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path='/profile/*' element={<Profile />}/>
           <Route  path='/messages/*' element={ <Messages /> }/>
+          <Route path='/users/*' element={ <Users /> } />
         </Routes>
       </div>
     </div>
