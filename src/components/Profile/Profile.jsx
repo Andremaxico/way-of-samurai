@@ -5,6 +5,7 @@ import NewPost from './NewPost'
 import classes from './Profile.module.scss'
 
 const Profile = (props) => {
+	console.log(props);
 	return (
 		<div className={classes.profile}>
 			<ProfileBody info={props.currUserProfileInfo}/>

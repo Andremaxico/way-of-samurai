@@ -18,7 +18,7 @@ function App(props) {
         <Sidebar data={props.data.sidebar}/>
         <div className='content'>
             <Routes>
-              <Route path='/profile/*' element={<ProfileContainer />} />
+              <Route path='/profile/:userId?' element={<ProfileContainer />} />
               <Route path='/messages/*' element={<Messages data={props.data.messagesPage} dispatch={props.dispatch}/>} />
               <Route path='/users/*' element={<Users />}/>
               <Route path='/news/*' element={<News />} />
