@@ -1,6 +1,7 @@
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
 const SET_USER_PROFILE_INFO = 'set-user-profile-info';
+const SET_MY_PROFILE_INFO = 'set-my-profile-info';
 
 const initialState = {
 	postsData: [
@@ -30,12 +31,7 @@ const initialState = {
 			id: 1,
 		},
 	],
-	myProfileInfo: {
-		name: 'Andriy Solomko',
-		age: 13,
-		avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
-		coverUrl: 'https://www.trendycovers.com/covers/make_a_wish_facebook_cover_1484111405.jpg',
-	},
+	myProfileInfo: {},
 	currUserProfileInfo: {},
 	newPostText: '',
 }
@@ -65,6 +61,11 @@ const profileReducer = (state = initialState, action) => {
 				...state,
 				currUserProfileInfo: action.userProfileInfo,
 			}
+		case SET_MY_PROFILE_INFO: 
+			return {
+				...state, 
+				myProfileInfo: action.myProfileInfo,
+			}
 		default: {
 			return state
 		}
@@ -89,5 +90,12 @@ export const setUserProfileInfo = (userProfileInfo) => {
 		userProfileInfo,
 	}
 }
+export const setMyProfileInfo = (myProfileInfo) => {
+	return {
+		type: SET_MY_PROFILE_INFO,
+		myProfileInfo,
+	}
+}
+
 
 export default profileReducer;

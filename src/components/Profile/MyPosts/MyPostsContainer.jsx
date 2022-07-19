@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import MyPosts from './MyPosts';
+import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 
 const mapStateToProps = state => {
 	return {
 		postsData: state.profilePage.postsData,
-		avatarUrl: state.profilePage.myProfileInfo.avatarUrl,
+		avatarUrl: state.profilePage.currUserProfileInfo.photos ? 
+					  state.profilePage.currUserProfileInfo.photos.small :
+					  defaultAvatar,
 	}
 }
 

@@ -8,7 +8,7 @@ class UsersListContainer extends React.Component {
 	componentDidMount() {
 		//sets preloader
 		this.props.toggleIsFetching(true);
-
+		
 		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pagesSize}`)
 			.then(res => {
 				this.props.setUsers(res.data.items);

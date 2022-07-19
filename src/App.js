@@ -1,6 +1,6 @@
 
 import './App.scss';
-import Header from './components/Header/Header';
+import HeaderContainer from './components/Header';
 import Sidebar from './components/Sidebar/Sidebar'
 import Messages from './components/Messages/Messages';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
@@ -14,11 +14,13 @@ function App(props) {
   return (
     <BrowserRouter>
       <div className="app-wrapper">
-        <Header />
+        <HeaderContainer />
         <Sidebar data={props.data.sidebar}/>
         <div className='content'>
             <Routes>
-              <Route path='/profile/:userId?' element={<ProfileContainer />} />
+              <Route path='/profile' element={<ProfileContainer />}>
+                <Route path=':userId'/>
+              </Route>
               <Route path='/messages/*' element={<Messages data={props.data.messagesPage} dispatch={props.dispatch}/>} />
               <Route path='/users/*' element={<Users />}/>
               <Route path='/news/*' element={<News />} />
