@@ -1,1 +1,1 @@
-export { default } from './UsersPaginationContainer';
+export { default } from './UsersPagination';

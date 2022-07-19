@@ -2,14 +2,28 @@ import React from 'react';
 import classes from './User.module.scss';
 import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 import { Link } from 'react-router-dom';
+import { usersAPI } from '../../../api/api';
+import { toggleFollowingInProgress } from '../../../Redux/users-reducer';
 
 const User = (props) => {
 	const {name: name, id: id, status: description, photos: photos, followed: isFollowed} = props.info;
 	const follow = () => {
-		props.follow(id);
+		debugger;
+		usersAPI.follow(id).then(res => {
+			if(res.resultCode === 0) {
+				props.follow(id) ;
+			}
+		})
 	};
 	const unfollow = () => {
-		props.unfollow(id);
+		toggleFollowingInProgress(true);
+		debugger;
+		usersAPI.unfollow(id).then(res => {
+			if(res.resultCode === 0) {
+				props.unfollow(id);
+				toggleFollowingInProgress(false);
+			}
+		})
 	};
 	return (
 		<div className={classes.user}>
@@ -26,7 +40,7 @@ const User = (props) => {
 				</div>
 				<p className={classes.description}>{description}</p>
 			</div>
-			<button className={classes.followBtn}  onClick={isFollowed ? unfollow : follow }>{isFollowed ? 'Unfollow' : 'Follow'}</button>
+			<button className={classes.followBtn} disabled={props.followingInProgress} onClick={isFollowed ? unfollow : follow }>{isFollowed ? 'Unfollow' : 'Follow'}</button>
 		</div>
 	)
 }

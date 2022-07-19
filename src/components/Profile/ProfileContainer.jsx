@@ -9,6 +9,7 @@ import Profile from './Profile';
 import { toggleIsFetchingAC } from '../../Redux/users-reducer';
 import { setUserProfileInfo, setMyProfileInfo } from '../../Redux/profile-reducer';
 import axios from 'axios';
+import { usersAPI } from '../../api/api';
 
 class ProfileContainer extends Component {
 	componentDidMount() {
@@ -16,9 +17,9 @@ class ProfileContainer extends Component {
 		
 		//if current user defined or header request data and set my id 
 		if(this.props.router.params.userId || this.props.myProfileId) {
-			axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${this.props.router.params.userId || this.props.myProfileId}`)
-			.then(res => {
-				this.props.setUserProfileInfo(res.data);
+			usersAPI.getUserById(this.props.router.params.userId || this.props.myProfileId)
+			.then(data => {
+				this.props.setUserProfileInfo(data);
 				this.props.toggleIsFetching(false);
 			});
 		}
@@ -28,9 +29,9 @@ class ProfileContainer extends Component {
 		if(!this.props.router.params.userId) {
 			this.props.toggleIsFetching(true);
 
-			axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${this.props.myProfileId}`)
-			.then(res => {
-				this.props.setUserProfileInfo(res.data);
+			usersAPI.getUserById(this.props.myProfileId)
+			.then(data => {
+				this.props.setUserProfileInfo(data);
 			});
 		}
 	}
