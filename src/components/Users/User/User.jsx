@@ -7,24 +7,28 @@ import { toggleFollowingInProgress } from '../../../Redux/users-reducer';
 
 const User = (props) => {
 	const {name: name, id: id, status: description, photos: photos, followed: isFollowed} = props.info;
+	const followingInProgress = props.followingInProgress.includes(id);
 	const follow = () => {
-		debugger;
+		props.toggleFollowingInProgress(true, id);
+
 		usersAPI.follow(id).then(res => {
 			if(res.resultCode === 0) {
-				props.follow(id) ;
+				props.follow(id);
+				props.toggleFollowingInProgress(false, id);
 			}
 		})
 	};
 	const unfollow = () => {
-		toggleFollowingInProgress(true);
-		debugger;
+		props.toggleFollowingInProgress(true, id);
+
 		usersAPI.unfollow(id).then(res => {
 			if(res.resultCode === 0) {
 				props.unfollow(id);
-				toggleFollowingInProgress(false);
+				props.toggleFollowingInProgress(false, id);
 			}
 		})
 	};
+
 	return (
 		<div className={classes.user}>
 			<Link to={`/profile/${id}`} className={classes.avatar}>
@@ -40,7 +44,10 @@ const User = (props) => {
 				</div>
 				<p className={classes.description}>{description}</p>
 			</div>
-			<button className={classes.followBtn} disabled={props.followingInProgress} onClick={isFollowed ? unfollow : follow }>{isFollowed ? 'Unfollow' : 'Follow'}</button>
+			<button 
+				className={classes.followBtn} 
+				onClick={!followingInProgress ? (isFollowed ? unfollow : follow) : null }
+			>{followingInProgress ? 'Processing...' :  isFollowed ? 'Unfollow' : 'Follow'}</button>
 		</div>
 	)
 }
