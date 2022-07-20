@@ -3,21 +3,10 @@ import { connect } from 'react-redux';
 import Header from './Header';
 import { setAuthData } from '../../Redux/auth-reducer';
 import { setMyProfileInfo } from '../../Redux/profile-reducer';
-import { authAPI, usersAPI } from '../../api/api';
 
 class Headercontainer extends Component {
 	componentDidMount() {
-		authAPI.getAuthInfo().then(res => {
-			if(res.resultCode === 0) {
-				this.props.setAuthData(res.data);
-			}
-			
-			return usersAPI.getUserById(res.data.id);
-
-		})
-		.then(data => {
-			this.props.setMyProfileInfo(data);
-		})
+		this.props.setAuthData();
 	}
 
 	render() {

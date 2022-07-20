@@ -1,3 +1,6 @@
+import { usersAPI } from "../api/api";
+import { toggleIsFetchingAC } from "./users-reducer";
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
 const SET_USER_PROFILE_INFO = 'set-user-profile-info';
@@ -95,6 +98,15 @@ export const setMyProfileInfo = (myProfileInfo) => {
 		type: SET_MY_PROFILE_INFO,
 		myProfileInfo,
 	}
+}
+
+//thunks creators
+export const getUserById = (id) => (dispatch) => {
+	dispatch(toggleIsFetchingAC(true));
+
+	return usersAPI.getUserById(id).then(data => {
+		dispatch(setUserProfileInfo(data));
+	});
 }
 
 

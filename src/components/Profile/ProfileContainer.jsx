@@ -7,32 +7,22 @@ import {
  } from 'react-router-dom';
 import Profile from './Profile';
 import { toggleIsFetchingAC } from '../../Redux/users-reducer';
+import { getUserById } from '../../Redux/profile-reducer';
 import { setUserProfileInfo, setMyProfileInfo } from '../../Redux/profile-reducer';
-import axios from 'axios';
-import { usersAPI } from '../../api/api';
 
 class ProfileContainer extends Component {
 	componentDidMount() {
-		this.props.toggleIsFetching(true);
-		
+		let userId = this.props.router.params.userId || this.props.myProfileId;
 		//if current user defined or header request data and set my id 
-		if(this.props.router.params.userId || this.props.myProfileId) {
-			usersAPI.getUserById(this.props.router.params.userId || this.props.myProfileId)
-			.then(data => {
-				this.props.setUserProfileInfo(data);
-				this.props.toggleIsFetching(false);
-			});
+		if(userId) {
+			this.props.getUserById(userId);
+			this.props.toggleIsFetching(false);
 		}
 	}
 
 	componentDidUpdate() {
 		if(!this.props.router.params.userId) {
-			this.props.toggleIsFetching(true);
-
-			usersAPI.getUserById(this.props.myProfileId)
-			.then(data => {
-				this.props.setUserProfileInfo(data);
-			});
+			this.props.getUserById(this.props.myProfileId);
 		}
 	}
 
@@ -69,6 +59,7 @@ const methods = {
 	toggleIsFetching: toggleIsFetchingAC,
 	setUserProfileInfo,
 	setMyProfileInfo,
+	getUserById,
 }
 
 const withRouterProfileContainer = withRouter(ProfileContainer);

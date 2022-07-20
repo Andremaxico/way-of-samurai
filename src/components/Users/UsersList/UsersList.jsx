@@ -9,8 +9,7 @@ const UsersList = (props) => {
 		return (
 			<User 
 				info={data} key={data.id} 
-				follow={props.follow} unfollow={props.unfollow} 
-				toggleFollowingInProgress={props.toggleFollowingInProgress}
+				follow={props.follow} unfollow={props.unfollow}
 				followingInProgress={props.followingInProgress}
 			/>
 		)
