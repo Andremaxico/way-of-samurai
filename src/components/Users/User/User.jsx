@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const User = (props) => {
 	const {name: name, id: id, status: description, photos: photos, followed: isFollowed} = props.info;
 	const followingInProgress = props.followingInProgress.includes(id);
+	
 	const follow = () => props.follow(id);
 	const unfollow = () => props.unfollow(id);
 

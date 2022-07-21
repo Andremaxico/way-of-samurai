@@ -36,15 +36,15 @@ export const setAuthDataAC = (data) => {
 //thunks
 export const setAuthData = () => (dispatch) => {
 	authAPI.getAuthInfo().then(res => {
+		console.log('result', res.resultCode);
 		if(res.resultCode === 0) {
 			dispatch(setAuthDataAC(res.data));
+			return usersAPI.getUserById(res.data.id);
 		}
-
-		return usersAPI.getUserById(res.data.id);
 
 	})
 	.then(data => {
-		dispatch(setMyProfileInfo(data));
+		if(data) dispatch(setMyProfileInfo(data));
 	})
 }
 

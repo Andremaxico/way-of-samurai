@@ -14,7 +14,7 @@ const Header = (props) => {
           {
             props.isAuthed ? 
             <AccountInfo login={props.login} avatarUrl={props.avatarUrl}/> : 
-            <NavLink to='/profile' className={classes.loginLink }>
+            <NavLink to='/login' className={classes.loginLink }>
               Login
             </NavLink>
           }

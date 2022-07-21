@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import {
+	Navigate,
 	useLocation,
 	useNavigate,
 	useParams,
@@ -12,6 +13,7 @@ import { setUserProfileInfo, setMyProfileInfo } from '../../Redux/profile-reduce
 
 class ProfileContainer extends Component {
 	componentDidMount() {
+		console.log('profile');
 		let userId = this.props.router.params.userId || this.props.myProfileId;
 		//if current user defined or header request data and set my id 
 		if(userId) {
@@ -27,32 +29,31 @@ class ProfileContainer extends Component {
 	}
 
 	render() {
+		if (!this.props.isAuthed) return <Navigate to='/login' />
+
 		return (
 			<Profile currUserProfileInfo={this.props.currUserProfileInfo}/>
 		)
 	}
 }
 
-function withRouter(Component) {
-	function ComponentWithRouterProp(props) {
-	  let location = useLocation();
-	  let navigate = useNavigate();
-	  let params = useParams();
-	  return (
-		 <Component
-			{...props}
-			router={{ location, navigate, params }}
-		 />
-	  );
-	}
- 
-	return ComponentWithRouterProp;
+const withRouter = (Component) => (props) => {
+	let location = useLocation();
+	let navigate = useNavigate();
+	let params = useParams();
+	return (
+		<Component
+		{...props}
+		router={{ location, navigate, params }}
+		/>
+	);
 }
- 
+
 const mapStateToProps = (state) => {
 	return {
 		currUserProfileInfo: state.profilePage.currUserProfileInfo,
 		myProfileId: state.auth.data.id,
+		isAuthed: state.auth.data.isAuthed,
 	}
 }
 const methods = {

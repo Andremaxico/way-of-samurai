@@ -6,6 +6,7 @@ import { setMyProfileInfo } from '../../Redux/profile-reducer';
 
 class Headercontainer extends Component {
 	componentDidMount() {
+		console.log('header');
 		this.props.setAuthData();
 	}
 
@@ -24,7 +25,7 @@ class Headercontainer extends Component {
 const mapStateToProps = (state) => {
 	return {
 		authData: state.auth.data,
-		myProfileInfo: state.profilePage.myProfileInfo,
+		myProfileInfo: state.profilePage.myProfileInfo ,
 	}
 }
 
