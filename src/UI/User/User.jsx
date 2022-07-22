@@ -9,10 +9,8 @@ const User = (props) => {
 
 	const followingInProgress = props.followingInProgress.includes(id);
 
-	console.log(followingInProgress, props.followingInProgress);
-
-	const follow = (event) => props.follow(id);
-	const unfollow = (event) => props.unfollow(id);
+	const follow = () => props.follow(id);
+	const unfollow = () => props.unfollow(id);
 
 	return (
 		<div className={classes.User}>
