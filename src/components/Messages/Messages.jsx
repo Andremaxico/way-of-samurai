@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './Messages.module.scss';
 import ChatsList from './ChatsList';
 import MessagesListContainer from './MessagesList';
-import { Navigate } from 'react-router-dom';
 import withLoginRedirect from '../../hocs/withLoginRedirect';
 
 function Messages(props) {

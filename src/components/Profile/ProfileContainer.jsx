@@ -6,6 +6,7 @@ import { getUserById } from '../../Redux/profile-reducer';
 import { setUserProfileInfo, setMyProfileInfo } from '../../Redux/profile-reducer';
 import withRouter from '../../hocs/withRouter';
 import withLoginRedirect from '../../hocs/withLoginRedirect';
+import { compose } from 'redux';
 
 class ProfileContainer extends Component {
 	componentDidMount() {
@@ -46,7 +47,8 @@ const methods = {
 	getUserById,
 }
 
-const withRouterProfileContainer = withRouter(ProfileContainer);
-const withRedirectProfileContainer = withLoginRedirect(withRouterProfileContainer);
-
-export default connect(mapStateToProps, methods)(withRedirectProfileContainer);
+export default compose(
+	connect(mapStateToProps, methods),
+	withLoginRedirect,
+	withRouter,
+)(ProfileContainer);
