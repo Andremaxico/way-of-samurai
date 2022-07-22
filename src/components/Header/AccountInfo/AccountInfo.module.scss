@@ -1,1 +1,12 @@
 @import '../../../global-styles';
+
+.AccountInfo {
+	.avatar {
+		@include userAvatar;
+	}
+	.name {
+		@include bigText;
+		color: #fff;
+		font-weight: 500;
+	}
+}

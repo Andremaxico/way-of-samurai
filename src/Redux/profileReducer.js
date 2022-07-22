@@ -1,13 +1,15 @@
 const UPDATE_NEW_POST_VALUE = 'update-new-post-value';
 const ADD_POST = 'add-post';
+const SET_CURRENT_USER_PROFILE_DATA = 'set-current-user-profile-data';
 
 const initialState = {
-	profileInfo: {
+	myProfileData: {
 		name: 'Andriy',
 		age: 13,
 		coverUrl: 'https://timelinecovers.pro/facebook-cover/download/life-cycle-facebook-cover.jpg',
 		avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
 	},
+	currentUserProfileData: {},
 	postsData: [
 		{
 			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
@@ -59,6 +61,8 @@ const profileReducer = (state = initialState, action) => {
 	return stateCopy;
 }
 
+
+//action creators
 export const addPostAction = () => {
 	return {
 		type: ADD_POST,
@@ -70,6 +74,19 @@ export const updateNewPostValueAction = (value) => {
 		type: UPDATE_NEW_POST_VALUE,
 		value: value
 	}
+}
+
+export const setCurrentUserProfileDataAC = (profileData) => {
+	return {
+		type: SET_CURRENT_USER_PROFILE_DATA,
+		profileData,
+	}
+}
+
+
+//thunk creator
+export const setCurrentUserProfileData = (profileData) => (dispatch) => {
+	
 }
 
 export default profileReducer;

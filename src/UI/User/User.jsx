@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './User.module.scss';
 import defaultAvatar from '../../assets/images/default-avatar-img.png';
-
+import { Link } from 'react-router-dom';
 
 const User = (props) => {
 	const {name, photos, status, followed: isFollowed, id} = props.info;
@@ -14,9 +14,9 @@ const User = (props) => {
 
 	return (
 		<div className={classes.User}>
-			<div className={classes.avatar}>
+			<Link to={`/profile/${id}`} className={classes.avatar}>
 				<img src={avatarImg || defaultAvatar} alt="Avatar img" />
-			</div>
+			</Link>
 			<div className={classes.info}>
 				<p className={classes.name}>{name}</p>
 				<p className={classes.description}>{status}</p>

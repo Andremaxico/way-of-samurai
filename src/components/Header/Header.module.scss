@@ -1,9 +1,17 @@
 @import '../../global-styles';
 
 .header {
-	padding: 15px 0;
+	padding: 20px 25px;
 	grid-column-start: 1;
 	grid-column-end: 3;
 	background-color: $mainCol;
-	.body {}
+	.body {
+		@include row-align;
+		justify-content: space-between;
+	}
+	.loginLink {
+		@include bigText;
+		color: #fff;
+		font-weight: 500;
+	}
  }

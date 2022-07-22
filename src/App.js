@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header/Header';
+import Header from './components/Header';
 import Sidenav from './components/Sidebar/Sidebar'
 import Profile from './components/Profile/Profile';
 import Messages from './components/Messages/Messages';

@@ -10,6 +10,7 @@ const TOGGLE_FOLLOWING_IN_PROGRESS = 'toggle-following-in-progress';
 
 const initialState = {
 	usersData: [],
+	currentUserData: {},
 	currentPage: 1,
 	pageSize: 6,
 	totalUsersCount: 0,
@@ -127,6 +128,7 @@ export const setUsersPage = (currentPage, pageSize) => (dispatch) => {
 		dispatch(toggleIsFetching(false));
 	});
 }	
+
 export const follow = (userId) => (dispatch) => {
 	dispatch(toggleFollowingInProgress(userId, true));
 	usersAPI.follow(userId).then(res => {
@@ -146,6 +148,15 @@ export const unfollow = (userId) => (dispatch) => {
 		dispatch(toggleFollowingInProgress(userId, false));
 	})
 }
+
+export const setUserById = (userId) => (dispatch) => {
+	dispatch(toggleIsFetching(true));
+
+	usersAPI.getUserById(userId).then(res => {
+
+	});
+}
+
 
 
 export default usersReducer;

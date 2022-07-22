@@ -19,5 +19,15 @@ export const usersAPI = {
 	},
 	async unfollow(userId) {
 		return instance.delete(`/follow/${userId}`).then(res => res.data);
+	},
+
+	async getUserById(userId) {
+		return instance.get(`/profile/${userId}`).then(res => res.data);
+	}
+}
+
+export const authAPI = {
+	async getAuthData() {
+		return instance.get('/auth/me').then(res => res.data);
 	}
 }

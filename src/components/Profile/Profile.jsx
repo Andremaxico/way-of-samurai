@@ -4,7 +4,7 @@ import NewPostContainer from './NewPost';
 import ProfileBodyContainer from './ProfileBody';
 import classes from './Profile.module.scss';
 
-export default function Profile() {
+function Profile() {
   return (
 	<div className={classes.profile}>
 		<ProfileBodyContainer />
@@ -13,3 +13,5 @@ export default function Profile() {
 	</div>
   )
 }
+
+export default Profile;
