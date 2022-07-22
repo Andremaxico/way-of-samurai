@@ -1,3 +1,5 @@
+import { usersAPI } from '../api/api';
+
 const FOLLOW = 'follow';
 const UNFOLLOW = 'unfollow';
 const SET_TOTAL_USERS_COUNT = 'set-total-users-count';
@@ -96,5 +98,16 @@ export const setCurrentPage = (currentPage) => {
 		currentPage,
 	}
 }
+
+//thunks creator
+export const setUsersPage = (currentPage, pageSize) => (dispatch) => {
+	dispatch(toggleIsFetching(true));
+
+	usersAPI.getUsersPage(currentPage, pageSize).then(res => {
+		dispatch(setTotalUsersCount(res.totalCount));
+		dispatch(setUsers(res.items));
+		dispatch(toggleIsFetching(false));
+	});
+}	
 
 export default usersReducer;

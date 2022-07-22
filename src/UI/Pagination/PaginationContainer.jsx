@@ -6,6 +6,7 @@ import {
 	setCurrentPage,
 	toggleIsFetching,
 	setUsers,
+	setUsersPage,
 } from '../../Redux/usersReducer';
 
 
@@ -13,15 +14,6 @@ class PaginationContainer extends Component {
 	setCurrentPage = (num) => {
 		//change current page
 		this.props.setCurrentPage(num);
-
-		//toggle is fetching
-		this.props.toggleIsFetching(true);
-
-		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${num}&count=${this.props.pageSize}`)
-			.then(res => {
-				this.props.setUsers(res.data.items)
-				this.props.toggleIsFetching(false);
-			})
 
 	}
 

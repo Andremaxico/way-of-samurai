@@ -1,4 +1,5 @@
-import { legacy_createStore as createStore, combineReducers } from 'redux';
+import { legacy_createStore as createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import messagesReducer from './messagesReducer';
 import profileReducer from './profileReducer';
 import sidebarReducer  from './sidebarReducer';
@@ -10,6 +11,6 @@ const reducer = combineReducers({
 	sidebar: sidebarReducer,
 });
 
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(thunk));
 
 export default store;

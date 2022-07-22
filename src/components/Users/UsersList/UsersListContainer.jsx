@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { Component } from 'react'
 import UsersList from './UsersList';
 import Preloader from '../../../UI/Preloader';
@@ -6,38 +5,41 @@ import { connect } from 'react-redux';
 import {
 	follow,
 	unfollow,
-	setUsers,
-	setTotalUsersCount,
-	toggleIsFetching,
 	setCurrentPage,
+	setUsersPage,
 } from '../../../Redux/usersReducer';
-import PaginationContainer from '../../../UI/Pagination/PaginationContainer';
+import Pagination from '../../../UI/Pagination/Pagination';
 
 class UsersListContainer extends Component {
-	componentDidMount() {
-		//set preloader
-		this.props.toggleIsFetching(true);
 
-		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-			.then(res => {
-				this.props.setTotalUsersCount(res.data.totalCount);
-				this.props.setUsers(res.data.items)
-				this.props.toggleIsFetching(false);
-			})
+	componentDidMount() {
+		this.props.setUsersPage(this.props.currentPage, this.props.pageSize);
+	}
+
+	changeUsersPage = (num) => {
+		this.props.setUsersPage(num, this.props.pageSize);
 	}
 
 	render() {
+		//number
 		const pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+
+		// 0 < array length > number 
 		let pagesNumbers = [];
 		for(let i = 1; i <= pagesCount; i++) pagesNumbers = [...pagesNumbers, i];
 
-
+		//when loading data from server
 		if(this.props.isFetching) {
 			return <Preloader />
 		}
+
 		return (
 			<>
-				<PaginationContainer pagesNumbers={pagesNumbers} currentPage={this.props.currentPage}/>
+				<Pagination
+					pagesNumbers={pagesNumbers} 
+					currentPage={this.props.currentPage}
+					changePage={this.changeUsersPage}
+				/>
 				<UsersList
 					usersData={this.props.usersData} 
 					follow={this.props.follow} unfollow={this.props.unfollow}
@@ -60,10 +62,8 @@ const mapStateToProps = (state) => {
 const methods = {
 	follow,
 	unfollow,
-	setUsers,
-	setTotalUsersCount,
-	toggleIsFetching,
 	setCurrentPage,
+	setUsersPage,
 }
 
 export default connect(mapStateToProps, methods)(UsersListContainer);

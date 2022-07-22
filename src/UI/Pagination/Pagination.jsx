@@ -2,13 +2,14 @@ import React from 'react';
 import classes from './Pagination.module.scss';
 
 const Pagination = (props) => {
-	const setCurrentPage = (num) => {
-		props.setCurrentPage(num);
-	} ;
+	const changePage = (num) => {
+		props.changePage(num);
+	}
+
 	const numbers = props.pagesNumbers.map(num => {
 		return (
 			<button 
-				onClick={() => setCurrentPage(num)} 
+				onClick={() => changePage(num)} 
 				key={num} 
 				className={props.currentPage === num ? `${classes.paginationBtn} ${classes._active}` : classes.paginationBtn}
 			>
@@ -16,6 +17,7 @@ const Pagination = (props) => {
 			</button>
 		)
 	});
+
 	return (
 		<div className={classes.Pagination}>
 			{ numbers }
