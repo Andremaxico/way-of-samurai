@@ -3,12 +3,9 @@ import classes from './Messages.module.scss';
 import ChatsList from './ChatsList';
 import MessagesListContainer from './MessagesList';
 import { Navigate } from 'react-router-dom';
+import withLoginRedirect from '../../hocs/withLoginRedirect';
 
 function Messages(props) {
-	if(!props.isAuthed) {
-		return <Navigate replace to='/login'/>
-	}  
-
 	return (
 		<div className={classes.messages}>
 			<h2 className={classes.title}>Messages</h2>
@@ -20,4 +17,4 @@ function Messages(props) {
 	)
 }
 
-export default Messages;
+export default withLoginRedirect(Messages);
