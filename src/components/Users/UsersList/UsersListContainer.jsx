@@ -2,13 +2,8 @@ import React, { Component } from 'react'
 import UsersList from './UsersList';
 import Preloader from '../../../UI/Preloader';
 import { connect } from 'react-redux';
-import {
-	follow,
-	unfollow,
-	setCurrentPage,
-	setUsersPage,
-} from '../../../Redux/usersReducer';
-import Pagination from '../../../UI/Pagination/Pagination';
+import { setUsersPage, follow, unfollow } from '../../../Redux/usersReducer';
+import Pagination from '../../../UI/Pagination';
 
 class UsersListContainer extends Component {
 
@@ -43,6 +38,7 @@ class UsersListContainer extends Component {
 				<UsersList
 					usersData={this.props.usersData} 
 					follow={this.props.follow} unfollow={this.props.unfollow}
+					followingInProgress={this.props.followingInProgress}
 				/>
 			</>
 		)
@@ -56,13 +52,13 @@ const mapStateToProps = (state) => {
 		usersData: state.usersPage.usersData,
 		totalUsersCount: state.usersPage.totalUsersCount,
 		isFetching: state.usersPage.isFetching,
+		followingInProgress: state.usersPage.followingInProgress,
 	}
 }
 
 const methods = {
 	follow,
 	unfollow,
-	setCurrentPage,
 	setUsersPage,
 }
 
