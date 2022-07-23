@@ -119,13 +119,20 @@ export const setCurrentPage = (currentPage) => {
 }
 
 //thunks creator
+//change visible page with users
 export const setUsersPage = (currentPage, pageSize) => (dispatch) => {
+	//sets preloader
 	dispatch(toggleIsFetching(true));
 
+	//axios request...
 	usersAPI.getUsersPage(currentPage, pageSize).then(res => {
+		//for math operations (for total pages count)
 		dispatch(setTotalUsersCount(res.totalCount));
+		//change current page number in pagination
 		dispatch(setCurrentPage(currentPage));
+		//set page with current users (6)
 		dispatch(setUsers(res.items));
+		//remove preloader
 		dispatch(toggleIsFetching(false));
 	});
 }	
