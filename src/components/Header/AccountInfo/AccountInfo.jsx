@@ -1,14 +1,15 @@
 import React from 'react';
 import classes from './AccountInfo.module.scss';
 import defaultAvatar from '../../../assets/images/default-avatar-img.png';
+import { Link } from 'react-router-dom';
 
 const AccountInfo = (props) => {
 	return (
 		<div className={classes.AccountInfo}>
-			<div className={classes.avatar}>
+			<Link to='/profile' className={classes.avatar}>
 				<img src={props.avatarUrl || defaultAvatar} alt="Your avatar" />
-			</div>
-			<p className={classes.nickname}>{props.name}</p>
+			</Link>
+			<p className={classes.nickname}>{props.login}</p>
 		</div>
 	)
 }

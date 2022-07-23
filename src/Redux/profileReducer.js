@@ -1,14 +1,13 @@
+import { toggleIsFetching } from './usersReducer';
+import { usersAPI } from '../api/api';
+
 const UPDATE_NEW_POST_VALUE = 'update-new-post-value';
 const ADD_POST = 'add-post';
 const SET_CURRENT_USER_PROFILE_DATA = 'set-current-user-profile-data';
+const SET_MY_PROFILE_DATA = 'set-my-profile-data';
 
 const initialState = {
-	myProfileData: {
-		name: 'Andriy',
-		age: 13,
-		coverUrl: 'https://timelinecovers.pro/facebook-cover/download/life-cycle-facebook-cover.jpg',
-		avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
-	},
+	myProfileData: {},
 	currentUserProfileData: {},
 	postsData: [
 		{
@@ -34,13 +33,10 @@ const initialState = {
 }
 
 const profileReducer = (state = initialState, action) => {
-	const stateCopy = {...state};
-	stateCopy.postsData = [...state.postsData];
-
 	switch (action.type) {
 		case ADD_POST:
-			const value = stateCopy.newPostText;
-			const id = stateCopy.postsData.length + 1;
+			const value = state.newPostText;
+			const id = state.postsData.length + 1;
 			const newPost = {
 				text: value,
 				likesCount: 0,
@@ -48,19 +44,30 @@ const profileReducer = (state = initialState, action) => {
 				avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
 			}
 
-			stateCopy.postsData.unshift(newPost);
-			stateCopy.newPostText = '';
-
-			break;
+			return {
+				...state, 
+				postsData: state.postsData.unshift(newPost),
+				newPostText: '',
+			}
 		case UPDATE_NEW_POST_VALUE:
-			stateCopy.newPostText = action.value;
-
-			break;
+			return {
+				...state,
+				newPostText: action.value,
+			}
+		case SET_MY_PROFILE_DATA: 
+			return {
+				...state,
+				myProfileData: action.profileData,
+			}
+		case SET_CURRENT_USER_PROFILE_DATA:
+			return {
+				...state,
+				currentUserProfileData: action.profileData,
+			}
+		default: 
+			return state;
 	}
-
-	return stateCopy;
 }
-
 
 //action creators
 export const addPostAction = () => {
@@ -83,10 +90,24 @@ export const setCurrentUserProfileDataAC = (profileData) => {
 	}
 }
 
-
-//thunk creator
-export const setCurrentUserProfileData = (profileData) => (dispatch) => {
-	
+export const setMyProfileData = (profileData) => {
+	return {
+		type: SET_MY_PROFILE_DATA,
+		profileData,
+	}
 }
 
+
+//thunk creator
+export const setUserProfileData = (userId) => (dispatch) => {
+	
+	dispatch(toggleIsFetching(true));
+
+	usersAPI.getUserById(userId).then(data => {
+		if(data) {
+			dispatch(setCurrentUserProfileDataAC(data));
+		}
+		dispatch(toggleIsFetching(false));
+	});
+}
 export default profileReducer;
