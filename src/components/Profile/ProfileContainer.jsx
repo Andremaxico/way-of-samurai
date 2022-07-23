@@ -49,6 +49,5 @@ const methods = {
 
 export default compose(
 	connect(mapStateToProps, methods),
-	withLoginRedirect,
 	withRouter,
 )(ProfileContainer);

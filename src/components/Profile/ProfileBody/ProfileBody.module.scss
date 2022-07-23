@@ -19,9 +19,21 @@
 	.avatar {
 		@include userAvatar;
 	}
-	.description {
-		p {
-			@include text;
+	.login {
+		@include bigText;
+		margin-bottom: 8px;
+	}
+	.statusText {
+		@include text;
+		.defaultStatus {
+			color: $gray;
 		}
+	}
+	.statusInput {
+		padding: 10px 12px;
+		@include smallText;
+		border: 1px solid $mainCol;
+		border-radius: 6px;
+		resize: none;
 	}
 }
