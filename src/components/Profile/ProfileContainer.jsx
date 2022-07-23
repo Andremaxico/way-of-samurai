@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import withRouter from '../../hocs/withRouter';
+import withAuthRedirect from '../../hocs/withRedirect';
 import Preloader from '../../UI/Preloader';
 import Profile from './Profile'; 
 import { setUserProfileData, setMyProfileData } from '../../Redux/profileReducer';
@@ -43,4 +44,5 @@ const methods = {
 export default compose(
 	connect(mapStateToProps, methods),
 	withRouter,
+	withAuthRedirect,
 )(ProfileContainer);

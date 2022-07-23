@@ -6,6 +6,7 @@ import Sidenav from './components/Sidebar/Sidebar'
 import Profile from './components/Profile';
 import Messages from './components/Messages/Messages';
 import Users from './components/Users/Users';
+import Login from './components/Login';
 
 function App(props) {
   return (
@@ -17,6 +18,7 @@ function App(props) {
           <Route path='profile' element={<Profile />}>
             <Route path=':userId' />
           </Route>
+          <Route path='login' element={<Login />} />
           <Route  path='/messages/*' element={ <Messages /> }/>
           <Route path='/users/*' element={ <Users /> } />
         </Routes>

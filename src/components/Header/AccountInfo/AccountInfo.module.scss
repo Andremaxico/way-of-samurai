@@ -1,10 +1,12 @@
 @import '../../../global-styles';
 
 .AccountInfo {
+	@include row-align;
 	.avatar {
+		margin-right: 16px;
 		@include userAvatar;
 	}
-	.name {
+	.login {
 		@include bigText;
 		color: #fff;
 		font-weight: 500;

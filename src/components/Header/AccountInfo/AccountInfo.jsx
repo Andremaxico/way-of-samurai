@@ -9,7 +9,7 @@ const AccountInfo = (props) => {
 			<Link to='/profile' className={classes.avatar}>
 				<img src={props.avatarUrl || defaultAvatar} alt="Your avatar" />
 			</Link>
-			<p className={classes.nickname}>{props.login}</p>
+			<p className={classes.login}>{props.login}</p>
 		</div>
 	)
 }
