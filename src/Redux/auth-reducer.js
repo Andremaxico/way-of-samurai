@@ -1,5 +1,5 @@
-import { authAPI, usersAPI } from "../api/api";
-import { setMyProfileInfo } from "./profile-reducer";
+import { authAPI, profileAPI, usersAPI } from "../api/api";
+import { setMyProfileInfo, setMyStatus,  updateMyStatus } from "./profile-reducer";
 
 const SET_AUTH_DATA = 'set-auth-data';
 
@@ -36,7 +36,6 @@ export const setAuthDataAC = (data) => {
 //thunks
 export const setAuthData = () => (dispatch) => {
 	authAPI.getAuthInfo().then(res => {
-		console.log('result', res.resultCode);
 		if(res.resultCode === 0) {
 			dispatch(setAuthDataAC(res.data));
 			return usersAPI.getUserById(res.data.id);
@@ -44,7 +43,13 @@ export const setAuthData = () => (dispatch) => {
 
 	})
 	.then(data => {
-		if(data) dispatch(setMyProfileInfo(data));
+		if(data) {
+			dispatch(setMyProfileInfo(data));
+			return profileAPI.getUserStatus(data.userId);
+		}
+	})
+	.then(status => {
+		if(status.length > 0) dispatch(setMyStatus(status));
 	})
 }
 

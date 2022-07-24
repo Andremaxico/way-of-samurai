@@ -9,25 +9,29 @@ import withLoginRedirect from '../../hocs/withLoginRedirect';
 import { compose } from 'redux';
 
 class ProfileContainer extends Component {
-	componentDidMount() {
-		let userId = this.props.router.params.userId || this.props.myProfileId;
+	userId = this.props.router.params.userId || this.props.myProfileId;
 
+	componentDidMount() {
 		//if current user defined or header request data and set my id 
-		if(userId) {
-			this.props.getUserById(userId);
+		if(this.userId === this.props.router.params.userId) {
+			this.props.getUserById(this.userId);
 			this.props.toggleIsFetching(false);
 		}
 	}
 
-	componentDidUpdate() {
+	/*componentDidUpdate() {
 		if(!this.props.router.params.userId) {
-			this.props.getUserById(this.props.myProfileId);
+			//this.props.getUserById(this.props.myProfileId);
 		}
-	}
+	}*/
 
 	render() {
+		console.log(this.props.myProfileInfo);
 		return (
-			<Profile currUserProfileInfo={this.props.currUserProfileInfo}/>
+			<Profile currUserProfileInfo={ this.userId !== this.props.router.params.userId
+					? this.props.myProfileInfo
+					: this.props.currUserProfileInfo
+			}/>
 		)
 	}
 }
@@ -37,7 +41,8 @@ class ProfileContainer extends Component {
 const mapStateToProps = (state) => {
 	return {
 		currUserProfileInfo: state.profilePage.currUserProfileInfo,
-		myProfileId: state.auth.data.id
+		myProfileInfo: state.profilePage.myProfileInfo,
+		myProfileId: state.auth.data.id,
 	}
 }
 const methods = {

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import classes from '../ProfileBody.module.scss';
+import { updateMyStatus } from '../../../../Redux/profile-reducer';
+import { connect } from 'react-redux';
 
 class ProfileStatus extends Component {
 	state = {
@@ -7,15 +9,28 @@ class ProfileStatus extends Component {
 		isEdit: false,
 	}
 
+	componentDidUpdate() {
+		this.setState({
+			statusText: this.props.status,
+		});
+	}
+
 	toggleEdding = (value) => {
+		//if edding end
+		if(!value) {
+			if(this.state.statusText != this.props.status) {
+				this.props.updateMyStatus(this.state.statusText);
+			}
+		}
 		this.setState({
 			isEdit: value,
 		})
 	}
 
 	changeStatusText = (event) => {
+		const newValue = event.target.value;
 		this.setState({
-			statusText: event.target.value,
+			statusText: newValue,
 		});
 	}
 	
@@ -36,4 +51,5 @@ class ProfileStatus extends Component {
 	}
 }
 
-export default ProfileStatus;
+
+export default connect(null, {updateMyStatus})(ProfileStatus);

@@ -6,7 +6,6 @@ import defaultCover from '../../../assests/images/default-cover.png';
 import ProfileStatus from './ProfileStatus';
 
 function ProfileBody(props) {
-
 	if(Object.keys(props.info) < 1) {
 		return <Preloader />
 	}

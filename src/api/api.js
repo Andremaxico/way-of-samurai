@@ -32,4 +32,17 @@ export const authAPI = {
 	}
 }
 
+export const profileAPI = {
+	async updateMyStatus(status) {
+		return instance.put('/profile/status', {status}).then(res => res.data).catch(e => console.log(e));
+	},
+
+	async getUserStatus(userId) {
+		console.log('send user status request, id: ' + userId);
+		return instance.get(`/profile/status/${userId}`).then(res => res.data).catch(e => console.log(e));
+	}
+
+
+}
+
 console.log(usersAPI);

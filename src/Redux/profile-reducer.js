@@ -1,10 +1,12 @@
-import { usersAPI } from "../api/api";
+import { profileAPI, usersAPI } from "../api/api";
 import { toggleIsFetchingAC } from "./users-reducer";
 
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
 const SET_USER_PROFILE_INFO = 'set-user-profile-info';
 const SET_MY_PROFILE_INFO = 'set-my-profile-info';
+const SET_MY_STATUS = 'set-my-status';
+const SET_CURR_USER_STATUS = 'set-curr-user-status';
 
 const initialState = {
 	postsData: [
@@ -69,6 +71,22 @@ const profileReducer = (state = initialState, action) => {
 				...state, 
 				myProfileInfo: action.myProfileInfo,
 			}
+		case SET_MY_STATUS: 
+			return {
+				...state,
+				myProfileInfo: {
+					...state.myProfileInfo,
+					aboutMe: action.newStatus,
+				}
+			}
+		case SET_CURR_USER_STATUS:
+			return {
+				...state,
+				currUserProfileInfo: {
+					...state.currUserProfileInfo,
+					aboutMe: action.newStatus,
+				}
+			}
 		default: {
 			return state
 		}
@@ -99,15 +117,42 @@ export const setMyProfileInfo = (myProfileInfo) => {
 		myProfileInfo,
 	}
 }
+export const setMyStatus = (newStatus) => {
+	return {
+		type: SET_MY_STATUS,
+		newStatus,
+	}
+}
+export const setCurrUserStatus = (newStatus) => {
+	return {
+		type: SET_CURR_USER_STATUS,
+		newStatus,
+	}
+}
 
 //thunks creators
 export const getUserById = (id) => (dispatch) => {
 	dispatch(toggleIsFetchingAC(true));
-
 	return usersAPI.getUserById(id).then(data => {
-		dispatch(setUserProfileInfo(data));
-	});
+		if(data) {
+			dispatch(setUserProfileInfo(data));
+		}
+	})
 }
 
+export const updateMyStatus = (newStatus) => (dispatch) => {
+	profileAPI.updateMyStatus(newStatus).then(res => {
+		if(res.resultCode === 0) {
+			dispatch(setMyStatus(newStatus));
+		}
+	})
+}
+
+
+export const setUserStatus = (userId) => (dispatch) => {
+	profileAPI.getUserStatus(userId).then(data => {
+		dispatch(setCurrUserStatus(data.status));
+	});
+}
 
 export default profileReducer;
