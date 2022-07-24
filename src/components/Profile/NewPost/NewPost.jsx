@@ -1,28 +1,21 @@
 import React from 'react';
 import classes from './NewPost.module.scss';
+import { useForm } from 'react-hook-form';
 
 export default function NewPost(props) {
-	//when user click button "addPost"
-	const addPost = (event) => {
-		if(props.newPostText.length > 0) {
-			props.addPost();
-		}
-		event.preventDefault();
-	}
-	
-	//when user inout smt in textarea
-	const changeTextarea = event => {
-		const text = event.target.value;
-		props.updateNewPostValue(text);
-	}
+	const { handleSubmit, watch, register } = useForm();
+
+	console.log(watch);
+
+	const onSubmit = () => props.addPost(watch('post-text'));
 
 	return (
-		<div className={classes.newPost}>
-			<h2 className={classes.title}>My posts</h2>
-			<form className={classes.form} onSubmit={ addPost }>
-				<textarea onChange={ changeTextarea } placeholder='Add message' value={props.newPostText}></textarea>
-				<button>Add Post</button>
-			</form>
-		</div>
+		<form className={classes.NewPost} onSubmit={ handleSubmit( onSubmit ) }>
+			<textarea 
+				placeholder='text...'
+				{...register('post-text', {minLength: 1})}
+			></textarea>
+			<button>Add Post</button>
+		</form>
 	)
 }

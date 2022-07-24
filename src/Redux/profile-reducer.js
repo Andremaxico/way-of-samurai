@@ -38,14 +38,13 @@ const initialState = {
 	],
 	myProfileInfo: {},
 	currUserProfileInfo: {},
-	newPostText: '',
 }
 
 const profileReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case ADD_POST:
 			const id = state.postsData.length+1;
-			const postText = state.newPostText;
+			const postText = action.newPostValue;
 			const newPostData = {
 				text: postText,
 				likesCount: 0,
@@ -94,15 +93,10 @@ const profileReducer = (state = initialState, action) => {
 }
 
 //Action creators
-export const addPostCreator = () => {
+export const addPost = (newPostValue) => {
 	return {
 		type: ADD_POST,
-	}
-}
-export const updateNewPostValueCreator = (value) => {
-	return {
-		type: UPDATE_NEW_POST_VALUE,
-		value: value
+		newPostValue,
 	}
 }
 export const setUserProfileInfo = (userProfileInfo) => {

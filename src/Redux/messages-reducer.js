@@ -46,14 +46,13 @@ const initalState = {
 			isMy: false,
 		},
 	],
-	newMessageValue: '',
 }
 
 const messagesReducer = (state = initalState, action) => {
 	//add post
 	switch (action.type) {
 		case ADD_MESSAGE:
-			const messageText = state.newMessageValue;
+			const messageText = action.newMessageValue;
 			const newMessageData = {
 				text: messageText,
 				isMy: true,
@@ -64,27 +63,16 @@ const messagesReducer = (state = initalState, action) => {
 				messagesData: [...state.messagesData, newMessageData],
 				newMessageValue: '',
 			}
-	
-		case UPDATE_NEW_MESSAGE_VALUE:
-			return {
-				...state,
-				newMessageValue: action.value,
-			}
 		default:
 			return state
 	}
 }
 
 //Action creators
-export const addMessageCreator = () => {
+export const addMessage = (newMessageValue) => {
 	return {
 		type: ADD_MESSAGE,
-	}
-}
-export const updateNewMessageValueCreator = (value) => {
-	return {
-		type: UPDATE_NEW_MESSAGE_VALUE,
-		value: value
+		newMessageValue,
 	}
 }
 

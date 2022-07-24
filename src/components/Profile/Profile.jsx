@@ -8,6 +8,7 @@ const Profile = (props) => {
 	return (
 		<div className={classes.profile}>
 			<ProfileBody profileInfo={props.currUserProfileInfo} updateMyStatus={props.updateMyStatus}/>
+			<h2 className={classes.title}>My posts</h2>
 			<NewPost />
 			<MyPosts />
 		</div>

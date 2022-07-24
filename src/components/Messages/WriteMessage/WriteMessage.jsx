@@ -1,20 +1,18 @@
 import React from 'react';
 import classes from './WriteMessage.module.scss';
-
+import { useForm } from 'react-hook-form';
 
 const WriteMessage = (props) => {
-	const onAddMessage = (event) => {
-		props.addMessage();
-		event.preventDefault();
-	}
+	const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
-	const onTextareaChange = event => {
-		const text = event.target.value;
-		props.updateNewMessageValue(text);
-	}
+	const onSubmit = () => props.addMessage(watch('message'));
+
 	return (
-		<form action='#' className={classes.form} onSubmit={ onAddMessage }>
-			<textarea onChange={ onTextareaChange } value={props.newMessageValue} placeholder='Input your message...' className={classes.textarea}></textarea>
+		<form action='#' className={classes.form} onSubmit={ handleSubmit(onSubmit) }>
+			<textarea 
+				{...register('message', {minLength: 1})}
+				placeholder='Input your message...' className={classes.textarea}
+			></textarea>
 			<button className={classes.button}>Send</button>
 		</form>
 	)

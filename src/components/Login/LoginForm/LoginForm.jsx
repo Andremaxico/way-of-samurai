@@ -32,6 +32,4 @@ const LoginForm = (props) => {
 	)
 }
 
-const LoginReduxForm = reduxForm({form: 'login'})(LoginForm);
-
-export default connect(null, {login})(LoginReduxForm);
+export default connect(null, {login})(LoginForm);
