@@ -29,6 +29,10 @@ export const usersAPI = {
 export const authAPI = {
 	async getAuthInfo() {
 		return instance.get('/auth/me').then(res => res.data);
+	},
+
+	async login(data) {
+		return instance.post(`/auth/login`, {...data}).then(res => res.data);
 	}
 }
 
@@ -41,7 +45,6 @@ export const profileAPI = {
 		console.log('send user status request, id: ' + userId);
 		return instance.get(`/profile/status/${userId}`).then(res => res.data).catch(e => console.log(e));
 	}
-
 
 }
 

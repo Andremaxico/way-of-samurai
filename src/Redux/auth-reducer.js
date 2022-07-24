@@ -54,7 +54,13 @@ export const setAuthData = () => (dispatch) => {
 	.then(status => {
 		dispatch(toggleIsFetchingAC(false));
 		//change 'aboutMe' of myProfileInfo
-		if(status.length > 0) dispatch(setMyStatus(status));
+		if(status && status.length > 0) dispatch(setMyStatus(status));
+	})
+}
+
+export const login = (data) => (dispatch) => {
+	authAPI.login(data).then(res => {
+		if(res.resultCode === 0) dispatch( setAuthData() );
 	})
 }
 

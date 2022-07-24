@@ -1,0 +1,10 @@
+@import '../../global-styles';
+
+.Login {
+	@include column-align;
+	align-items: center;
+	.title {
+		@include title;
+		margin-bottom: 28px;
+	}
+}
