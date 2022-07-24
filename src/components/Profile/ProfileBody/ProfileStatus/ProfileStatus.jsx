@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
 import classes from '../ProfileBody.module.scss';
-import { updateMyStatus } from '../../../../Redux/profile-reducer';
-import { connect } from 'react-redux';
 
 class ProfileStatus extends Component {
 	state = {
-		statusText: this.props.status,
+		statusText: this.props.status || '',
 		isEdit: false,
 	}
 
-	componentDidUpdate() {
-		this.setState({
-			statusText: this.props.status,
-		});
+	componentDidUpdate(prevProps) {
+		//if status changed
+		if(this.props.status != prevProps.status) {
+			this.setState({
+				statusText: this.props.status,
+			});
+		}
 	}
 
 	toggleEdding = (value) => {
@@ -41,9 +42,9 @@ class ProfileStatus extends Component {
 				? <p className={classes.statusText} onClick={() => this.toggleEdding(true)}>
 						{this.state.statusText || <i className={classes.defaultStatus}>no info</i>}
 					</p>
-				: <textarea className={classes.statusInput} autoFocus maxLength='300'
+				: <textarea className={classes.statusInput} autoFocus maxLength='300' value={this.state.statusText}
 						onChange={ this.changeStatusText } onBlur={() => this.toggleEdding(false)}
-					>{this.state.statusText}</textarea>
+					></textarea>
 				}
 			</div>
 			
@@ -52,4 +53,4 @@ class ProfileStatus extends Component {
 }
 
 
-export default connect(null, {updateMyStatus})(ProfileStatus);
+export default ProfileStatus;

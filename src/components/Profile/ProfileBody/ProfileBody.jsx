@@ -6,11 +6,11 @@ import defaultCover from '../../../assests/images/default-cover.png';
 import ProfileStatus from './ProfileStatus';
 
 function ProfileBody(props) {
-	if(Object.keys(props.info) < 1) {
+	if(Object.keys(props.profileInfo) < 1) {
 		return <Preloader />
 	}
 
-	const {fullName, userId: id, photos, aboutMe, } = props.info;
+	const {fullName, userId: id, photos, aboutMe, } = props.profileInfo;
 	const {small: coverImg, large: avatarImg} = photos;
 
 	//AndreMaxico => Andre Maxico
@@ -29,7 +29,7 @@ function ProfileBody(props) {
 				</div>
 				<div className={classes.description}>
 					<p className={classes.login}>{name}</p>
-					<ProfileStatus status={aboutMe}/>
+					<ProfileStatus updateMyStatus={props.updateMyStatus} status={aboutMe}/>
 				</div>
 			</div>
 		</div>

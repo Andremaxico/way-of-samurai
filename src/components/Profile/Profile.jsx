@@ -7,7 +7,7 @@ import classes from './Profile.module.scss'
 const Profile = (props) => {
 	return (
 		<div className={classes.profile}>
-			<ProfileBody info={props.currUserProfileInfo}/>
+			<ProfileBody profileInfo={props.currUserProfileInfo} updateMyStatus={props.updateMyStatus}/>
 			<NewPost />
 			<MyPosts />
 		</div>

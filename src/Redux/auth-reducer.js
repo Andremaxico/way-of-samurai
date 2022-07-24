@@ -1,5 +1,6 @@
 import { authAPI, profileAPI, usersAPI } from "../api/api";
 import { setMyProfileInfo, setMyStatus,  updateMyStatus } from "./profile-reducer";
+import { toggleIsFetchingAC } from "./users-reducer";
 
 const SET_AUTH_DATA = 'set-auth-data';
 
@@ -35,6 +36,7 @@ export const setAuthDataAC = (data) => {
 
 //thunks
 export const setAuthData = () => (dispatch) => {
+	dispatch( toggleIsFetchingAC(true) );
 	authAPI.getAuthInfo().then(res => {
 		if(res.resultCode === 0) {
 			dispatch(setAuthDataAC(res.data));
@@ -45,10 +47,13 @@ export const setAuthData = () => (dispatch) => {
 	.then(data => {
 		if(data) {
 			dispatch(setMyProfileInfo(data));
+			//return my status by my id
 			return profileAPI.getUserStatus(data.userId);
 		}
 	})
 	.then(status => {
+		dispatch(toggleIsFetchingAC(false));
+		//change 'aboutMe' of myProfileInfo
 		if(status.length > 0) dispatch(setMyStatus(status));
 	})
 }
