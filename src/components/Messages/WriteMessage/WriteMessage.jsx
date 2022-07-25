@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './WriteMessage.module.scss';
 import { useForm } from 'react-hook-form';
-import Textarea from '../../../UI/Textarea/Textarea';
+import Textarea from '../../../UI/FormControls/Textarea';
 
 const WriteMessage = (props) => {
 	const { register, resetField, handleSubmit, watch, formState: { errors } } = useForm();

@@ -10,6 +10,8 @@ function ProfileBody(props) {
 		return <Preloader />
 	}
 
+	const logout = () => props.logout();
+
 	const {fullName, userId: id, photos, aboutMe, } = props.profileInfo;
 	const {small: coverImg, large: avatarImg} = photos;
 
@@ -31,6 +33,7 @@ function ProfileBody(props) {
 					<p className={classes.login}>{name}</p>
 					<ProfileStatus updateMyStatus={props.updateMyStatus} status={aboutMe}/>
 				</div>
+				{ props.myProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
 			</div>
 		</div>
 	)

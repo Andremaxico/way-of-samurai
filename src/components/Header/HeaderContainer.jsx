@@ -6,7 +6,6 @@ import { setMyProfileInfo } from '../../Redux/profile-reducer';
 
 class Headercontainer extends Component {
 	componentDidMount() {
-		console.log('header');
 		this.props.setAuthData();
 	}
 
@@ -15,7 +14,7 @@ class Headercontainer extends Component {
 			<Header 
 				isAuthed={this.props.authData.isAuthed} 
 				login={this.props.authData.login}
-				avatarUrl={this.props.myProfileInfo.photos ?
+				avatarUrl={this.props.myProfileInfo?.photos ?
 							  this.props.myProfileInfo.photos.small : ''}
 			/>
 		);

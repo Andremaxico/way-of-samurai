@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './NewPost.module.scss';
 import { useForm } from 'react-hook-form';
-import Textarea from '../../../UI/Textarea';
+import Textarea from '../../../UI/FormControls/Textarea';
 
 export default function NewPost(props) {
 	const { handleSubmit, resetField, watch, register, formState: { errors } } = useForm();

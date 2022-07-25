@@ -33,8 +33,13 @@ export const authAPI = {
 
 	async login(data) {
 		return instance.post(`/auth/login`, {...data}).then(res => res.data);
+	},
+
+	async logout() {
+		console.log('lougout');
+		return instance.delete('/auth/login').then(res => res.data);
 	}
-}
+}	
 
 export const profileAPI = {
 	async updateMyStatus(status) {

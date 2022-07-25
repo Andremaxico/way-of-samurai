@@ -1,5 +1,5 @@
 import { authAPI, profileAPI, usersAPI } from "../api/api";
-import { setMyProfileInfo, setMyStatus,  updateMyStatus } from "./profile-reducer";
+import { setMyProfileInfo, setMyStatus } from "./profile-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
 
 const SET_AUTH_DATA = 'set-auth-data';
@@ -18,7 +18,7 @@ const authReducer = (state = initialState, action) => {
 		case SET_AUTH_DATA:
 			return {
 				...state,
-				data: {...action.data, isAuthed: true},
+				data: {...action.data, isAuthed: action.isAuthed},
 			}
 	
 		default:
@@ -27,25 +27,31 @@ const authReducer = (state = initialState, action) => {
 }
 
 //actionCreators
-export const setAuthDataAC = (data) => {
+export const setAuthDataAC = (data, isAuthed) => {
 	return {
 		type: SET_AUTH_DATA,
 		data,
+		isAuthed,
 	}
 }
+
+export const unsetAuthData = () => {};
 
 //thunks
 export const setAuthData = () => (dispatch) => {
 	dispatch( toggleIsFetchingAC(true) );
+
 	authAPI.getAuthInfo().then(res => {
 		if(res.resultCode === 0) {
-			dispatch(setAuthDataAC(res.data));
+			//login, email, id
+			dispatch(setAuthDataAC(res.data, true));
 			return usersAPI.getUserById(res.data.id);
 		}
 
 	})
 	.then(data => {
 		if(data) {
+			//all info
 			dispatch(setMyProfileInfo(data));
 			//return my status by my id
 			return profileAPI.getUserStatus(data.userId);
@@ -54,13 +60,27 @@ export const setAuthData = () => (dispatch) => {
 	.then(status => {
 		dispatch(toggleIsFetchingAC(false));
 		//change 'aboutMe' of myProfileInfo
+		//set my status from server yo my profileData
 		if(status && status.length > 0) dispatch(setMyStatus(status));
 	})
 }
 
 export const login = (data) => (dispatch) => {
 	authAPI.login(data).then(res => {
-		if(res.resultCode === 0) dispatch( setAuthData() );
+		if(res.resultCode === 0) {
+         dispatch( setAuthData() )
+		} else if(res.resultCode === 1) {
+
+		}
+	})
+}
+
+export const logout = () => (dispatch) => {
+	authAPI.logout().then(res => {
+		if(res.resultCode === 0) {
+			dispatch( setAuthDataAC(null, false) );
+			dispatch( setMyProfileInfo(null) );
+		}
 	})
 }
 

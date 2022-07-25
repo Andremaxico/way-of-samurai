@@ -1,0 +1,36 @@
+@import '../../../global-styles';
+
+.Checkbox {
+	position: relative;
+	margin-bottom: 16px;
+	input {
+		position: absolute;
+		z-index: -1;
+		visibility: hidden;
+		opacity: 0;
+		&:checked {
+			&+label::before {
+				border-color: $mainCol;
+				background-color: $mainCol;
+			}
+		}
+	}
+	label {
+		@include row-align;
+		&.error {
+			&::before {
+				border-color: $mainCol;
+			}
+		}
+		&::before {
+			content: '';
+			display: block;
+			margin-right: 12px;
+			width: 16px;
+			height: 16px;
+			border: 1px solid $gray;
+			border-radius: 4px;
+			transition: 0.2s;
+		}
+	}
+}

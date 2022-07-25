@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import Profile from './Profile';
 import { toggleIsFetchingAC } from '../../Redux/users-reducer';
-import { getUserById } from '../../Redux/profile-reducer';
-import { setUserProfileInfo, setMyProfileInfo, updateMyStatus } from '../../Redux/profile-reducer';
+import { getUserById, updateMyStatus } from '../../Redux/profile-reducer';
+import { logout } from '../../Redux/auth-reducer';
 import withRouter from '../../hocs/withRouter';
 import withLoginRedirect from '../../hocs/withLoginRedirect';
 import { compose } from 'redux';
@@ -20,12 +20,6 @@ class ProfileContainer extends Component {
 		}
 	}
 
-	/*componentDidUpdate() {
-		if(!this.props.router.params.userId) {
-			//this.props.getUserById(this.props.myProfileId);
-		}
-	}*/
-
 	render() {
 		if(this.props.isFetching) {
 			return <Preloader />
@@ -36,6 +30,7 @@ class ProfileContainer extends Component {
 					: this.props.currUserProfileInfo
 					}
 					updateMyStatus={this.props.updateMyStatus}
+					logout={this.props.logout}
 			/>
 		)
 	}
@@ -55,9 +50,11 @@ const methods = {
 	toggleIsFetching: toggleIsFetchingAC,
 	getUserById,
 	updateMyStatus,
+	logout,
 }
 
 export default compose(
 	connect(mapStateToProps, methods),
 	withRouter,
+	withLoginRedirect,
 )(ProfileContainer);
