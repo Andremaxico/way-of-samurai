@@ -1,15 +1,10 @@
 import React from 'react';
-import Preloader from '../../../UI/Preloader/Preloader';
 import classes from './ProfileBody.module.scss';
 import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 import defaultCover from '../../../assests/images/default-cover.png';
 import ProfileStatus from './ProfileStatus';
 
 function ProfileBody(props) {
-	if(Object.keys(props.profileInfo) < 1) {
-		return <Preloader />
-	}
-
 	const logout = () => props.logout();
 
 	const {fullName, userId: id, photos, aboutMe, } = props.profileInfo;

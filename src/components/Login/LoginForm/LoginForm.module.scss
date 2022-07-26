@@ -1,6 +1,7 @@
 @import '../../../global-styles';
 
 .LoginForm {
+	position: relative;
 	@include column-align;
 	align-items: center;
 	max-width: 280px;
@@ -42,5 +43,16 @@
 				transition: 0.2s;
 			}
 		}
+	}
+	.errorMessage {
+		position: absolute;
+		left: 0;
+		bottom: -20px;
+		white-space: nowrap;
+		@include smallText;
+		color: rgba($color: $mainCol, $alpha: 0.7);
+		font-weight: 500;
+		font-style: italic;
+		background-color: $grayBg;
 	}
 }

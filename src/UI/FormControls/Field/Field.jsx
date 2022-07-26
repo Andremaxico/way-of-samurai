@@ -29,4 +29,17 @@ export const PasswordField = ({register, ...rest}) => {
 	)
 }
 
+export const EmailField = ({register, ...rest}) => {
+	return (
+		<Field {...rest}>
+			<input 
+				type="email" className={classes.input} 
+				placeholder='Email' {...register('email', {
+					required: 'This field is required',
+				})}
+			/>
+		</Field>
+	)
+}
+
 export default Field;

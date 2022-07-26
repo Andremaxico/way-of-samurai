@@ -6,6 +6,7 @@ import profileReducer from './profile-reducer';
 import sidebarReducer from './sidebar-reducer';
 import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';
+import appReducer from './app-reducer';
 
 const reducer = combineReducers({
 	profilePage: profileReducer, //profile reducer returns state
@@ -13,6 +14,7 @@ const reducer = combineReducers({
 	usersPage: usersReducer,
 	sidebar: sidebarReducer, //sidebar reducer returns sidebar state
 	auth: authReducer,
+	app: appReducer,
 });
 
 

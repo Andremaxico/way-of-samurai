@@ -5,9 +5,6 @@ import { setAuthData } from '../../Redux/auth-reducer';
 import { setMyProfileInfo } from '../../Redux/profile-reducer';
 
 class Headercontainer extends Component {
-	componentDidMount() {
-		this.props.setAuthData();
-	}
 
 	render() {
 		return (

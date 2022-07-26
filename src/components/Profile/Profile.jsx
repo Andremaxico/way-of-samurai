@@ -3,8 +3,13 @@ import ProfileBody from './ProfileBody';
 import MyPosts from './MyPosts';
 import NewPost from './NewPost'
 import classes from './Profile.module.scss'
+import Preloader from '../../UI/Preloader';
 
 const Profile = (props) => {
+	if(!props.currUserProfileInfo) {
+		return <Preloader />
+	}
+
 	return (
 		<div className={classes.profile}>
 			<ProfileBody 

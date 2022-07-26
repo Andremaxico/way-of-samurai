@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import Profile from './Profile';
 import { toggleIsFetchingAC } from '../../Redux/users-reducer';
 import { getUserById, updateMyStatus } from '../../Redux/profile-reducer';
@@ -21,6 +22,7 @@ class ProfileContainer extends Component {
 	}
 
 	render() {
+		if (!this.props.isAuthed && !this.props.router.params.userId) return <Navigate to='/login' replace />
 		if(this.props.isFetching) {
 			return <Preloader />
 		}
@@ -43,7 +45,8 @@ const mapStateToProps = (state) => {
 		currUserProfileInfo: state.profilePage.currUserProfileInfo,
 		myProfileInfo: state.profilePage.myProfileInfo,
 		myProfileId: state.auth.data.id,
-		isFetching: state.usersPage.isFetching
+		isFetching: state.usersPage.isFetching,
+		isAuthed: state.auth.data.isAuthed
 	}
 }
 const methods = {
@@ -56,5 +59,4 @@ const methods = {
 export default compose(
 	connect(mapStateToProps, methods),
 	withRouter,
-	withLoginRedirect,
 )(ProfileContainer);

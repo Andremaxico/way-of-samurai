@@ -39,9 +39,7 @@ export const unsetAuthData = () => {};
 
 //thunks
 export const setAuthData = () => (dispatch) => {
-	dispatch( toggleIsFetchingAC(true) );
-
-	authAPI.getAuthInfo().then(res => {
+	return authAPI.getAuthInfo().then(res => {
 		if(res.resultCode === 0) {
 			//login, email, id
 			dispatch(setAuthDataAC(res.data, true));
@@ -58,7 +56,6 @@ export const setAuthData = () => (dispatch) => {
 		}
 	})
 	.then(status => {
-		dispatch(toggleIsFetchingAC(false));
 		//change 'aboutMe' of myProfileInfo
 		//set my status from server yo my profileData
 		if(status && status.length > 0) dispatch(setMyStatus(status));
@@ -66,11 +63,11 @@ export const setAuthData = () => (dispatch) => {
 }
 
 export const login = (data) => (dispatch) => {
-	authAPI.login(data).then(res => {
+   return authAPI.login(data).then(res => {
 		if(res.resultCode === 0) {
-         dispatch( setAuthData() )
+         dispatch( setAuthData() );
 		} else if(res.resultCode === 1) {
-
+			return res.messages[0];
 		}
 	})
 }

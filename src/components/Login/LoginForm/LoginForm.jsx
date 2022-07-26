@@ -3,32 +3,45 @@ import classes from './LoginForm.module.scss';
 import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import { login } from '../../../Redux/auth-reducer';
-import Field, { PasswordField } from '../../../UI/FormControls/Field/Field';
+import Field, { PasswordField, EmailField } from '../../../UI/FormControls/Field/Field';
 import Checkbox from '../../../UI/FormControls/Checkbox';
 import { Navigate } from 'react-router-dom'
+import Preloader from '../../../UI/Preloader';
 
 const LoginForm = (props) => {
-	const { register, handleSubmit, watch, formState: { errors } } = useForm();
-   const onSubmit = data => props.login({...data, captcha: false});
+	const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitSuccessful,isValidating } } = useForm();
+
+	const onSubmit = async data => {
+		//login return error or
+		const err = await props.login({...data, captcha: false});
+		if(err) {
+			setError('summary', {
+				type: 'custom',
+				message: err,
+			})
+		} else {
+			console.log('should clear');
+			clearErrors('summary');
+		}
+	}
+
+	const handleFormChange = () => {
+		if(errors.summary) clearErrors('summary');
+	};
 
 	if(props.isAuthed) return <Navigate  to='/profile' replace/>
+	if(isValidating) return <Preloader />
 
 	return (
-		<form action="#" className={classes.LoginForm} onSubmit={ handleSubmit(onSubmit) }>
-			<Field className={classes.inputWrapper} error={errors.email}>
-				<input 
-					type="email" className={classes.input} 
-					placeholder='Email' {...register('email', {
-						required: 'This field is required',
-					})}
-				/>
-			</Field>
+		<form action="#" className={classes.LoginForm} onChange={ handleFormChange } onSubmit={ handleSubmit(onSubmit) }>
+			<EmailField className={classes.inputWrapper} error={errors.email} register={register}/>
 			<PasswordField className={classes.inputWrapper} error={errors.password} register={register}/>
 			<Checkbox 
 				register={register} validation={{required: true}} 
 				error={errors.rememberMe} name='rememberMe' labelText='Remember me'
 			/>
 			<button className={classes.submitBtn}>Sumbit</button>
+			{errors.summary && <p className={classes.errorMessage}>{errors.summary.message}</p>}
 		</form>
 	)
 }
