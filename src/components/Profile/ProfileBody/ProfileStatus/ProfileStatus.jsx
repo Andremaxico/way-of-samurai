@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import classes from '../ProfileBody.module.scss';
 
 const  ProfileStatus = (props) => {
@@ -6,6 +6,11 @@ const  ProfileStatus = (props) => {
 	const [statusText, setStatusText] = useState(props.status);
 	const [isEdit, setIsEdit] = useState(false);
 
+	useEffect(() => {
+		if(props.status !== statusText) {
+			setStatusText(props.status);
+		}
+	}, [props.status])
 
 	const startEdit = () => setIsEdit(true);
 
@@ -26,12 +31,12 @@ const  ProfileStatus = (props) => {
 
 	return (
 		<div className={classes.profileStatus}>
-			{isEdit 
+			{!isEdit 
 			? <p className={classes.statusText} onClick={props.isMyProfile && startEdit}>
 					{statusText || <i className={classes.defaultStatus}>no info</i>}
 				</p>
 			: <textarea className={classes.statusInput} autoFocus maxLength='300' value={statusText}
-					onChange={ changeStatusText } onBlur={finishEdit}
+					onChange={ changeStatusText } onBlur={props.isMyProfile && finishEdit}
 				></textarea>
 			}
 		</div>

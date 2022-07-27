@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import Profile from './Profile';
 import Preloader from '../../UI/Preloader';
@@ -13,32 +13,38 @@ import withRouter from '../../hocs/withRouter';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-class ProfileContainer extends Component {
-	userId = this.props.router.params.userId;
+const ProfileContainer = (props) => {
+	const [userId, setUserId] = useState(null);
 
-	componentDidMount() {
-		//if current user defined or header request data and set my id 
-		if(this.userId) {
-			this.props.setUserById(this.userId).then(() => this.props.toggleIsFetching(false));
+	useEffect(() => {
+		if(props.router.params.userId) {
+			setUserId(props.router.params.userId);
+		} else {
+			setUserId(null);
 		}
-	}
 
-	render() {
-		if (!this.props.isAuthed && !this.props.router.params.userId) return <Navigate to='/login' replace />
+	}, [props.router.params.userId]);
 
-		if(this.props.isFetching ) {
-			return <Preloader />
+	useEffect(() => {
+		if(userId) {
+			props.setUserById(userId).then(() => props.toggleIsFetching(false));
 		}
-		return (
-			<Profile currUserProfileInfo={ this.userId
-					? this.props.currUserProfileInfo
-					: this.props.myProfileInfo
-					}
-					updateMyStatus={this.props.updateMyStatus}
-					logout={this.props.logout}
-			/>
-		)
+	}, [userId])
+
+	if (!props.isAuthed && !props.router.params.userId) return <Navigate to='/login' replace />
+
+	if(props.isFetching ) {
+		return <Preloader />
 	}
+	return (
+		<Profile currUserProfileInfo={ userId
+				? props.currUserProfileInfo
+				: props.myProfileInfo
+				}
+				updateMyStatus={props.updateMyStatus}
+				logout={props.logout}
+		/>
+	)
 }
 
 
