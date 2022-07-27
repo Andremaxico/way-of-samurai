@@ -16,12 +16,12 @@ const UsersList = (props) => {
 	});
 
 	//pagination numbers
-	const pagesCount = Math.ceil(props.totalUsersCount / props.pagesSize);
+	/*const pagesCount = Math.ceil(props.totalUsersCount / props.pagesSize);
 	let pagesNumbers = [];
 	
 	for(let i = 1; i <= pagesCount; i++) {
 		pagesNumbers.push(i);
-	} 
+	} */
 
 	//if loading
 	if(props.isFetching) {
@@ -30,7 +30,7 @@ const UsersList = (props) => {
 	return (
 		<div className={classes.UsersList}>
 			<UsersPagination 
-				pagesNumbers={pagesNumbers}
+				pagesNumbers={props.usersPagesNumbers}
 				currentPage={props.currentPage}
 				setCurrentPage={props.setCurrentPage}
 			/>

@@ -1,55 +1,42 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import classes from '../ProfileBody.module.scss';
 
-class ProfileStatus extends Component {
-	state = {
-		statusText: this.props.status || '',
-		isEdit: false,
-	}
+const  ProfileStatus = (props) => {
 
-	componentDidUpdate(prevProps) {
-		//if status changed
-		if(this.props.status != prevProps.status) {
-			this.setState({
-				statusText: this.props.status,
-			});
+	const [statusText, setStatusText] = useState(props.status);
+	const [isEdit, setIsEdit] = useState(false);
+
+
+	const startEdit = () => setIsEdit(true);
+
+	const finishEdit = () => {
+		//if we type new status
+		if(statusText != props.status) {
+			//send put request to server
+			props.updateMyStatus(statusText);
 		}
+
+		setIsEdit(false);
 	}
 
-	toggleEdding = (value) => {
-		//if edding end
-		if(!value) {
-			if(this.state.statusText != this.props.status) {
-				this.props.updateMyStatus(this.state.statusText);
-			}
-		}
-		this.setState({
-			isEdit: value,
-		})
-	}
-
-	changeStatusText = (event) => {
+	const changeStatusText = (event) => {
 		const newValue = event.target.value;
-		this.setState({
-			statusText: newValue,
-		});
+		setStatusText(newValue);
 	}
-	
-	render() {
-		return (
-			<div className={classes.profileStatus}>
-				{!this.state.isEdit 
-				? <p className={classes.statusText} onClick={() => this.toggleEdding(true)}>
-						{this.state.statusText || <i className={classes.defaultStatus}>no info</i>}
-					</p>
-				: <textarea className={classes.statusInput} autoFocus maxLength='300' value={this.state.statusText}
-						onChange={ this.changeStatusText } onBlur={() => this.toggleEdding(false)}
-					></textarea>
-				}
-			</div>
-			
-		)
-	}
+
+	return (
+		<div className={classes.profileStatus}>
+			{isEdit 
+			? <p className={classes.statusText} onClick={props.isMyProfile && startEdit}>
+					{statusText || <i className={classes.defaultStatus}>no info</i>}
+				</p>
+			: <textarea className={classes.statusInput} autoFocus maxLength='300' value={statusText}
+					onChange={ changeStatusText } onBlur={finishEdit}
+				></textarea>
+			}
+		</div>
+		
+	)
 }
 
 

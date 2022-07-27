@@ -15,7 +15,6 @@ const Profile = (props) => {
 			<ProfileBody 
 				profileInfo={props.currUserProfileInfo} 
 				updateMyStatus={props.updateMyStatus} logout={props.logout}
-				myProfile
 			/>
 			<h2 className={classes.title}>My posts</h2>
 			<NewPost />

@@ -36,8 +36,8 @@ const initialState = {
 			id: 1,
 		},
 	],
-	myProfileInfo: {},
-	currUserProfileInfo: {},
+	myProfileInfo: null,
+	currUserProfileInfo: null,
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -68,7 +68,7 @@ const profileReducer = (state = initialState, action) => {
 		case SET_MY_PROFILE_INFO: 
 			return {
 				...state, 
-				myProfileInfo: action.myProfileInfo,
+				myProfileInfo: {...action.myProfileInfo, isMyProfile: true},
 			}
 		case SET_MY_STATUS: 
 			return {
@@ -125,12 +125,16 @@ export const setCurrUserStatus = (newStatus) => {
 }
 
 //thunks creators
-export const getUserById = (id) => (dispatch) => {
+export const setUserById = (id) => async (dispatch) => {
 	dispatch(toggleIsFetchingAC(true));
+	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	return usersAPI.getUserById(id).then(data => {
 		if(data) {
 			dispatch(setUserProfileInfo(data));
+			return profileAPI.getUserStatus(id);
 		}
+	}).then(status => {
+		dispatch(setCurrUserStatus(status));
 	})
 }
 

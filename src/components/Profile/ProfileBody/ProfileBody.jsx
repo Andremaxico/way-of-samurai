@@ -7,7 +7,7 @@ import ProfileStatus from './ProfileStatus';
 function ProfileBody(props) {
 	const logout = () => props.logout();
 
-	const {fullName, userId: id, photos, aboutMe, } = props.profileInfo;
+	const {fullName, userId: id, photos, aboutMe, isMyProfile} = props.profileInfo;
 	const {small: coverImg, large: avatarImg} = photos;
 
 	//AndreMaxico => Andre Maxico
@@ -26,9 +26,12 @@ function ProfileBody(props) {
 				</div>
 				<div className={classes.description}>
 					<p className={classes.login}>{name}</p>
-					<ProfileStatus updateMyStatus={props.updateMyStatus} status={aboutMe}/>
+					<ProfileStatus 
+						updateMyStatus={props.updateMyStatus} 
+						isMyProfile={isMyProfile} status={aboutMe}
+					/>
 				</div>
-				{ props.myProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
+				{ isMyProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
 			</div>
 		</div>
 	)

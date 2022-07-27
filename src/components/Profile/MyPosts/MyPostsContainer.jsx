@@ -6,8 +6,7 @@ import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 const mapStateToProps = state => {
 	return {
 		postsData: state.profilePage.postsData,
-		avatarUrl: state.profilePage.currUserProfileInfo.photos ? 
-					  state.profilePage.currUserProfileInfo.photos.small :
+		avatarUrl: state.profilePage.currUserProfileInfo?.photos.small ||
 					  defaultAvatar,
 	}
 }

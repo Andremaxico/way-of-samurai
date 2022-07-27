@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import { follow, unfollow, setCurrentPageAC, 
 			toggleFollowingInProgress,getUsers
 } from "../../../Redux/users-reducer";
+import { selectPageSize, selectPagesNumbers, selectTotalPagesCount, selectTotalUsersCount, selectUnfollowedUsersData, selectUsersData } from '../../../Redux/users-selectors';
 import UsersList from './UsersList';
 
 class UsersListContainer extends React.Component {
@@ -28,9 +29,10 @@ class UsersListContainer extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		usersData: state.usersPage.usersData,
-		totalUsersCount: state.usersPage.totalUsersCount,
-		pagesSize: state.usersPage.pagesSize,
+		usersData: selectUsersData(state),
+		usersPagesNumbers: selectPagesNumbers(state),
+		totalUsersCount: selectTotalUsersCount(state),
+		pagesSize: selectPageSize(state),
 		currentPage: state.usersPage.currentPage,
 		isFetching: state.usersPage.isFetching,
 		followingInProgress: state.usersPage.followingInProgress,
