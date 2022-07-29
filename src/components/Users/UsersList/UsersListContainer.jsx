@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from "react-redux"
-import { follow, unfollow, setCurrentPageAC, 
-			toggleFollowingInProgress,getUsers
+import { follow, unfollow, setCurrentPageAC, getUsers
 } from "../../../Redux/users-reducer";
-import { selectPageSize, selectPagesNumbers, selectTotalPagesCount, selectTotalUsersCount, selectUnfollowedUsersData, selectUsersData } from '../../../Redux/users-selectors';
+import { selectPageSize, selectPagesNumbers, selectTotalUsersCount, selectUsersData } from '../../../Redux/users-selectors';
 import UsersList from './UsersList';
 
 class UsersListContainer extends React.Component {

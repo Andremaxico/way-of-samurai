@@ -1,11 +1,11 @@
 import React from 'react';
 import classes from './Field.module.scss';
 
-const Field = ({className, ...rest }) => {
+const Field = ({className, error, children }) => {
 	return (
 		<div className={`${classes.Field} ${className}`}>
-			{rest.children}
-			{rest.error && <p className={classes.errorMessage}>{rest.error.message}</p>}
+			{children}
+			{error && <p className={classes.errorMessage}>{error.message}</p>}
 		</div>
 	)
 }

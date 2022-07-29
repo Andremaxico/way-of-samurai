@@ -50,5 +50,3 @@ export const profileAPI = {
 	}
 
 }
-
-console.log(usersAPI);

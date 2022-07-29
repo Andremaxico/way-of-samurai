@@ -6,10 +6,13 @@ const Checkbox = ({register, name, ...rest}) => {
 		<div className={`${classes.Checkbox} ${rest.className}`}>
 			<input 
 				type="checkbox" id={name} 
-				{...register(name, rest.validation)} 
+				{...register(name, {required: true, ...rest.validation} )} 
 				className={classes.checkboxInput}
 			/>
-			<label htmlFor={name} tabIndex='0' className={`${classes.checkboxLabel} ${rest.error && classes.error}`}>{rest.labelText}</label>
+			<label 
+				htmlFor={name} tabIndex='0' 
+				className={`${classes.checkboxLabel} ${rest.error && classes.error}`}
+			>{rest.labelText}</label>
 		</div>
 	)
 }

@@ -15,15 +15,7 @@ const UsersList = (props) => {
 		)
 	});
 
-	//pagination numbers
-	/*const pagesCount = Math.ceil(props.totalUsersCount / props.pagesSize);
-	let pagesNumbers = [];
-	
-	for(let i = 1; i <= pagesCount; i++) {
-		pagesNumbers.push(i);
-	} */
-
-	//if loading
+	//when loading
 	if(props.isFetching) {
 		return <Preloader />
 	}
@@ -34,7 +26,9 @@ const UsersList = (props) => {
 				currentPage={props.currentPage}
 				setCurrentPage={props.setCurrentPage}
 			/>
-			{ list }
+			<div className={classes.UsersList}>
+				{ list }
+			</div>
 		</div>
 	)
 }
