@@ -39,7 +39,9 @@ export const unsetAuthData = () => {};
 
 //thunks
 export const setAuthData = () => (dispatch) => {
-	return authAPI.getAuthInfo().then(res => {
+	dispatch(toggleIsFetchingAC(true));
+	return authAPI.getAuthInfo()
+	.then(res => {
 		if(res.resultCode === 0) {
 			//login, email, id
 			dispatch(setAuthDataAC(res.data, true));
@@ -59,6 +61,7 @@ export const setAuthData = () => (dispatch) => {
 		//change 'aboutMe' of myProfileInfo
 		//set my status from server yo my profileData
 		if(status && status.length > 0) dispatch(setMyStatus(status));
+		dispatch(toggleIsFetchingAC(false));
 	})
 }
 

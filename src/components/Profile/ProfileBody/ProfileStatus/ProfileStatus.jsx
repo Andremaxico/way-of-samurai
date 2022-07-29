@@ -6,6 +6,7 @@ const  ProfileStatus = (props) => {
 	const [statusText, setStatusText] = useState(props.status);
 	const [isEdit, setIsEdit] = useState(false);
 
+	//if props.status changed
 	useEffect(() => {
 		if(props.status !== statusText) {
 			setStatusText(props.status);

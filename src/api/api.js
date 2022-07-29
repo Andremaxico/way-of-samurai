@@ -28,7 +28,7 @@ export const usersAPI = {
 
 export const authAPI = {
 	async getAuthInfo() {
-		return instance.get('/auth/me').then(res => res.data);
+		return instance.get('/auth/me').then(res => res.data).catch(e => e.message);
 	},
 
 	async login(data) {
@@ -36,7 +36,6 @@ export const authAPI = {
 	},
 
 	async logout() {
-		console.log('lougout');
 		return instance.delete('/auth/login').then(res => res.data);
 	}
 }	
@@ -47,8 +46,7 @@ export const profileAPI = {
 	},
 
 	async getUserStatus(userId) {
-		console.log('send user status request, id: ' + userId);
-		return instance.get(`/profile/status/${userId}`).then(res => res.data).catch(e => console.log(e));
+		return instance.get(`/profile/status/${userId}`).then(res => res.data).catch(e => e.message);
 	}
 
 }

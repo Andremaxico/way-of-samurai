@@ -9,18 +9,24 @@
 		visibility: hidden;
 		opacity: 0;
 		&:checked {
-			&+label::before {
-				border-color: $mainCol;
-				background-color: $mainCol;
+			&+label {
+				&::before {
+					border-color: $mainCol;
+					background-color: $mainCol;
+				}
 			}
 		}
 	}
 	label {
 		@include row-align;
 		&.error {
+			color: $mainCol;
 			&::before {
 				border-color: $mainCol;
 			}
+		}
+		&:focus {
+			border: 1px solid $mainCol;
 		}
 		&::before {
 			content: '';

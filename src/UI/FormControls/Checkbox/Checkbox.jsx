@@ -9,7 +9,7 @@ const Checkbox = ({register, name, ...rest}) => {
 				{...register(name, rest.validation)} 
 				className={classes.checkboxInput}
 			/>
-			<label htmlFor={name} className={`${classes.checkboxLabel} ${rest.error && classes.error}`}>{rest.labelText}</label>
+			<label htmlFor={name} tabIndex='0' className={`${classes.checkboxLabel} ${rest.error && classes.error}`}>{rest.labelText}</label>
 		</div>
 	)
 }

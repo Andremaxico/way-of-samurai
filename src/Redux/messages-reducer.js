@@ -1,5 +1,5 @@
 const ADD_MESSAGE = 'ADD-MESSAGE';
-const UPDATE_NEW_MESSAGE_VALUE = 'UPDATE-NEW-MESSAGE-VALUE';
+const DELETE_MESSAGE = 'DELETE_MESSAGE';
 
 const initalState = {
 	usersInfo: [
@@ -28,22 +28,27 @@ const initalState = {
 		{
 			text: 'Hi',
 			isMy: true,
+			id: 1
 		},
 		{
 			text: 'How are you?',
 			isMy: true,
+			id: 2
 		},
 		{
 			text: 'Where are you?',
 			isMy: false,
+			id: 3
 		},
 		{
 			text: 'Want to home?...',
 			isMy: true,
+         id: 4
 		},
 		{
 			text: 'Me too...:(',
 			isMy: false,
+			id: 5,
 		},
 	],
 }
@@ -53,15 +58,23 @@ const messagesReducer = (state = initalState, action) => {
 	switch (action.type) {
 		case ADD_MESSAGE:
 			const messageText = action.newMessageValue;
+			const id = state.messagesData.length+1;
 			const newMessageData = {
 				text: messageText,
 				isMy: true,
+				id: id,
 			}
 
 			return {
 				...state,
 				messagesData: [...state.messagesData, newMessageData],
 				newMessageValue: '',
+			}
+		case DELETE_MESSAGE: 
+		console.log('delete message');
+			return {
+				...state,
+				messagesData: state.messagesData.filter(mess => mess.id !== action.messageId),
 			}
 		default:
 			return state
@@ -76,5 +89,11 @@ export const addMessage = (newMessageValue) => {
 	}
 }
 
+export const deleteMessage = (messageId) => {
+	return {
+		type: DELETE_MESSAGE,
+		messageId,
+	}
+}
 
 export default messagesReducer;

@@ -14,7 +14,7 @@ export const PasswordField = ({register, ...rest}) => {
 	return (
 		<Field {...rest}>
 			<input 
-				type="password" className={classes.input} 
+				type="password" className={classes.input}  autoComplete='true'
 				placeholder='Password' {...register('password', {
 					required: 'This field is required',
 					pattern: {

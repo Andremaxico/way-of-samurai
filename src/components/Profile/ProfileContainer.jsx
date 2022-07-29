@@ -15,17 +15,21 @@ import { connect } from 'react-redux';
 
 const ProfileContainer = (props) => {
 	const [userId, setUserId] = useState(null);
-
+	//if we render other user profile, we set const userId
 	useEffect(() => {
 		if(props.router.params.userId) {
+			//set const for show user profile
 			setUserId(props.router.params.userId);
 		} else {
+			//set const to null to show my profile
 			setUserId(null);
 		}
 
 	}, [props.router.params.userId]);
 
+	//set currUserProfileInfo in state if we get userId
 	useEffect(() => {
+		//if we get other user id, we set this with thunk
 		if(userId) {
 			props.setUserById(userId).then(() => props.toggleIsFetching(false));
 		}
