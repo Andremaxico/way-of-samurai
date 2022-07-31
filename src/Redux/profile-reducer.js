@@ -1,4 +1,5 @@
 import { profileAPI, usersAPI } from "../api/api";
+import { setNetworkError } from "./app-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
 
 const ADD_POST = 'ADD-POST';
@@ -135,15 +136,19 @@ export const setUserById = (id) => async (dispatch) => {
 		}
 	}).then(status => {
 		dispatch(setCurrUserStatus(status));
+		dispatch(setNetworkError(false));
 	})
+	.catch(e => e.code === 'ERR_NETWORK' && dispatch(setNetworkError(true)));
 }
 
 export const updateMyStatus = (newStatus) => (dispatch) => {
 	profileAPI.updateMyStatus(newStatus).then(res => {
 		if(res.resultCode === 0) {
 			dispatch(setMyStatus(newStatus));
+			dispatch(setNetworkError(false));
 		}
 	})
+	.catch(e => e.code === 'ERR_NETWORK' && dispatch(setNetworkError(true)));
 }
 
 

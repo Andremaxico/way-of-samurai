@@ -28,7 +28,7 @@ export const usersAPI = {
 
 export const authAPI = {
 	async getAuthInfo() {
-		return instance.get('/auth/me').then(res => res.data).catch(e => e.message);
+		return instance.get('/auth/me').then(res => res.data);
 	},
 
 	async login(data) {

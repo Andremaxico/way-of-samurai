@@ -12,6 +12,7 @@ import { getIsAuthed } from '../../Redux/auth-selectors';
 import withRouter from '../../hocs/withRouter';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import withNetworkRedirect from '../../hocs/withNetworkRedirect';
 
 const ProfileContainer = (props) => {
 	const [userId, setUserId] = useState(null);
@@ -71,5 +72,6 @@ const methods = {
 
 export default compose(
 	connect(mapStateToProps, methods),
+	withNetworkRedirect,
 	withRouter,
 )(ProfileContainer);

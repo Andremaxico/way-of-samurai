@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux';
+import { applyMiddleware, combineReducers, legacy_createStore as createStore, compose} from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
 import  ThunkMiddleware  from 'redux-thunk';
 import messagesReducer from './messages-reducer';
@@ -18,7 +18,9 @@ const reducer = combineReducers({
 });
 
 
-const store  = createStore(reducer, applyMiddleware(ThunkMiddleware));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(ThunkMiddleware)));
+
 window.store = store;
 
 export default store;

@@ -9,7 +9,10 @@ import { Navigate } from 'react-router-dom'
 import Preloader from '../../../UI/Preloader';
 
 const LoginForm = (props) => {
-	const { register, handleSubmit, setError, clearErrors, formState: { errors, isSubmitSuccessful,isValidating } } = useForm();
+	const { 
+		register, handleSubmit, setError, clearErrors, 
+		formState: { errors, isSubmitSuccessful,isValidating } 
+	} = useForm();
 
 	const onSubmit = async data => {
 		//login return error or

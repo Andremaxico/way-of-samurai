@@ -1,5 +1,8 @@
 import React, { Component, useEffect } from 'react';
 import './App.scss';
+//hocs
+import withNetworkRedirect from './hocs/withNetworkRedirect';
+import withRouter from './hocs/withRouter';
 //componenst
 import HeaderContainer from './components/Header';
 import Sidebar from './components/Sidebar/Sidebar'
@@ -10,14 +13,13 @@ import Settings from './components/Settings/Settings';
 import Users from './components/Users';
 import ProfileContainer from './components/Profile';
 import Login from './components/Login';
+import Preloader from './UI/Preloader';
 //libraries
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { initApp } from './Redux/app-reducer';
-import withRouter from './hocs/withRouter';
-import Preloader from './UI/Preloader';
-
 const App = (props) => {
   useEffect(() => {
     props.initApp();
@@ -28,13 +30,13 @@ const App = (props) => {
   return (
       <div className="app-wrapper">
         <HeaderContainer />
-        <Sidebar data={props.data.sidebar}/>
+        <Sidebar data={props.sidebar}/>
         <div className='content'>
             <Routes>
               <Route path='/profile' element={<ProfileContainer />}>
                 <Route path=':userId'/>
               </Route>
-              <Route path='/messages/*' element={<Messages data={props.data.messagesPage} dispatch={props.dispatch} isAuthed={props.data.auth.isAuthed}/>} />
+              <Route path='/messages/*' element={<Messages />} />
               <Route path='/users/*' element={<Users />}/>
               <Route path='/news/*' element={<News />} />
               <Route path='/music/*' element={<Music />} />
@@ -49,10 +51,23 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     isInitSuccess: state.app.isInitSuccess,
+    sidebar: state.sidebar,
+    messagesPage: state.messagesPage,
   }
 } 
 
-export default compose(
+const AppContainer = compose(
   connect(mapStateToProps, { initApp }),
+  withNetworkRedirect,
   withRouter,
 )(App);
+
+const SamuraiApp = (props) => (
+  <BrowserRouter>
+    <Provider store={props.store}>
+      <AppContainer {...props}/>
+    </Provider>
+  </BrowserRouter> 
+);
+
+export default SamuraiApp;

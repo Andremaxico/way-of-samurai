@@ -33,10 +33,10 @@ const  ProfileStatus = (props) => {
 	return (
 		<div className={classes.profileStatus}>
 			{!isEdit 
-			? <p className={classes.statusText} onClick={props.isMyProfile && startEdit}>
+			? <p className={classes.statusText} data-testid="status-text" onClick={props.isMyProfile && startEdit}>
 					{statusText || <i className={classes.defaultStatus}>no info</i>}
 				</p>
-			: <textarea className={classes.statusInput} autoFocus maxLength='300' value={statusText}
+			: <textarea data-testid="status-textarea" className={classes.statusInput} autoFocus maxLength='300' value={statusText}
 					onChange={ changeStatusText } onBlur={props.isMyProfile && finishEdit}
 				></textarea>
 			}
