@@ -25,4 +25,9 @@
 			color: $mainCol;
 		}
 	}
+	.navBtn {
+		margin: 0 10px;
+		@include formBtn;
+		text-transform: uppercase;
+	}
 }

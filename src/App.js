@@ -58,7 +58,7 @@ const mapStateToProps = (state) => {
 
 const AppContainer = compose(
   connect(mapStateToProps, { initApp }),
-  withNetworkRedirect,
+ // withNetworkRedirect,
   withRouter,
 )(App);
 

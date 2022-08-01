@@ -1,5 +1,6 @@
 import { usersAPI } from "../api/api";
 import { changeArrayObjProps } from '../utils/helpers/objHelper';
+import { setNetworkError } from "./app-reducer";
 
 const FOLLOW = 'follow';
 const UNFOLLOW = 'unfollow';
@@ -20,13 +21,18 @@ const initialState = {
 
 //flow
 const followUnfollowFlow = async (apiMethod, actionCreator, dispatch, userId) => {
-	dispatch(toggleFollowingInProgress(true, userId));
-
-	const res = await apiMethod(userId);
-
-	if(res.resultCode === 0) {
-		dispatch(actionCreator);
-		dispatch(toggleFollowingInProgress(false, userId));
+	try {
+		dispatch(toggleFollowingInProgress(true, userId));
+	
+		const res = await apiMethod(userId);
+	
+		if(res.resultCode === 0) {
+			dispatch(actionCreator);
+			dispatch(toggleFollowingInProgress(false, userId));
+			dispatch(setNetworkError(false));
+		}
+	} catch (e) {
+		if(e.code === "ERR_NETWORK") dispatch(setNetworkError(true));
 	}
 }
 
@@ -124,11 +130,16 @@ export const toggleFollowingInProgress = (isInProgress, userId) => {
 //thunks
 export const getUsers = (currentPage, pagesSize) => async (dispatch) => {
 	dispatch(toggleIsFetchingAC(true));
-	const res = await usersAPI.getUsersPage(currentPage, pagesSize);
+	try {
+		const res = await usersAPI.getUsersPage(currentPage, pagesSize);
 
-	dispatch(setUsersAC(res.items));
-	dispatch(setTotalUsersCountAC(res.totalCount));
-	dispatch(toggleIsFetchingAC(false));
+		dispatch(setUsersAC(res.items));
+		dispatch(setTotalUsersCountAC(res.totalCount));
+		dispatch(toggleIsFetchingAC(false));
+		dispatch(setNetworkError(false));
+	} catch (e) {
+		if(e.code === "ERR_NETWORK") dispatch(setNetworkError(true));
+	}
 }
 export const follow = (userId) => async (dispatch) => {
 	followUnfollowFlow(usersAPI.follow.bind(usersAPI), followSuccess(userId), dispatch, userId);

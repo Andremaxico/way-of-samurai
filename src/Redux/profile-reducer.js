@@ -129,33 +129,38 @@ export const setCurrUserStatus = (newStatus) => {
 export const setUserById = (id) => async (dispatch) => {
 	dispatch(toggleIsFetchingAC(true));
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
-	return usersAPI.getUserById(id).then(data => {
+	try {
+		const data = await usersAPI.getUserById(id);
 		if(data) {
 			dispatch(setUserProfileInfo(data));
-			return profileAPI.getUserStatus(id);
 		}
-	}).then(status => {
+	
+		const status = await profileAPI.getUserStatus(id);
 		dispatch(setCurrUserStatus(status));
 		dispatch(setNetworkError(false));
-	})
-	.catch(e => e.code === 'ERR_NETWORK' && dispatch(setNetworkError(true)));
+	
+	} catch(e) {
+		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true))
+	}
 }
 
-export const updateMyStatus = (newStatus) => (dispatch) => {
-	profileAPI.updateMyStatus(newStatus).then(res => {
-		if(res.resultCode === 0) {
+export const updateMyStatus = (newStatus) => async (dispatch) => {
+	try {
+		const resolve = await profileAPI.updateMyStatus(newStatus);
+
+		if(resolve.resultCode === 0) {
 			dispatch(setMyStatus(newStatus));
 			dispatch(setNetworkError(false));
 		}
-	})
-	.catch(e => e.code === 'ERR_NETWORK' && dispatch(setNetworkError(true)));
+	} catch(e) {
+		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true))
+	}
 }
 
 
-export const setUserStatus = (userId) => (dispatch) => {
-	profileAPI.getUserStatus(userId).then(data => {
-		dispatch(setCurrUserStatus(data.status));
-	});
+export const setUserStatus = (userId) => async (dispatch) => {
+	const data = await profileAPI.getUserStatus(userId);
+	dispatch(setCurrUserStatus(data.status));
 }
 
 export default profileReducer;

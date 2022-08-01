@@ -1,4 +1,5 @@
 import React from 'react';
+import withNetworkRedirect from '../../hocs/withNetworkRedirect';
 import classes from './Login.module.scss';
 import LoginForm from './LoginForm';
 
@@ -11,4 +12,4 @@ const Login = (props) => {
 	)
 }
 
-export default Login;
+export default withNetworkRedirect(Login);

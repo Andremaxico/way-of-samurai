@@ -71,7 +71,6 @@ const messagesReducer = (state = initalState, action) => {
 				newMessageValue: '',
 			}
 		case DELETE_MESSAGE: 
-		console.log('delete message');
 			return {
 				...state,
 				messagesData: state.messagesData.filter(mess => mess.id !== action.messageId),

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux"
+import withNetworkRedirect from '../../../hocs/withNetworkRedirect';
 import { follow, unfollow, setCurrentPageAC, getUsers
 } from "../../../Redux/users-reducer";
 import { selectPageSize, selectPagesNumbers, selectTotalUsersCount, selectUsersData } from '../../../Redux/users-selectors';
@@ -73,4 +74,6 @@ const mdtp = {
 	setCurrentPage: setCurrentPageAC,
 	getUsers,
 }
-export default  connect(mapStateToProps, mdtp)(UsersListContainer);
+export default connect(mapStateToProps, mdtp)( 
+	withNetworkRedirect(UsersListContainer) 
+);

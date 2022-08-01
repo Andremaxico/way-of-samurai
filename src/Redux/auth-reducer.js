@@ -36,7 +36,6 @@ export const setAuthDataAC = (data, isAuthed) => {
 	}
 }
 
-export const unsetAuthData = () => {};
 
 //thunks
 export const setAuthData = () => async (dispatch) => {
@@ -66,12 +65,17 @@ export const setAuthData = () => async (dispatch) => {
 }
 
 export const login = (data) => async (dispatch) => {
-   const res = await authAPI.login(data);
-
-	if(res.resultCode === 0) {
-		dispatch( setAuthData() );
-	} else if(res.resultCode === 1) {
-		return res.messages[0];
+	try {
+		const res = await authAPI.login(data);
+		dispatch(setNetworkError(false));
+		
+		if(res.resultCode === 0) {
+			dispatch( setAuthData() );
+		} else if(res.resultCode === 1) {
+			return res.messages[0];
+		}
+	} catch(e) {
+		if(e.code === "ERR_NETWORK") dispatch(setNetworkError(true));
 	}
 }
 
