@@ -1,6 +1,6 @@
 import React from 'react'
 import withAuthRedirect from '../../hocs/withRedirect';
-import ChatsListContainer from './ChatsList';
+import ChatsListContainer from './ChatsList/ChatsListContainer';
 import CurrentChatContainer from './CurrentChat';
 import classes from './Messages.module.scss';
 

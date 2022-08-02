@@ -2,8 +2,8 @@
 
 .Pagination {
 	display: flex;
-	max-width: 300px;
-	margin: 0 auto 20px;	
+	justify-content: center;
+	margin-bottom: 20px;	
 	overflow: hidden;
 	.paginationBtn {
 		margin-right: 8px;
@@ -16,5 +16,9 @@
 		&:hover, &._active {
 			color: $mainCol;
 		}
+	}
+	.navBtn {
+		margin: 0 15px;
+		@include formBtn;
 	}
 }
