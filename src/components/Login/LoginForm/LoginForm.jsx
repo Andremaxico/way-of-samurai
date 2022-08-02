@@ -15,15 +15,13 @@ const LoginForm = (props) => {
 	} = useForm();
 
 	const onSubmit = async data => {
-		//login return error or
+		//login return error or null
 		const err = await props.login({...data, captcha: false});
 		if(err) {
 			setError('summary', {
 				type: 'custom',
 				message: err,
 			})
-		} else {
-			clearErrors('summary');
 		}
 	}
 
