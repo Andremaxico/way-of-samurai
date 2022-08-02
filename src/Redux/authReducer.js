@@ -36,17 +36,14 @@ const setAuthDataAC = (authData) => {
 }
 
 //thunks creators
-export const setAuthData = () => (dispatch) => {
-
-	authAPI.getAuthData().then(res => {
-		if(res.resultCode === 0) {
-			dispatch(setAuthDataAC(res.data));
-			return usersAPI.getUserById(res.data.id);
-		}
+export const setAuthData = () => async (dispatch) => {
+	const resolve = await authAPI.getAuthData();
+	if(resolve.resultCode === 0) {
+		dispatch(setAuthDataAC(resolve.data));
+	}
 		
-	}).then(data => {
-		if(data) dispatch(setMyProfileData(data));
-	})
+	const data = await usersAPI.getUserById(resolve.data.id);
+	if(data) dispatch(setMyProfileData(data));
 }
 
 export default authReducer;

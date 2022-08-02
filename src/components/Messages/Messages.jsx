@@ -1,5 +1,5 @@
 import React from 'react'
-import withAuthRedirect from '../../hocs/withRedirect';
+import withLoginRedirect from '../../hocs/withLoginRedirect';
 import ChatsListContainer from './ChatsList/ChatsListContainer';
 import CurrentChatContainer from './CurrentChat';
 import classes from './Messages.module.scss';
@@ -14,4 +14,4 @@ const Messages = (props) => {
 	)
 }
 
-export default withAuthRedirect(Messages);
+export default withLoginRedirect(Messages);

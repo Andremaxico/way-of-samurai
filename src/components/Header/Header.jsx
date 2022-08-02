@@ -3,6 +3,7 @@ import classes from  './Header.module.scss';
 import { Link } from 'react-router-dom';
 import Logo from '../../UI/Logo';
 import AccountInfo from './AccountInfo';
+import { connect } from 'react-redux';
 
 function Header(props) {
 	return (
@@ -19,4 +20,10 @@ function Header(props) {
 	);
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    isAuthed: state.auth.isAuthed,
+  }
+}
+
+export default connect(mapStateToProps)(Header);

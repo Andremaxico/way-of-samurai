@@ -1,14 +1,29 @@
-import React from 'react';
+//react
+import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
+//components
 import Header from './components/Header';
 import Sidenav from './components/Sidebar/Sidebar'
 import Profile from './components/Profile';
 import Messages from './components/Messages/Messages';
 import Users from './components/Users/Users';
 import Login from './components/Login';
+import Preloader from './UI/Preloader';
+
+//other
+import { initApp } from './Redux/appReducer';
+
 
 function App(props) {
+
+  useEffect(() => {
+    props.initApp();
+  }, [])
+
+  if(!props.isInit) return <Preloader />
+
   return (
     <div className="app-wrapper">
       <Header />
@@ -27,4 +42,10 @@ function App(props) {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isInit: state.app.isInit,
+  }
+}
+
+export default connect(mapStateToProps, {initApp})(App);
