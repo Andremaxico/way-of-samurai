@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './Users.module.scss';
 import UsersList from './UsersList';
+import withNetworkErrorCheck from '../../hocs/withNetworkCheck';
 
 const Users = (props) => {
 	return (
@@ -11,4 +12,4 @@ const Users = (props) => {
 	)
 }
 
-export default Users;
+export default withNetworkErrorCheck(Users);

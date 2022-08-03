@@ -6,11 +6,11 @@ import withLoginRedirect from '../../hocs/withLoginRedirect';
 import Preloader from '../../UI/Preloader';
 import Profile from './Profile'; 
 import { setUserProfileData, setMyProfileData } from '../../Redux/profileReducer';
+import { Navigate } from 'react-router-dom';
 
 class ProfileContainer extends Component {
 	componentDidMount() {
 		const userId = this.props.router.params.userId || this.props.myProfileId;
-
 		if(userId) {
 			this.props.setUserProfileData(userId);
 		}
@@ -18,6 +18,7 @@ class ProfileContainer extends Component {
 
 	render() {
 		if(this.props.isFetching) return <Preloader />
+		if(!this.props.router.params.userId && !this.props.isAuthed) return <Navigate to='/login' replace/>
 
 		return (
 			<Profile profileData={this.props.router.params.userId 
@@ -29,6 +30,7 @@ class ProfileContainer extends Component {
 
 const mapStateToProps = (state) => {
 	return {
+		isAuthed: state.auth.isAuthed,
 		isFetching: state.usersPage.isFetching,
 		myProfileId: state.profilePage.myProfileData.userId,
 		myProfileData: state.profilePage.myProfileData,
@@ -44,5 +46,4 @@ const methods = {
 export default compose(
 	connect(mapStateToProps, methods),
 	withRouter,
-	withLoginRedirect,
 )(ProfileContainer);

@@ -88,7 +88,7 @@ $gray: rgb(131, 131, 131);
   cursor: pointer;
 }
 @mixin input() {
-  padding: 12px 15px;
+  padding: 10px 15px;
   width: 100%;
   @include text();
   border: 1px solid $gray;

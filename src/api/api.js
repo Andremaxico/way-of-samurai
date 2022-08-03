@@ -29,5 +29,16 @@ export const usersAPI = {
 export const authAPI = {
 	async getAuthData() {
 		return instance.get('/auth/me').then(res => res.data);
+	},
+	async logout() {
+		return instance.delete('/auth/login').then(res => res.data);
+	},
+
+	async login(data) {
+		return instance.post('auth/login', {...data}).then(res => res.data);
 	}
+}
+
+export const profileAPI = {
+
 }
