@@ -135,7 +135,7 @@ export const changeUserStatus = (status) => {
 //thunk creator
 export const setUserProfileData = (userId) => async (dispatch) => {
 	dispatch(toggleIsFetching(true));
-	await catchNetWorkError(dispatch, () => {
+	await catchNetWorkError(dispatch, async () => {
 		const data = await usersAPI.getUserById(userId);
 		if(data) dispatch(setCurrentUserProfileDataAC(data));
 	

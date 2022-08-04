@@ -1,4 +1,5 @@
 import { usersAPI } from '../api/api';
+import catchNetWorkError from '../helpers/catchNetworkError';
 
 const FOLLOW = 'follow';
 const UNFOLLOW = 'unfollow';
@@ -17,6 +18,20 @@ const initialState = {
 	isFetching: false,
 	followingInProgress: [],
 }
+
+//flow
+const followUnfollowFlow = async (apiRequest, method, userId, dispatch,) => {
+	catchNetWorkError(dispatch, async () => {
+		dispatch(toggleFollowingInProgress(userId, true));
+
+		const res = await apiRequest(userId)
+		if(res.resultCode === 0) {
+			dispatch(method(userId));
+		}
+		dispatch(toggleFollowingInProgress(userId, false));
+	});
+}
+
 
 const usersReducer = (state = initialState, action) => {
 	switch (action.type) {
@@ -138,23 +153,10 @@ export const setUsersPage = (currentPage, pageSize) => (dispatch) => {
 }	
 
 export const follow = (userId) => (dispatch) => {
-	dispatch(toggleFollowingInProgress(userId, true));
-	usersAPI.follow(userId).then(res => {
-		if(res.resultCode === 0) {
-			dispatch(followAC(userId));
-		}
-		dispatch(toggleFollowingInProgress(userId, false));
-	})
+	followUnfollowFlow(usersAPI.follow, followAC, userId, dispatch);
 }
 export const unfollow = (userId) => (dispatch) => {
-	dispatch(toggleFollowingInProgress(userId, true));
-
-	usersAPI.unfollow(userId).then(res => {
-		if(res.resultCode === 0) {
-			dispatch(unfollowAC(userId));
-		}
-		dispatch(toggleFollowingInProgress(userId, false));
-	})
+	followUnfollowFlow(usersAPI.unfollow, unfollowAC, userId, dispatch);
 }
 
 

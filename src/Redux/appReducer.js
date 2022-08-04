@@ -1,3 +1,4 @@
+import catchNetWorkError from '../helpers/catchNetworkError';
 import { setAuthData } from './authReducer';
 
 const INIT_APP = 'INIT_APP';
@@ -34,8 +35,10 @@ export const setNetworkError = (value) => {
 
 //thunks
 export const initApp = () => async (dispatch) => {
-	await dispatch( setAuthData() );
-	dispatch(initAppAC());
+	catchNetWorkError(dispatch, async () => {
+		await dispatch( setAuthData() );
+		dispatch(initAppAC());
+	})
 }
 
 export default appReducer;

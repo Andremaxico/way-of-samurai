@@ -1,5 +1,6 @@
 //react
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import React, { useEffect } from 'react';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
@@ -14,6 +15,7 @@ import Preloader from './UI/Preloader';
 
 //other
 import { initApp } from './Redux/appReducer';
+import withNetworkCheck from './hocs/withNetworkCheck';
 
 
 function App(props) {
@@ -48,4 +50,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {initApp})(App);
+export default compose(
+  connect(mapStateToProps, {initApp}),
+  withNetworkCheck,
+)(App);

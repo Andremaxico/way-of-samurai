@@ -10,15 +10,21 @@ import { Navigate } from 'react-router-dom';
 import NotAuthorized from '../../UI/NotAuthorized/NotAuthorized';
 
 const ProfileContainer = (props) => {
+	const [loading, setLoading] = useState(false)
 	useEffect(() => {
-		const userId = props.router.params?.userId || props.myProfileData?.userId;
-		if(userId) {
-			props.setUserProfileData(userId);
+		const setData = async () => {
+			const userId = props.router.params?.userId || props.myProfileData?.userId;
+			if(userId) {
+				setLoading(true);
+				await props.setUserProfileData(userId);
+				setLoading(false);
+			}
 		}
+		setData();
 	}, [props.router?.params?.userId, props.myProfileData]);
 
 
-	if(props.isFetching) return <Preloader />
+	if(props.isFetching || loading) return <Preloader />
 	if(!props.router.params.userId && !props.isAuthed) return <NotAuthorized />;
 
 	return (

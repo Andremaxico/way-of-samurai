@@ -7,7 +7,6 @@ import Preloader from '../../../UI/Preloader';
 import classes from './LoginForm.module.scss';
 
 const LoginForm = (props) => {
-	console.log(props.isAuthed);
 	const { handleSubmit, formState: { errors, isSubmitting }, register, setError, clearErrors} = useForm();
 	const onSubmit = async (data) => {
 		const err =  await props.login({...data, captcha: false});
