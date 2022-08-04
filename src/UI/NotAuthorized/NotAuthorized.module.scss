@@ -1,0 +1,14 @@
+@import '../../global-styles';
+
+.NotAuthorized {
+	@include column-align;
+	align-items: center;
+	justify-content: center;
+	.message {
+		margin-bottom: 16px;
+		@include bigText;
+	}
+	.loginBtn {
+		@include formBtn;
+	}
+}

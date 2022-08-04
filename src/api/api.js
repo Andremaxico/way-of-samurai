@@ -35,10 +35,16 @@ export const authAPI = {
 	},
 
 	async login(data) {
-		return instance.post('auth/login', {...data}).then(res => res.data);
+		return instance.post('/auth/login', {...data}).then(res => res.data);
 	}
 }
 
 export const profileAPI = {
+	async putStatus(status) {
+		return instance.put('/profile/status/', {status}).then(res => res.data);
+	},
 
+	async getUserStatus(userId) {
+		return instance.get(`/profile/status/${userId}`).then(res => res.data);
+	}
 }

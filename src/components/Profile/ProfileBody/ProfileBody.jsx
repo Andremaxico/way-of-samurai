@@ -4,7 +4,7 @@ import classes from '../Profile.module.scss';
 import defaultCover from '../../../assets/images/default-user-cover.jpg';
 
 const ProfileBody = (props) => {
-	const coverImg =  props.profileData.photos ? props.profileData.photos.large : ''; 
+	const coverImg =  props.profileData?.photos?.large; 
 	return (
 		<div className={classes.ProfileBody}>
 			<div className={classes.cover}>

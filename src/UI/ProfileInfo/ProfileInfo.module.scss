@@ -2,17 +2,35 @@
 
 .Info {
 	display: flex;
-
+	align-items: flex-start;
 	.avatar {
 		@include userAvatar;
 		margin-right: 12px;
 	}
 	.description {
-		p {
-			&:first-child {
-				@include bigText;
-			}
-			@include text;
+		flex: 1 1 auto;
+		.login {
+			@include bigText;
+			margin-bottom: 8px;
 		}
+	}
+	.ProfileStatus {
+		.text {
+			@include smallText;
+			i {
+				font-style: italic;
+				color: $gray;
+			}
+		}
+		.textarea {
+			@include input;
+			max-width: 500px;
+			width: 100%;
+			resize: none;
+		}
+	}
+
+	.logoutBtn {
+		@include formBtn;
 	}
 }

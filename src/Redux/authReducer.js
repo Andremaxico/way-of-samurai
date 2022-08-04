@@ -1,5 +1,5 @@
-import { authAPI, usersAPI } from '../api/api';
-import { setMyProfileData } from './profileReducer';
+import { authAPI, usersAPI, profileAPI } from '../api/api';
+import { changeMyStatus, setMyProfileData } from './profileReducer';
 import { toggleIsFetching } from './usersReducer';
 import { setNetworkError } from './appReducer';
 import catchNetworkError from '../helpers/catchNetworkError';
@@ -15,6 +15,7 @@ const initialState = {
 		login: null,
 	},
 	isAuthed: false,
+	isLogging: false,
 }
 
 const authReducer = (state = initialState, action) => {
@@ -23,15 +24,9 @@ const authReducer = (state = initialState, action) => {
 			return {
 				...state,
 				data: action.authData,
-				isAuthed: true,
+				isAuthed: action.authData ? true : false,
 			}
-		case LOGIN: 
-			return {
-				...state,
-				data: {...action.data},
-				isAuthed: true,
-			}
-		case LOGIN: 
+		case LOGOUT: 
 			return {
 				...state,
 				data: null,
@@ -49,17 +44,10 @@ const setAuthDataAC = (authData) => {
 		authData,
 	}
 }
-const loginSuccessfull = (data) => {
-	return {
-		type: LOGIN,
-		data,
-	}
-}
 
-const logoutSuccessfull = (data) => {
+const logoutSuccessfull = () => {
 	return {
 		type: LOGOUT,
-		data,
 	}
 }
 
@@ -67,37 +55,41 @@ const logoutSuccessfull = (data) => {
 
 export const setAuthData = () => async (dispatch) => {
 	const resolve = await authAPI.getAuthData();
-
 	if(resolve.resultCode === 0) {
 		dispatch(setAuthDataAC(resolve.data));
 	}
-		
-	const data = await usersAPI.getUserById(resolve.data.id);
+
+	const data = resolve.data.id ? await usersAPI.getUserById(resolve.data.id) : null;
 	if(data) dispatch(setMyProfileData(data));
+
+	const status = data ? await profileAPI.getUserStatus(data.userId) : '';
+	if(status) dispatch(changeMyStatus(status));
 }
 
 export const login = (data) => async (dispatch) => {
 	return catchNetworkError(dispatch, async () => {
+
 		const res = await authAPI.login(data);
-		console.log(res);
 		if(res.resultCode === 0) {
-			dispatch(loginSuccessfull(res.data));
-		} else if(res.resultCode === 10) {
-			console.log(res.messages[0]);
+			dispatch(setAuthData());
+
+		} else if(res.resultCode === 1) {
 			return res.messages[0];
 		}
 	});
 }
 
 export const logout = () => async (dispatch) => {
-	
-	catchNetworkError(dispatch, async () => {
+	dispatch(toggleIsFetching(true));
+	await catchNetworkError(dispatch, async () => {
 		const res = await authAPI.logout();
 
 		if(res.resultCode === 0) {
 			dispatch(logoutSuccessfull());
+			dispatch(setMyProfileData(null)); 
 			dispatch(setAuthDataAC(null));
 		}
-	})
+	});
+	dispatch(toggleIsFetching(false));
 }
 export default authReducer;

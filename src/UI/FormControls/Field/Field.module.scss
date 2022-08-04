@@ -1,0 +1,20 @@
+@import '../../../global-styles';
+
+.Field {
+	position: relative;
+	.input {
+		@include input;
+	}
+	.error {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		transform: translateY(105%);
+	}
+	.errorMessage {
+		@include text;
+		font-weight: 500;
+		color: $mainCol;
+		font-style: italic;
+	}
+}

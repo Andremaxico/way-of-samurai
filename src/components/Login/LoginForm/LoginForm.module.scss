@@ -1,0 +1,28 @@
+@import '../../../global-styles';
+
+.LoginForm {
+	position:  relative;
+	@include column-align;
+	align-items: center;
+	max-width: 350px;
+	.input {
+		max-width: 100%;
+		margin-bottom: 16px;
+	}
+	.rememberMe {
+		margin-bottom: 16px;
+	}
+	.submitBtn {
+		@include formBtn;
+	}
+	.errorMessage {
+		position: absolute;
+		bottom: -16px;
+		left: 0;
+		@include text;
+		color: rgba($color: $mainCol, $alpha: 0.7);
+		font-weight: 500;
+		font-style: italic;
+		transform: translateY(100%);
+	}
+}

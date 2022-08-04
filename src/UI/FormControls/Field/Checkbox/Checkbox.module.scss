@@ -1,0 +1,41 @@
+@import '../../../../global-styles';
+
+.Checkbox {
+	input {
+		position: absolute;
+		opacity: 0;
+		visibility: hidden;
+		z-index: -1;
+		&.error {
+			border-radius: 2px solid $mainCol;
+			&+label {
+				color: $mainCol;
+				&::before {}
+			}
+		}
+		&:checked {
+			&+label::before {
+				background-color: $mainCol;
+				border-color: $mainCol;
+			}
+		}
+		&:focus {
+			&+label::before {
+				border-color: $mainCol;
+				transform: translateY(-2px);
+			}
+		}
+	}
+	label {
+		@include row-align;
+		&::before {
+			content: '';
+			width: 16px;
+			height: 16px;
+			margin-right: 12px;
+			border: 1px solid $gray;
+			border-radius: 4px;
+			transition: 0.2s;
+		}
+	}
+}
