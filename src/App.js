@@ -13,7 +13,7 @@ import Settings from './components/Settings/Settings';
 import Users from './components/Users';
 import Preloader from './UI/Preloader';
 //libraries
-import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import { Route, Routes, BrowserRouter, HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -72,11 +72,11 @@ const AppContainer = compose(
 )(App);
 
 const SamuraiApp = (props) => (
-  <BrowserRouter>
+  <HashRouter>
     <Provider store={props.store}>
       <AppContainer {...props}/>
     </Provider>
-  </BrowserRouter> 
+  </HashRouter> 
 );
 
 export default SamuraiApp;
