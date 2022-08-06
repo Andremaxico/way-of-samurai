@@ -4,7 +4,7 @@ import Profile from './Profile';
 import Preloader from '../../UI/Preloader';
 //reducers
 import { toggleIsFetchingAC } from '../../Redux/users-reducer';
-import { setUserById, updateMyStatus } from '../../Redux/profile-reducer';
+import { setUserById, updateMyStatus, setAvatar } from '../../Redux/profile-reducer';
 import { logout } from '../../Redux/auth-reducer';
 //selectors
 import { getIsAuthed } from '../../Redux/auth-selectors';
@@ -28,7 +28,7 @@ const ProfileContainer = (props) => {
 
 	}, [props.router.params.userId]);
 
-	//set currUserProfileInfo in state if we get userId
+	//set currUserProfileInfo in state if we got userId
 	useEffect(() => {
 		//if we get other user id, we set this with thunk
 		if(userId) {
@@ -48,6 +48,7 @@ const ProfileContainer = (props) => {
 				}
 				updateMyStatus={props.updateMyStatus}
 				logout={props.logout}
+				setAvatar={props.setAvatar}
 		/>
 	)
 }
@@ -68,6 +69,7 @@ const methods = {
 	setUserById,
 	updateMyStatus,
 	logout,
+	setAvatar,
 }
 
 export default compose(

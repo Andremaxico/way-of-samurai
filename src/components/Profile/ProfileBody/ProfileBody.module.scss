@@ -19,6 +19,35 @@
 	margin-bottom: 40px;
 	.avatar {
 		@include userAvatar;
+		&.my {
+			position: relative;
+			&:hover {
+				label {
+					opacity: 1;
+				}
+			}
+			img {}
+			input {
+				position: absolute;
+				z-index: -1;
+				opacity: 0;
+				visibility: hidden;
+			}
+			label {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+
+				@include text;
+				text-align: center;
+				color: #fff;
+				
+				opacity: 0;
+				background-color: rgba($color: #000000, $alpha: 0.5);
+				transform: translate(-50%, -50%);	
+				z-index: 2;
+			}
+		}
 	}
 	.description {
 		margin-right: 16px;

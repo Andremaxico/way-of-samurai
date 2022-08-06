@@ -13,7 +13,7 @@ const Profile = (props) => {
 	return (
 		<div className={classes.profile}>
 			<ProfileBody 
-				profileInfo={props.currUserProfileInfo} 
+				profileInfo={props.currUserProfileInfo}  setAvatar={props.setAvatar}
 				updateMyStatus={props.updateMyStatus} logout={props.logout}
 			/>
 			<h2 className={classes.title}>My posts</h2>

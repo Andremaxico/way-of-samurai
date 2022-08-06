@@ -1,5 +1,5 @@
 import axios from "axios";
-import { followAC } from "../Redux/users-reducer";
+import { setAvatar } from "../Redux/profile-reducer";
 
 const instance = axios.create({
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
@@ -47,6 +47,16 @@ export const profileAPI = {
 
 	async getUserStatus(userId) {
 		return instance.get(`/profile/status/${userId}`).then(res => res.data).catch(e => e.message);
-	}
+	},
 
+	async setAvatar(file) {
+		const formData = new FormData();
+		formData.append('image', file);
+
+		return instance.put('/profile/photo', formData, {
+			headers: {
+				'Content-type':'multiport/form-data',
+			}
+		}).then(res => res.data);
+	} 
 }

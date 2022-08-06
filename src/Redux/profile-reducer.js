@@ -8,6 +8,7 @@ const SET_USER_PROFILE_INFO = 'set-user-profile-info';
 const SET_MY_PROFILE_INFO = 'set-my-profile-info';
 const SET_MY_STATUS = 'set-my-status';
 const SET_CURR_USER_STATUS = 'set-curr-user-status';
+const SET_AVATAR = 'set-avatar';
 
 const initialState = {
 	postsData: [
@@ -87,6 +88,17 @@ const profileReducer = (state = initialState, action) => {
 					aboutMe: action.newStatus,
 				}
 			}
+		case SET_AVATAR: 
+			return {
+				...state,
+				myProfileInfo: {
+					...state.myProfileInfo,
+					photos: {
+						...state.myProfileInfo.photos,
+						small: action.avatar,
+					}
+				}
+			}
 		default: {
 			return state
 		}
@@ -116,6 +128,12 @@ export const setMyStatus = (newStatus) => {
 	return {
 		type: SET_MY_STATUS,
 		newStatus,
+	}
+}
+export const setAvatarSuccessful = (avatar) => {
+	return {
+		type: SET_AVATAR,
+		avatar,
 	}
 }
 export const setCurrUserStatus = (newStatus) => {
@@ -157,10 +175,21 @@ export const updateMyStatus = (newStatus) => async (dispatch) => {
 	}
 }
 
-
 export const setUserStatus = (userId) => async (dispatch) => {
 	const data = await profileAPI.getUserStatus(userId);
 	dispatch(setCurrUserStatus(data.status));
+}
+
+export const setAvatar = (file) => async (dispatch) => {
+	try {
+		const res = await profileAPI.setAvatar(file);
+		if(res.resultCode === 0) {
+			dispatch(setAvatarSuccessful(res.data.photos.small));
+		}
+		dispatch(setNetworkError(false));
+	} catch(e) {
+		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true));
+	}
 }
 
 export default profileReducer;
