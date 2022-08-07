@@ -63,6 +63,7 @@ const mapStateToProps = (state) => {
 		myProfileId: state.auth.data.id,
 		isFetching: state.usersPage.isFetching,
 		formError: state.profilePage.myProfileFormError,
+		captchaUrl: state.auth.captchaUrl,
 		isAuthed: getIsAuthed(state),
 	}
 }

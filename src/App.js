@@ -72,11 +72,11 @@ const AppContainer = compose(
 )(App);
 
 const SamuraiApp = (props) => (
-  <HashRouter>
+  <BrowserRouter>
     <Provider store={props.store}>
       <AppContainer {...props}/>
     </Provider>
-  </HashRouter> 
+  </BrowserRouter> 
 );
 
 export default SamuraiApp;

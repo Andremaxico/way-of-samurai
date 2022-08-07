@@ -1,9 +1,10 @@
-import { authAPI, profileAPI, usersAPI } from "../api/api";
+import { authAPI, profileAPI, usersAPI, securityAPI } from "../api/api";
 import { setNetworkError } from "./app-reducer";
 import { setMyProfileInfo, setMyStatus } from "./profile-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
 
 const SET_AUTH_DATA = 'auth/set-auth-data';
+const GET_CAPTCHA_URL_SUCCESSFUL = 'auth/get-capthca-url-successful';
 
 const initialState = {
 	data: {
@@ -12,6 +13,7 @@ const initialState = {
 		id: null,
 		isAuthed: false,
 	},
+	captchaUrl: null,
 }
 
 const authReducer = (state = initialState, action) => {
@@ -21,7 +23,11 @@ const authReducer = (state = initialState, action) => {
 				...state,
 				data: {...action.data, isAuthed: action.isAuthed},
 			}
-	
+		case GET_CAPTCHA_URL_SUCCESSFUL: 
+			return {
+				...state,
+				captchaUrl: action.captcha
+			}
 		default:
 			return state
 	}
@@ -33,6 +39,13 @@ export const setAuthDataAC = (data, isAuthed) => {
 		type: SET_AUTH_DATA,
 		data,
 		isAuthed,
+	}
+}
+
+export const getCaptchaUrlSuccessful = (captcha) => {
+	return {
+		type: GET_CAPTCHA_URL_SUCCESSFUL,
+		captcha,
 	}
 }
 
@@ -58,20 +71,33 @@ export const setAuthData = () => async (dispatch) => {
 		const status = await profileAPI.getUserStatus(data.userId);
 		if(status && status.length > 0) dispatch(setMyStatus(status));
 		dispatch(toggleIsFetchingAC(false));
+
+		//set captcha
+		dispatch(getCaptchaUrl());
 	} catch(e) {
 		console.log(e.code);
 		if	(e.code === "ERR_NETWORK") dispatch(setNetworkError(true))
 	}
 }
 
+export const getCaptchaUrl = () => async (dispatch) => {
+	const captcha = await securityAPI.getCaptchaUrl();
+	if(captcha) dispatch(getCaptchaUrlSuccessful(captcha.url));
+}
+
 export const login = (data) => async (dispatch) => {
 	try {
 		const res = await authAPI.login(data);
 		dispatch(setNetworkError(false));
+		dispatch(getCaptchaUrlSuccessful(null));
 		
 		if(res.resultCode === 0) {
 			dispatch( setAuthData() );
-		} else if(res.resultCode === 1) {
+		} else {
+			if(res.resultCode === 10) {
+				dispatch(getCaptchaUrl());
+			}
+			dispatch(getCaptchaUrl)
 			return res.messages[0];
 		}
 	} catch(e) {

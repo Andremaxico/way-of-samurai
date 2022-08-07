@@ -1,7 +1,10 @@
 import { profileAPI, usersAPI } from "../api/api";
 import { setNetworkError } from "./app-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
-import { setAuthData } from './auth-reducer';
+import { 
+	getCaptchaUrl, getCaptchaUrlSuccessful, 
+	setAuthData 
+} from './auth-reducer';
 
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
@@ -211,7 +214,10 @@ export const updateMyProfileData = (data) => async (dispatch) => {
 		if(res.resultCode === 0) {
 			await profileAPI.updateMyStatus(data.aboutMe);
 			dispatch(setAuthData());
+			dispatch(getCaptchaUrlSuccessful(null));
 		} else {
+			if(res.resultCode === 10) dispatch(getCaptchaUrl());
+			dispatch(getCaptchaUrlSuccessful(null));
 			dispatch(setFormError(res.messages[0]));
 		}
 		dispatch(setNetworkError(false));

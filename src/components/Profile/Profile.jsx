@@ -13,9 +13,7 @@ const Profile = (props) => {
 	return (
 		<div className={classes.profile}>
 			<ProfileBody 
-				profileInfo={props.currUserProfileInfo}  setAvatar={props.setAvatar}
-				updateMyStatus={props.updateMyStatus} logout={props.logout}
-				updateMyProfileData={props.updateMyProfileData} formError={props.formError}
+				{...props}
 			/>
 			<h2 className={classes.title}>My posts</h2>
 			<NewPost />

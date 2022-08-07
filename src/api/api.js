@@ -64,3 +64,9 @@ export const profileAPI = {
 		return instance.put('/profile', {...data}).then(res => res.data);
 	}
 }
+
+export const securityAPI = {
+	async getCaptchaUrl() {
+		return instance.get('/security/get-captcha-url').then(res => res.data);
+	}
+}
