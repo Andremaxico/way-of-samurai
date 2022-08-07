@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import classes from './ProfileBody.module.scss';
 import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 import defaultCover from '../../../assests/images/default-cover.png';
-import ProfileStatus from './ProfileStatus';
 import Preloader from '../../../UI/Preloader';
+import ProfileInfo from './ProfileInfo';
+import ProfileInfoForm from './ProfileInfoForm';
 
-function ProfileBody({ logout, setAvatar, profileInfo, updateMyStatus }) {
+function ProfileBody({ logout, setAvatar, profileInfo, updateMyStatus, formError, updateMyProfileData }) {
 	const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
+	const [isEdit, setIsEdit] = useState(false)
 
-	const {fullName, userId: id, photos, aboutMe, isMyProfile} = profileInfo;
+	const {userId: id, photos, isMyProfile} = profileInfo;
+
 	const {small: coverImg, large: avatarImg} = photos;
 
-	//AndreMaxico => Andre Maxico
-	const name = fullName.split('').map(symbol => {
-		return symbol.toUpperCase() === symbol ? ` ${symbol}` : symbol
-	});
-
-
+	//change avatar
 	const avatarFileChange = async (e) => {
 		if(e.target.files.length > 0) {
 			setIsAvatarUpdating(true);
@@ -24,6 +22,10 @@ function ProfileBody({ logout, setAvatar, profileInfo, updateMyStatus }) {
 			setIsAvatarUpdating(false);
 		}
 	}
+
+	//isEdit
+	const activateEdit = () => setIsEdit(true);
+	const deactivateEdit = () => setIsEdit(false);
 
 	if(isAvatarUpdating) return <Preloader />
 
@@ -42,13 +44,14 @@ function ProfileBody({ logout, setAvatar, profileInfo, updateMyStatus }) {
 						</div>
 					}
 				</div>
-				<div className={classes.description}>
-					<p className={classes.login}>{name}</p>
-					<ProfileStatus 
-						updateMyStatus={updateMyStatus} 
-						isMyProfile={isMyProfile} status={aboutMe}
+				{isEdit ?
+					<ProfileInfoForm 
+						deactivateEdit={deactivateEdit} 
+						profileInfo={profileInfo} formError={formError}
+						updateMyStatus={updateMyStatus} updateMyProfileData={updateMyProfileData}
 					/>
-				</div>
+				:	<ProfileInfo activateEdit={activateEdit} profileInfo={profileInfo} updateMyStatus={updateMyStatus}/>
+				}
 				{ isMyProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
 			</div>
 		</div>

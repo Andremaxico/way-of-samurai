@@ -4,7 +4,7 @@ import Profile from './Profile';
 import Preloader from '../../UI/Preloader';
 //reducers
 import { toggleIsFetchingAC } from '../../Redux/users-reducer';
-import { setUserById, updateMyStatus, setAvatar } from '../../Redux/profile-reducer';
+import { setUserById, updateMyStatus, setAvatar, updateMyProfileData } from '../../Redux/profile-reducer';
 import { logout } from '../../Redux/auth-reducer';
 //selectors
 import { getIsAuthed } from '../../Redux/auth-selectors';
@@ -16,6 +16,7 @@ import withNetworkRedirect from '../../hocs/withNetworkRedirect';
 
 const ProfileContainer = (props) => {
 	const [userId, setUserId] = useState(null);
+	
 	//if we render other user profile, we set const userId
 	useEffect(() => {
 		if(props.router.params.userId) {
@@ -46,9 +47,9 @@ const ProfileContainer = (props) => {
 				? props.currUserProfileInfo
 				: props.myProfileInfo
 				}
-				updateMyStatus={props.updateMyStatus}
-				logout={props.logout}
-				setAvatar={props.setAvatar}
+				updateMyStatus={props.updateMyStatus} logout={props.logout}
+				formError={props.formError}
+				setAvatar={props.setAvatar} updateMyProfileData={props.updateMyProfileData}
 		/>
 	)
 }
@@ -61,6 +62,7 @@ const mapStateToProps = (state) => {
 		myProfileInfo: state.profilePage.myProfileInfo,
 		myProfileId: state.auth.data.id,
 		isFetching: state.usersPage.isFetching,
+		formError: state.profilePage.myProfileFormError,
 		isAuthed: getIsAuthed(state),
 	}
 }
@@ -70,6 +72,7 @@ const methods = {
 	updateMyStatus,
 	logout,
 	setAvatar,
+	updateMyProfileData,
 }
 
 export default compose(

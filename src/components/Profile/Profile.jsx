@@ -15,6 +15,7 @@ const Profile = (props) => {
 			<ProfileBody 
 				profileInfo={props.currUserProfileInfo}  setAvatar={props.setAvatar}
 				updateMyStatus={props.updateMyStatus} logout={props.logout}
+				updateMyProfileData={props.updateMyProfileData} formError={props.formError}
 			/>
 			<h2 className={classes.title}>My posts</h2>
 			<NewPost />

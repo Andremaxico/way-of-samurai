@@ -58,5 +58,9 @@ export const profileAPI = {
 				'Content-type':'multiport/form-data',
 			}
 		}).then(res => res.data);
-	} 
+	},
+
+	async setMyProfileData(data) {
+		return instance.put('/profile', {...data}).then(res => res.data);
+	}
 }

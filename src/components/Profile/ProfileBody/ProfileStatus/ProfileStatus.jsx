@@ -4,7 +4,7 @@ import classes from '../ProfileBody.module.scss';
 const  ProfileStatus = (props) => {
 
 	const [statusText, setStatusText] = useState(props.status);
-	const [isEdit, setIsEdit] = useState(false);
+	const [isEdit, setIsEdit] = useState(props.isEdit);
 
 	//if props.status changed
 	useEffect(() => {

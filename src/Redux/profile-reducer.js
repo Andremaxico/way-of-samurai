@@ -1,6 +1,7 @@
 import { profileAPI, usersAPI } from "../api/api";
 import { setNetworkError } from "./app-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
+import { setAuthData } from './auth-reducer';
 
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
@@ -9,6 +10,7 @@ const SET_MY_PROFILE_INFO = 'set-my-profile-info';
 const SET_MY_STATUS = 'set-my-status';
 const SET_CURR_USER_STATUS = 'set-curr-user-status';
 const SET_AVATAR = 'set-avatar';
+const SET_FORM_ERROR = 'profile/SET_FORM_ERROR';
 
 const initialState = {
 	postsData: [
@@ -40,6 +42,7 @@ const initialState = {
 	],
 	myProfileInfo: null,
 	currUserProfileInfo: null,
+	myProfileFormError: null,
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -70,7 +73,7 @@ const profileReducer = (state = initialState, action) => {
 		case SET_MY_PROFILE_INFO: 
 			return {
 				...state, 
-				myProfileInfo: {...action.myProfileInfo, isMyProfile: true},
+				myProfileInfo: {...action.myProfileInfo,  isMyProfile: true},
 			}
 		case SET_MY_STATUS: 
 			return {
@@ -94,10 +97,14 @@ const profileReducer = (state = initialState, action) => {
 				myProfileInfo: {
 					...state.myProfileInfo,
 					photos: {
-						...state.myProfileInfo.photos,
-						small: action.avatar,
+						...action.photos
 					}
 				}
+			}
+		case SET_FORM_ERROR:
+			return {
+				...state,
+				myProfileFormError: action.message,
 			}
 		default: {
 			return state
@@ -130,16 +137,22 @@ export const setMyStatus = (newStatus) => {
 		newStatus,
 	}
 }
-export const setAvatarSuccessful = (avatar) => {
+export const setAvatarSuccessful = (photos) => {
 	return {
 		type: SET_AVATAR,
-		avatar,
+		photos,
 	}
 }
 export const setCurrUserStatus = (newStatus) => {
 	return {
 		type: SET_CURR_USER_STATUS,
 		newStatus,
+	}
+}
+export const setFormError = (message) => {
+	return {
+		type: SET_FORM_ERROR,
+		message,
 	}
 }
 
@@ -184,7 +197,7 @@ export const setAvatar = (file) => async (dispatch) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
 		if(res.resultCode === 0) {
-			dispatch(setAvatarSuccessful(res.data.photos.small));
+			dispatch(setAvatarSuccessful(res.data.photos));
 		}
 		dispatch(setNetworkError(false));
 	} catch(e) {
@@ -192,4 +205,18 @@ export const setAvatar = (file) => async (dispatch) => {
 	}
 }
 
+export const updateMyProfileData = (data) => async (dispatch) => {
+	try {
+		const res = await profileAPI.setMyProfileData(data);
+		if(res.resultCode === 0) {
+			await profileAPI.updateMyStatus(data.aboutMe);
+			dispatch(setAuthData());
+		} else {
+			dispatch(setFormError(res.messages[0]));
+		}
+		dispatch(setNetworkError(false));
+	} catch(e) {
+		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true));
+	}
+}
 export default profileReducer;

@@ -41,7 +41,7 @@
 				@include text;
 				text-align: center;
 				color: #fff;
-				
+
 				opacity: 0;
 				background-color: rgba($color: #000000, $alpha: 0.5);
 				transform: translate(-50%, -50%);	
@@ -49,22 +49,62 @@
 			}
 		}
 	}
-	.description {
+	.ProfileInfo {
 		margin-right: 16px;
-	}
-	.login {
-		@include bigText;
-		margin-bottom: 8px;
-	}
-	.statusText {
-		@include text;
-		.defaultStatus {
-			color: $gray;
+		flex: 1 1 auto;
+		.login {
+			@include bigText;
+			margin-bottom: 8px;
+		}
+		p {
+			margin-bottom: 12px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+		.statusText {
+			@include text;
+			.defaultStatus {
+				color: $gray;
+			}
+		}
+		.profileStatus {
+			margin-bottom: 8px;
+		}
+		.statusInput {
+			@include input;
+			resize: none;
+		}
+		.editBtn {
+			@include formBtn;
 		}
 	}
-	.statusInput {
-		@include input;
-		resize: none;
+	.ProfileInfoForm {
+		.input {
+			margin-bottom: 16px;
+		}
+		.lookingForAJob, .lookingForAJobDescription {
+			b {
+				margin-bottom: 8px;
+			}
+		}
+
+		.submitBtn {
+			@include formBtn;
+		}
+		.contacts {
+			.contactsTitle {
+				@include bigText;
+				font-weight: 500;
+				margin-bottom: 20px;
+			}
+			.contact {
+				padding-left: 20px;
+				b {
+					margin-bottom: 16px;
+				}
+			}
+		}
 	}
 	.logoutBtn {
 		@include formBtn;
