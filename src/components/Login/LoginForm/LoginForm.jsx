@@ -17,8 +17,8 @@ const LoginForm = (props) => {
 
 	const onSubmit = async data => {
 		//login return error or null
-		console.log(data);
 		const err = await props.login({...data});
+		console.log(err);
 		if(err) {
 			setError('summary', {
 				type: 'custom',

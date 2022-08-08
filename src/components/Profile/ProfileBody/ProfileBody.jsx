@@ -6,10 +6,9 @@ import Preloader from '../../../UI/Preloader';
 import ProfileInfo from './ProfileInfo';
 import ProfileInfoForm from './ProfileInfoForm';
 
-function ProfileBody({ logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, formError, captchaUrl, updateMyProfileData }) {
+function ProfileBody({ logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, formError, updateMyProfileData}) {
 	const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
-	const [isEdit, setIsEdit] = useState(false)
-	console.log(profileInfo);
+	const [isEdit, setIsEdit] = useState(false);
 	const {userId: id, photos, isMyProfile} = profileInfo;
 
 	const {small: coverImg, large: avatarImg} = photos;
@@ -46,7 +45,7 @@ function ProfileBody({ logout, setAvatar, currUserProfileInfo: profileInfo, upda
 				</div>
 				{isEdit ?
 					<ProfileInfoForm 
-						deactivateEdit={deactivateEdit} 
+						deactivateEdit={deactivateEdit} formError={formError}
 						profileInfo={profileInfo} formError={formError}
 						updateMyStatus={updateMyStatus} updateMyProfileData={updateMyProfileData}
 					/>

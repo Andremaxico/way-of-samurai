@@ -181,10 +181,13 @@ export const setUserById = (id) => async (dispatch) => {
 export const updateMyStatus = (newStatus) => async (dispatch) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
-
+		console.log(resolve.resultCode);
 		if(resolve.resultCode === 0) {
 			dispatch(setMyStatus(newStatus));
 			dispatch(setNetworkError(false));
+		} else {
+			console.log(resolve.messages[0]);
+			dispatch(setFormError(resolve.messages[0]));
 		}
 	} catch(e) {
 		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true))
@@ -211,14 +214,11 @@ export const setAvatar = (file) => async (dispatch) => {
 export const updateMyProfileData = (data) => async (dispatch) => {
 	try {
 		const res = await profileAPI.setMyProfileData(data);
+
 		if(res.resultCode === 0) {
-			await profileAPI.updateMyStatus(data.aboutMe);
+			await dispatch(updateMyStatus(data.aboutMe));
 			dispatch(setAuthData());
 			dispatch(getCaptchaUrlSuccessful(null));
-		} else {
-			if(res.resultCode === 10) dispatch(getCaptchaUrl());
-			dispatch(getCaptchaUrlSuccessful(null));
-			dispatch(setFormError(res.messages[0]));
 		}
 		dispatch(setNetworkError(false));
 	} catch(e) {

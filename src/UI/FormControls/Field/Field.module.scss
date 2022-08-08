@@ -16,13 +16,14 @@
 	}
 	.errorMessage {
 		position: absolute;
-		left: 0;
-		bottom: -20px;
+		right: -16px;
+		top: 50%;
 		white-space: nowrap;
 		@include smallText;
 		color: rgba($color: $mainCol, $alpha: 0.7);
 		font-weight: 500;
 		font-style: italic;
 		background-color: $grayBg;
+		transform: translate(100%, -50%);
 	}
 }

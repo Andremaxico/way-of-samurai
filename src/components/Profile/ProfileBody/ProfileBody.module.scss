@@ -64,6 +64,7 @@
 		}
 		.statusText {
 			@include text;
+			max-width: 600px;
 			.defaultStatus {
 				color: $gray;
 			}
@@ -80,8 +81,16 @@
 		}
 	}
 	.ProfileInfoForm {
+		.errorMessage {
+			margin-bottom: 16px;
+			@include text;
+			color: $mainCol;
+			font-weight: 500;
+		}
 		.input {
 			margin-bottom: 16px;
+			max-width: 300px;
+			width: 100%;
 		}
 		.lookingForAJob, .lookingForAJobDescription {
 			b {

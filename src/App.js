@@ -26,8 +26,16 @@ const Messages = React.lazy(() => import('./components/Messages'));
 
 
 const App = (props) => {
+
+  const handlePromiseReject = (PromiseRejectionEvent) => {
+    console.log(PromiseRejectionEvent);
+  }
+
   useEffect(() => {
     props.initApp();
+    window.addEventListener('unhandledrejection', handlePromiseReject);
+
+    return window.removeEventListener('unhandledrejection', handlePromiseReject);
   }, []);
 
   const ProfileSuspensed = withSuspense(ProfileContainer);
