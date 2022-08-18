@@ -1,6 +1,6 @@
 import { setAuthData } from './auth-reducer';
 
-const INIT_SUCCESS = 'init-success';
+const INIT_SUCCESS = 'INIT_SUCCESS';
 const SET_NETWORK_ERROR = 'SET_NETWORK_ERROR';
 
 const initialState = {
@@ -26,8 +26,9 @@ const appReducer = (state = initialState, action) => {
 	}
 }
 
+
 export const setInitSuccess = () => {
-	return  {type: INIT_SUCCESS};
+	return   {type: INIT_SUCCESS};
 }
 
 export const initApp = () => async (dispatch) => {

@@ -181,12 +181,11 @@ export const setUserById = (id) => async (dispatch) => {
 export const updateMyStatus = (newStatus) => async (dispatch) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
-		console.log(resolve.resultCode);
 		if(resolve.resultCode === 0) {
 			dispatch(setMyStatus(newStatus));
 			dispatch(setNetworkError(false));
+			dispatch(setFormError(null));
 		} else {
-			console.log(resolve.messages[0]);
 			dispatch(setFormError(resolve.messages[0]));
 		}
 	} catch(e) {

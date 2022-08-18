@@ -7,7 +7,7 @@ import { toggleIsFetchingAC } from '../../Redux/users-reducer';
 import { setUserById, updateMyStatus, setAvatar, updateMyProfileData } from '../../Redux/profile-reducer';
 import { logout } from '../../Redux/auth-reducer';
 //selectors
-import { getIsAuthed } from '../../Redux/auth-selectors';
+import { getIsAuthed } from '../../Redux/auth-selectors.tsx';
 //hocs
 import withRouter from '../../hocs/withRouter';
 import { compose } from 'redux';
