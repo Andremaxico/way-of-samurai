@@ -1,4 +1,19 @@
-const initialState = {
+type FriendCardType = {
+	avatarUrl: string | null,
+	name: string | null,
+	id: number,
+}
+type LinkType = {
+	path: string,
+	text: string,
+}
+
+export type SidebarStateType = {
+	friendsData: Array<FriendCardType>,
+	linksData: Array<LinkType>,
+}
+
+const initialState: SidebarStateType = {
 	friendsData: [
 		{
 			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
@@ -45,7 +60,7 @@ const initialState = {
 	]
 };
 
-const sidebarReducer = (state = initialState, action) => {
+const sidebarReducer = (state = initialState, action: any) => {
 	return state;
 }
 

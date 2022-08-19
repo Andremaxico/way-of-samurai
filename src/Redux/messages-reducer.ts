@@ -1,7 +1,26 @@
+//=================ACTION TYPES CONST=================
 const ADD_MESSAGE = 'ADD-MESSAGE';
 const DELETE_MESSAGE = 'DELETE_MESSAGE';
 
-const initalState = {
+//================STATE, TYPES================
+type UserInfoType = {
+	avatarUrl: string,
+	name: string,
+	id: number
+}
+type MessageDataType = {
+	text: string,
+	isMy: boolean,
+	id: number,
+}
+
+export type MessagesStateType = {
+	usersInfo: Array<UserInfoType>,
+	messagesData: Array<MessageDataType>,
+	newMessageValue: string,
+}
+
+const initalState: MessagesStateType = {
 	usersInfo: [
 		{
 			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
@@ -51,15 +70,16 @@ const initalState = {
 			id: 5,
 		},
 	],
+	newMessageValue: '',
 }
 
-const messagesReducer = (state = initalState, action) => {
+const messagesReducer = (state = initalState, action: any) => {
 	//add post
 	switch (action.type) {
 		case ADD_MESSAGE:
 			const messageText = action.newMessageValue;
 			const id = state.messagesData.length+1;
-			const newMessageData = {
+			const newMessageData: MessageDataType = {
 				text: messageText,
 				isMy: true,
 				id: id,
@@ -80,15 +100,27 @@ const messagesReducer = (state = initalState, action) => {
 	}
 }
 
-//Action creators
-export const addMessage = (newMessageValue) => {
+//==============ACTION CREATORS===========
+//add message to state
+type AddMessageActionType = {
+	type: typeof ADD_MESSAGE,
+	newMessageValue: string,
+}
+
+export const addMessage = (newMessageValue: string): AddMessageActionType => {
 	return {
 		type: ADD_MESSAGE,
 		newMessageValue,
 	}
 }
 
-export const deleteMessage = (messageId) => {
+//remove message from state
+type DeleteMessageType = {
+	type: typeof DELETE_MESSAGE,
+	messageId: number,
+}
+
+export const deleteMessage = (messageId: number): DeleteMessageType => {
 	return {
 		type: DELETE_MESSAGE,
 		messageId,

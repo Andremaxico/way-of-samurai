@@ -3,13 +3,18 @@ import { setAuthData } from './auth-reducer';
 const INIT_SUCCESS = 'INIT_SUCCESS';
 const SET_NETWORK_ERROR = 'SET_NETWORK_ERROR';
 
-const initialState = {
+export type AppStateType = {
+	isInitSuccess: boolean,
+	isNetworkError: boolean,
+}
+
+const initialState: AppStateType = {
 	isInitSuccess: false,
 	isNetworkError: false,
 }
 
 
-const appReducer = (state = initialState, action) => {
+const appReducer = (state = initialState, action: any): AppStateType => {
 	switch (action.type) {
 		case INIT_SUCCESS:
 			return {
@@ -26,17 +31,25 @@ const appReducer = (state = initialState, action) => {
 	}
 }
 
+type SetInitSuccessType = {
+	type: typeof INIT_SUCCESS,
+}
 
-export const setInitSuccess = () => {
+export const setInitSuccess = (): SetInitSuccessType => {
 	return   {type: INIT_SUCCESS};
 }
 
-export const initApp = () => async (dispatch) => {
+export const initApp = () => async (dispatch: any) => {
 	const promise = await dispatch(setAuthData());
 	dispatch( setInitSuccess() );
 }
 
-export const setNetworkError = (isError) => {
+type SetNetworkErrorActionType = {
+	type: typeof SET_NETWORK_ERROR,
+	isError: boolean,
+}
+
+export const setNetworkError = (isError: boolean): SetNetworkErrorActionType => {
 	return {
 		type: SET_NETWORK_ERROR,
 		isError,

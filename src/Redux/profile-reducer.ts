@@ -5,7 +5,9 @@ import {
 	getCaptchaUrl, getCaptchaUrlSuccessful, 
 	setAuthData 
 } from './auth-reducer';
+import { PostDataType, ProfileInfoType } from "../types/types";
 
+//==================ACTIONS CONST==============
 const ADD_POST = 'ADD-POST';
 const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
 const SET_USER_PROFILE_INFO = 'set-user-profile-info';
@@ -15,45 +17,23 @@ const SET_CURR_USER_STATUS = 'set-curr-user-status';
 const SET_AVATAR = 'set-avatar';
 const SET_FORM_ERROR = 'profile/SET_FORM_ERROR';
 
+//====================STATE, REDUCER===============
+
 const initialState = {
-	postsData: [
-		{
-			text: 'Hi',
-			likesCount: 0,
-			id: 5,
-		},
-		{
-			text: 'How are you?',
-			likesCount: 0,
-			id: 4,
-		},
-		{
-			text: 'Where are you?',
-			likesCount: 5,
-			id: 3,
-		},
-		{
-			text: 'Want to home?...',
-			likesCount: 8,
-			id: 2,
-		},
-		{
-			text: 'Me too...:(',
-			likesCount: 6,
-			id: 1,
-		},
-	],
-	myProfileInfo: null,
-	currUserProfileInfo: null,
-	myProfileFormError: null,
+	postsData: [{}] as Array<PostDataType>,
+	myProfileInfo: {} as ProfileInfoType,
+	currUserProfileInfo: {} as ProfileInfoType,
+	myProfileFormError: null as string | null
 }
 
-const profileReducer = (state = initialState, action) => {
+export type ProfileStateType = typeof initialState;
+
+const profileReducer = (state = initialState, action: any): ProfileStateType => {
 	switch (action.type) {
 		case ADD_POST:
 			const id = state.postsData.length+1;
 			const postText = action.newPostValue;
-			const newPostData = {
+			const newPostData: PostDataType = {
 				text: postText,
 				likesCount: 0,
 				id: id,
@@ -61,12 +41,6 @@ const profileReducer = (state = initialState, action) => {
 			return {
 				...state,
 				postsData: [newPostData, ...state.postsData],
-				newPostText: '',
-			}
-		case UPDATE_NEW_POST_VALUE:
-			return {
-				...state,
-				newPostText: action.value,
 			}
 		case SET_USER_PROFILE_INFO:
 			return {
@@ -115,52 +89,96 @@ const profileReducer = (state = initialState, action) => {
 	}
 }
 
-//Action creators
-export const addPost = (newPostValue) => {
+//===============ACTION CREATORS===============
+//add post to state
+type AddPostActionType = {
+	type: typeof ADD_POST,
+	newPostValue: string,
+}
+export const addPost = (newPostValue: string): AddPostActionType => {
 	return {
 		type: ADD_POST,
 		newPostValue,
 	}
 }
-export const setUserProfileInfo = (userProfileInfo) => {
+
+//set another profile info
+type SetUserProfileInfoActionType = {
+	type: typeof SET_USER_PROFILE_INFO,
+	userProfileInfo: any,
+}
+export const setUserProfileInfo = (userProfileInfo: any): SetUserProfileInfoActionType => {
 	return {
 		type: SET_USER_PROFILE_INFO,
 		userProfileInfo,
 	}
 }
-export const setMyProfileInfo = (myProfileInfo) => {
+
+//set my profile info
+type SetMyProfileInfoActionType = {
+	type: typeof SET_MY_PROFILE_INFO,
+	myProfileInfo: any,
+}
+export const setMyProfileInfo = (myProfileInfo: any): SetMyProfileInfoActionType => {
 	return {
 		type: SET_MY_PROFILE_INFO,
 		myProfileInfo,
 	}
 }
-export const setMyStatus = (newStatus) => {
+
+//set my status
+type SetMyStatusActionType = {
+	type: typeof SET_MY_STATUS,
+	newStatus: string,
+}
+export const setMyStatus = (newStatus: string): SetMyStatusActionType => {
 	return {
 		type: SET_MY_STATUS,
 		newStatus,
 	}
 }
-export const setAvatarSuccessful = (photos) => {
+
+//set avatar success
+type SetAvatarSuccessfulActionType = {
+	type: typeof SET_AVATAR,
+	photos: any,
+}
+
+export const setAvatarSuccessful = (photos: any): SetAvatarSuccessfulActionType => {
 	return {
 		type: SET_AVATAR,
 		photos,
 	}
 }
-export const setCurrUserStatus = (newStatus) => {
+
+//set current(another) user status
+type SetCurrUserStatusActionType = {
+	type: typeof SET_CURR_USER_STATUS,
+	newStatus: string,
+}
+
+export const setCurrUserStatus = (newStatus: string): SetCurrUserStatusActionType => {
 	return {
 		type: SET_CURR_USER_STATUS,
 		newStatus,
 	}
 }
-export const setFormError = (message) => {
+
+//set form error
+type SetFormErrorActionType = {
+	type: typeof SET_FORM_ERROR,
+	message: string,
+}
+
+export const setFormError = (message: string): SetFormErrorActionType => {
 	return {
 		type: SET_FORM_ERROR,
 		message,
 	}
 }
 
-//thunks creators
-export const setUserById = (id) => async (dispatch) => {
+//===================THUNKS CREATORS====================
+export const setUserById = (id: number) => async (dispatch: any) => {
 	dispatch(toggleIsFetchingAC(true));
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	try {
@@ -178,13 +196,13 @@ export const setUserById = (id) => async (dispatch) => {
 	}
 }
 
-export const updateMyStatus = (newStatus) => async (dispatch) => {
+export const updateMyStatus = (newStatus: string) => async (dispatch: any) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
 		if(resolve.resultCode === 0) {
 			dispatch(setMyStatus(newStatus));
 			dispatch(setNetworkError(false));
-			dispatch(setFormError(null));
+			dispatch(setFormError(''));
 		} else {
 			dispatch(setFormError(resolve.messages[0]));
 		}
@@ -193,12 +211,12 @@ export const updateMyStatus = (newStatus) => async (dispatch) => {
 	}
 }
 
-export const setUserStatus = (userId) => async (dispatch) => {
+export const setUserStatus = (userId: number) => async (dispatch: any) => {
 	const data = await profileAPI.getUserStatus(userId);
 	dispatch(setCurrUserStatus(data.status));
 }
 
-export const setAvatar = (file) => async (dispatch) => {
+export const setAvatar = (file: any) => async (dispatch: any) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
 		if(res.resultCode === 0) {
@@ -210,14 +228,14 @@ export const setAvatar = (file) => async (dispatch) => {
 	}
 }
 
-export const updateMyProfileData = (data) => async (dispatch) => {
+export const updateMyProfileData = (data: any) => async (dispatch: any) => {
 	try {
 		const res = await profileAPI.setMyProfileData(data);
 
 		if(res.resultCode === 0) {
 			await dispatch(updateMyStatus(data.aboutMe));
 			dispatch(setAuthData());
-			dispatch(getCaptchaUrlSuccessful(null));
+			dispatch(getCaptchaUrlSuccessful(''));
 		}
 		dispatch(setNetworkError(false));
 	} catch(e) {

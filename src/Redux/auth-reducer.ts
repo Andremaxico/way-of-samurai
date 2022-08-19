@@ -1,12 +1,28 @@
+import { getIsAuthed } from './auth-selectors';
 import { authAPI, profileAPI, usersAPI, securityAPI } from "../api/api";
 import { setNetworkError } from "./app-reducer";
 import { setMyProfileInfo, setMyStatus } from "./profile-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
 
+//=================ACTION TYPES CONSTS=========================
 const SET_AUTH_DATA = 'auth/set-auth-data';
 const GET_CAPTCHA_URL_SUCCESSFUL = 'auth/get-capthca-url-successful';
 
-const initialState = {
+
+//======================STATE, REDUCER===================
+type AuthDataType = {
+	login: string | null,
+	email: string | null,
+	id: number | null,
+	isAuthed: boolean | null,
+}
+
+export type AuthStateType = {
+	data: AuthDataType,
+	captchaUrl: string | null,
+}
+
+const initialState: AuthStateType = {
 	data: {
 		login: null,
 		email: null,
@@ -16,7 +32,7 @@ const initialState = {
 	captchaUrl: null,
 }
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: any) => {
 	switch (action.type) {
 		case SET_AUTH_DATA:
 			return {
@@ -33,8 +49,16 @@ const authReducer = (state = initialState, action) => {
 	}
 }
 
-//actionCreators
-export const setAuthDataAC = (data, isAuthed) => {
+//==================ACTION CREATORS================
+
+///set auth data
+type SetAuthDataActionType = {
+	type: typeof SET_AUTH_DATA,
+	data: any,
+	isAuthed: boolean,
+}
+
+export const setAuthDataAC = (data: any, isAuthed: boolean): SetAuthDataActionType => {
 	return {
 		type: SET_AUTH_DATA,
 		data,
@@ -42,7 +66,13 @@ export const setAuthDataAC = (data, isAuthed) => {
 	}
 }
 
-export const getCaptchaUrlSuccessful = (captcha) => {
+//get captcha url successful
+type GetCaptchaUrlActionType = {
+	type: typeof GET_CAPTCHA_URL_SUCCESSFUL,
+	captcha: string,
+}
+
+export const getCaptchaUrlSuccessful = (captcha: string): GetCaptchaUrlActionType => {
 	return {
 		type: GET_CAPTCHA_URL_SUCCESSFUL,
 		captcha,
@@ -50,8 +80,9 @@ export const getCaptchaUrlSuccessful = (captcha) => {
 }
 
 
-//thunks
-export const setAuthData = () => async (dispatch) => {
+//================THUNKS=================
+
+export const setAuthData = () => async (dispatch: any) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await authAPI.getAuthInfo();
@@ -64,6 +95,7 @@ export const setAuthData = () => async (dispatch) => {
 		const data = await usersAPI.getUserById(res.data.id);
 		if(data) {
 			//all info
+			console.log(data);
 			dispatch(setMyProfileInfo(data));
 		}
 
@@ -80,16 +112,22 @@ export const setAuthData = () => async (dispatch) => {
 	}
 }
 
-export const getCaptchaUrl = () => async (dispatch) => {
+export const getCaptchaUrl = () => async (dispatch: any) => {
 	const captcha = await securityAPI.getCaptchaUrl();
 	if(captcha) dispatch(getCaptchaUrlSuccessful(captcha.url));
 }
 
-export const login = (data) => async (dispatch) => {
+
+//login
+type LoginDataType = {
+
+}
+
+export const login = (data: any) => async (dispatch: any) => {
+	console.log(data);
 	try {
 		const res = await authAPI.login(data);
 		dispatch(setNetworkError(false));
-		dispatch(getCaptchaUrlSuccessful(null));
 		
 		if(res.resultCode === 0) {
 			dispatch( setAuthData() );
@@ -105,7 +143,7 @@ export const login = (data) => async (dispatch) => {
 	}
 }
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: any) => {
 	const res = await authAPI.logout();
 
 	if(res.resultCode === 0) {
