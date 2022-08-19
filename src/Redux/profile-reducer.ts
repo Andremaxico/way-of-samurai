@@ -6,6 +6,8 @@ import {
 	setAuthData 
 } from './auth-reducer';
 import { PostDataType, ProfileInfoType } from "../types/types";
+import { AppDispatch } from "./redux-store";
+import { AnyAction } from "redux";
 
 //==================ACTIONS CONST==============
 const ADD_POST = 'ADD-POST';
@@ -28,7 +30,7 @@ const initialState = {
 
 export type ProfileStateType = typeof initialState;
 
-const profileReducer = (state = initialState, action: any): ProfileStateType => {
+const profileReducer = (state = initialState, action: AnyAction): ProfileStateType => {
 	switch (action.type) {
 		case ADD_POST:
 			const id = state.postsData.length+1;
@@ -178,7 +180,7 @@ export const setFormError = (message: string): SetFormErrorActionType => {
 }
 
 //===================THUNKS CREATORS====================
-export const setUserById = (id: number) => async (dispatch: any) => {
+export const setUserById = (id: number) => async (dispatch: AppDispatch) => {
 	dispatch(toggleIsFetchingAC(true));
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	try {
@@ -196,7 +198,7 @@ export const setUserById = (id: number) => async (dispatch: any) => {
 	}
 }
 
-export const updateMyStatus = (newStatus: string) => async (dispatch: any) => {
+export const updateMyStatus = (newStatus: string) => async (dispatch: AppDispatch) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
 		if(resolve.resultCode === 0) {
@@ -211,12 +213,12 @@ export const updateMyStatus = (newStatus: string) => async (dispatch: any) => {
 	}
 }
 
-export const setUserStatus = (userId: number) => async (dispatch: any) => {
+export const setUserStatus = (userId: number) => async (dispatch: AppDispatch) => {
 	const data = await profileAPI.getUserStatus(userId);
 	dispatch(setCurrUserStatus(data.status));
 }
 
-export const setAvatar = (file: any) => async (dispatch: any) => {
+export const setAvatar = (file: any) => async (dispatch: AppDispatch) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
 		if(res.resultCode === 0) {
@@ -228,7 +230,7 @@ export const setAvatar = (file: any) => async (dispatch: any) => {
 	}
 }
 
-export const updateMyProfileData = (data: any) => async (dispatch: any) => {
+export const updateMyProfileData = (data: any) => async (dispatch: AppDispatch) => {
 	try {
 		const res = await profileAPI.setMyProfileData(data);
 

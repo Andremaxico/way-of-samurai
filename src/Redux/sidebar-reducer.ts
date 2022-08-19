@@ -1,3 +1,5 @@
+import { AnyAction } from "redux";
+
 type FriendCardType = {
 	avatarUrl: string | null,
 	name: string | null,
@@ -60,7 +62,7 @@ const initialState: SidebarStateType = {
 	]
 };
 
-const sidebarReducer = (state = initialState, action: any) => {
+const sidebarReducer = (state = initialState, action: AnyAction) => {
 	return state;
 }
 

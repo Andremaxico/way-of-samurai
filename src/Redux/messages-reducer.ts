@@ -1,3 +1,5 @@
+import { AnyAction } from "redux";
+
 //=================ACTION TYPES CONST=================
 const ADD_MESSAGE = 'ADD-MESSAGE';
 const DELETE_MESSAGE = 'DELETE_MESSAGE';
@@ -73,7 +75,7 @@ const initalState: MessagesStateType = {
 	newMessageValue: '',
 }
 
-const messagesReducer = (state = initalState, action: any) => {
+const messagesReducer = (state = initalState, action: AnyAction) => {
 	//add post
 	switch (action.type) {
 		case ADD_MESSAGE:

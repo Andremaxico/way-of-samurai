@@ -3,6 +3,8 @@ import { authAPI, profileAPI, usersAPI, securityAPI } from "../api/api";
 import { setNetworkError } from "./app-reducer";
 import { setMyProfileInfo, setMyStatus } from "./profile-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
+import { AppDispatch } from './redux-store';
+import { AnyAction } from 'redux';
 
 //=================ACTION TYPES CONSTS=========================
 const SET_AUTH_DATA = 'auth/set-auth-data';
@@ -32,7 +34,7 @@ const initialState: AuthStateType = {
 	captchaUrl: null,
 }
 
-const authReducer = (state = initialState, action: any) => {
+const authReducer = (state = initialState, action: AnyAction) => {
 	switch (action.type) {
 		case SET_AUTH_DATA:
 			return {
@@ -82,7 +84,7 @@ export const getCaptchaUrlSuccessful = (captcha: string): GetCaptchaUrlActionTyp
 
 //================THUNKS=================
 
-export const setAuthData = () => async (dispatch: any) => {
+export const setAuthData = () => async (dispatch: AppDispatch) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await authAPI.getAuthInfo();
@@ -112,7 +114,7 @@ export const setAuthData = () => async (dispatch: any) => {
 	}
 }
 
-export const getCaptchaUrl = () => async (dispatch: any) => {
+export const getCaptchaUrl = () => async (dispatch: AppDispatch) => {
 	const captcha = await securityAPI.getCaptchaUrl();
 	if(captcha) dispatch(getCaptchaUrlSuccessful(captcha.url));
 }
@@ -123,7 +125,7 @@ type LoginDataType = {
 
 }
 
-export const login = (data: any) => async (dispatch: any) => {
+export const login = (data: any) => async (dispatch: AppDispatch) => {
 	console.log(data);
 	try {
 		const res = await authAPI.login(data);
@@ -143,7 +145,7 @@ export const login = (data: any) => async (dispatch: any) => {
 	}
 }
 
-export const logout = () => async (dispatch: any) => {
+export const logout = () => async (dispatch: AppDispatch) => {
 	const res = await authAPI.logout();
 
 	if(res.resultCode === 0) {

@@ -2,6 +2,8 @@ import { PhotosType, UserCardType } from './../types/types';
 import { usersAPI } from "../api/api";
 import { changeArrayObjProps } from '../utils/helpers/objHelper';
 import { setNetworkError } from "./app-reducer";
+import { AppDispatch } from './redux-store';
+import { AnyAction } from 'redux';
 
 //=================ACTIONS VARIABLES=================
 
@@ -45,7 +47,7 @@ const followUnfollowFlow = async (apiMethod: any, actionCreator: any, dispatch: 
 }
 
 //reducer
-const usersReducer = (state = initialState, action: any): UsersStateType  => {
+const usersReducer = (state = initialState, action: AnyAction): UsersStateType  => {
 	switch (action.type) {
 		case FOLLOW:
 			return {
@@ -171,7 +173,7 @@ export const toggleFollowingInProgress = (isInProgress: boolean, userId: number)
 })
 
 //========================THUNKS============================
-export const getUsers = (currentPage: number, pagesSize: number) => async (dispatch: any) => {
+export const getUsers = (currentPage: number, pagesSize: number) => async (dispatch: AppDispatch) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await usersAPI.getUsersPage(currentPage, pagesSize);
@@ -183,10 +185,10 @@ export const getUsers = (currentPage: number, pagesSize: number) => async (dispa
 		if(e.code === "ERR_NETWORK") dispatch(setNetworkError(true));
 	}
 }
-export const follow = (userId: number) => async (dispatch: any) => {
+export const follow = (userId: number) => async (dispatch: AppDispatch) => {
 	followUnfollowFlow(usersAPI.follow.bind(usersAPI), followSuccess(userId), dispatch, userId);
 }
-export const unfollow = (userId: number) => async (dispatch: any) => {
+export const unfollow = (userId: number) => async (dispatch: AppDispatch) => {
 	followUnfollowFlow(usersAPI.unfollow, unfollowSuccess(userId), dispatch, userId);
 }
 

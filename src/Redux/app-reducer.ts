@@ -1,4 +1,6 @@
+import { AnyAction } from 'redux';
 import { setAuthData } from './auth-reducer';
+import { AppDispatch } from './redux-store';
 
 const INIT_SUCCESS = 'INIT_SUCCESS';
 const SET_NETWORK_ERROR = 'SET_NETWORK_ERROR';
@@ -14,7 +16,7 @@ const initialState: AppStateType = {
 }
 
 
-const appReducer = (state = initialState, action: any): AppStateType => {
+const appReducer = (state = initialState, action: AnyAction): AppStateType => {
 	switch (action.type) {
 		case INIT_SUCCESS:
 			return {
@@ -39,7 +41,7 @@ export const setInitSuccess = (): SetInitSuccessType => {
 	return   {type: INIT_SUCCESS};
 }
 
-export const initApp = () => async (dispatch: any) => {
+export const initApp = () => async (dispatch: AppDispatch) => {
 	const promise = await dispatch(setAuthData());
 	dispatch( setInitSuccess() );
 }
