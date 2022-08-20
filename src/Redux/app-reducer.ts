@@ -41,8 +41,8 @@ export const setInitSuccess = (): SetInitSuccessType => {
 	return   {type: INIT_SUCCESS};
 }
 
-export const initApp = () => async (dispatch: AppDispatch) => {
-	const promise = await dispatch(setAuthData());
+export const initApp = () => async (dispatch: any) => {
+	await dispatch(setAuthData());
 	dispatch( setInitSuccess() );
 }
 

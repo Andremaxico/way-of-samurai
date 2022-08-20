@@ -180,7 +180,7 @@ export const setFormError = (message: string): SetFormErrorActionType => {
 }
 
 //===================THUNKS CREATORS====================
-export const setUserById = (id: number) => async (dispatch: AppDispatch) => {
+export const setUserById = (id: number) => async (dispatch: any) => {
 	dispatch(toggleIsFetchingAC(true));
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	try {
@@ -198,7 +198,7 @@ export const setUserById = (id: number) => async (dispatch: AppDispatch) => {
 	}
 }
 
-export const updateMyStatus = (newStatus: string) => async (dispatch: AppDispatch) => {
+export const updateMyStatus = (newStatus: string) => async (dispatch: any) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
 		if(resolve.resultCode === 0) {
@@ -213,12 +213,12 @@ export const updateMyStatus = (newStatus: string) => async (dispatch: AppDispatc
 	}
 }
 
-export const setUserStatus = (userId: number) => async (dispatch: AppDispatch) => {
+export const setUserStatus = (userId: number) => async (dispatch: any) => {
 	const data = await profileAPI.getUserStatus(userId);
 	dispatch(setCurrUserStatus(data.status));
 }
 
-export const setAvatar = (file: any) => async (dispatch: AppDispatch) => {
+export const setAvatar = (file: any) => async (dispatch: any) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
 		if(res.resultCode === 0) {
@@ -230,7 +230,7 @@ export const setAvatar = (file: any) => async (dispatch: AppDispatch) => {
 	}
 }
 
-export const updateMyProfileData = (data: any) => async (dispatch: AppDispatch) => {
+export const updateMyProfileData = (data: any) => async (dispatch: any) => {
 	try {
 		const res = await profileAPI.setMyProfileData(data);
 

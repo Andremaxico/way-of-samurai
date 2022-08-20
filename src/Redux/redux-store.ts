@@ -17,7 +17,7 @@ type ReducerType = {
 	app: AppStateType,
 }
 
-const reducer = combineReducers({
+const reducer = combineReducers<ReducerType>({
 	profilePage: profileReducer, //profile reducer returns state
 	messagesPage: messagesReducer, //messages reducer returns messages propfile state
 	usersPage: usersReducer,
@@ -27,18 +27,13 @@ const reducer = combineReducers({
 });
 
 //create store
-declare global {
-	interface Window {
-	  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-	}
-}
-
+//@ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(applyMiddleware(ThunkMiddleware)));
 
 
 //types
-export type RootState = ReturnType<typeof store.getState>
+export type RootStateType = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch
 

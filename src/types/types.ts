@@ -32,6 +32,7 @@ export type ProfileInfoType = {
 	fullName: string,
 	contacts: ContactsType,
 	photos: PhotosType,
+	followed?: boolean,
 }
 
 //when we search users, user card

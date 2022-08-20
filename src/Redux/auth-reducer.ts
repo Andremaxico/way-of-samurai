@@ -84,7 +84,7 @@ export const getCaptchaUrlSuccessful = (captcha: string): GetCaptchaUrlActionTyp
 
 //================THUNKS=================
 
-export const setAuthData = () => async (dispatch: AppDispatch) => {
+export const setAuthData = () => async (dispatch: any) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await authAPI.getAuthInfo();
@@ -114,7 +114,7 @@ export const setAuthData = () => async (dispatch: AppDispatch) => {
 	}
 }
 
-export const getCaptchaUrl = () => async (dispatch: AppDispatch) => {
+export const getCaptchaUrl = () => async (dispatch: any) => {
 	const captcha = await securityAPI.getCaptchaUrl();
 	if(captcha) dispatch(getCaptchaUrlSuccessful(captcha.url));
 }
@@ -125,7 +125,7 @@ type LoginDataType = {
 
 }
 
-export const login = (data: any) => async (dispatch: AppDispatch) => {
+export const login = (data: any) => async (dispatch: any) => {
 	console.log(data);
 	try {
 		const res = await authAPI.login(data);
@@ -145,7 +145,7 @@ export const login = (data: any) => async (dispatch: AppDispatch) => {
 	}
 }
 
-export const logout = () => async (dispatch: AppDispatch) => {
+export const logout = () => async (dispatch: any) => {
 	const res = await authAPI.logout();
 
 	if(res.resultCode === 0) {

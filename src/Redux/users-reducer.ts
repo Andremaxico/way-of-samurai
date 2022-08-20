@@ -173,7 +173,7 @@ export const toggleFollowingInProgress = (isInProgress: boolean, userId: number)
 })
 
 //========================THUNKS============================
-export const getUsers = (currentPage: number, pagesSize: number) => async (dispatch: AppDispatch) => {
+export const getUsers = (currentPage: number, pagesSize: number) => async (dispatch: any) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await usersAPI.getUsersPage(currentPage, pagesSize);
@@ -185,10 +185,10 @@ export const getUsers = (currentPage: number, pagesSize: number) => async (dispa
 		if(e.code === "ERR_NETWORK") dispatch(setNetworkError(true));
 	}
 }
-export const follow = (userId: number) => async (dispatch: AppDispatch) => {
+export const follow = (userId: number) => async (dispatch: any) => {
 	followUnfollowFlow(usersAPI.follow.bind(usersAPI), followSuccess(userId), dispatch, userId);
 }
-export const unfollow = (userId: number) => async (dispatch: AppDispatch) => {
+export const unfollow = (userId: number) => async (dispatch: any) => {
 	followUnfollowFlow(usersAPI.unfollow, unfollowSuccess(userId), dispatch, userId);
 }
 
