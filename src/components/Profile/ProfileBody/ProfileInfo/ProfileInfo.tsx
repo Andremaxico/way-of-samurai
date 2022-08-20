@@ -1,32 +1,32 @@
-import React from 'react';
+import * as React from 'react';
 import ProfileStatus from '../ProfileStatus';
 import classes from '../ProfileBody.module.scss';
+import { ProfileInfoType } from '../../../../types/types';
+import Contact from '../../../../UI/Contact/Contact';
 
-const Contact = ({contact, title, value}) => {
-	if(value) {
-		return (
-			<div className={classes.contact}><a href={value} target='_blank'>{title}</a></div>
-		)
-	}
+type PropsType = {
+	profileInfo: ProfileInfoType,
+	updateMyStatus: (status: string) => void,
+	activateEdit: () => void,
 }
 
-const ProfileInfo = ({profileInfo, updateMyStatus, activateEdit}) => {
+const ProfileInfo: React.FC<PropsType> = ({profileInfo, updateMyStatus, activateEdit}) => {
 	const {
 		fullName, aboutMe, isMyProfile, contacts, 
 		lookingForAJob, lookingForAJobDescription,
 	} = profileInfo;
 
 	//sets {key: value} to [[key, value]]
-	const contactsArr = Object.entries(contacts);
+	const contactsArr: Array<Array<string>> = Object.entries(contacts);
 	//map [[key, value]] to React component
 	const contactsList = contactsArr.map(([title, value]) => {
 		return <Contact key={title} title={title} value={value}/>
 	})
 
 	//AndreMaxico => Andre Maxico
-	const name = fullName.split('').map(symbol => {
+	const name: string = fullName.split('').map(symbol => {
 		return symbol.toUpperCase() === symbol ? ` ${symbol}` : symbol
-	});
+	}).join(' ');
 	return (
 		<div className={classes.ProfileInfo}>
 			<p className={classes.login}>{name}</p>

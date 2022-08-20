@@ -1,10 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import User from '../User/User';
 import classes from '../Users.module.scss';
 import Preloader from '../../../UI/Preloader/Preloader';
 import UsersPagination from '../UsersPagination/UsersPagination';
+import { UsersListPropsType } from './UsersListContainer';
 
-const UsersList = (props) => {
+type OwnProps = {
+	setCurrentPage: (pageNum: number) => void,
+}
+type PropsType = UsersListPropsType & OwnProps;
+
+const UsersList: React.FC<PropsType> = (props) => {
 	const list = props.usersData.map(data => {
 		return (
 			<User 

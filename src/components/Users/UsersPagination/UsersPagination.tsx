@@ -10,9 +10,11 @@ type PropsType = {
 	setCurrentPage: (num: number) => void;
 }
 
-const UsersPagination: React.FC<PropsType> = ({ pagesNumbers, setCurrentPage, currentPage, portionSize = 10 }) => {
-	const portionsCount = Math.ceil(pagesNumbers.length / portionSize);
-	const portionNumber = Math.ceil(currentPage / portionSize);
+const UsersPagination: React.FC<PropsType> = (
+	{ pagesNumbers, setCurrentPage, currentPage, portionSize = 10 }
+) => {
+	const portionsCount: number = Math.ceil(pagesNumbers.length / portionSize);
+	const portionNumber: number = Math.ceil(currentPage / portionSize);
 	const [portionNum, setPortionNum] = useState(portionNumber);
 
 	const portionLeftBorder = (portionNum - 1) * portionSize;

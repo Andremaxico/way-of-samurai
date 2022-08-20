@@ -32,7 +32,8 @@ export type ProfileInfoType = {
 	fullName: string,
 	contacts: ContactsType,
 	photos: PhotosType,
-	followed?: boolean,
+	followed: boolean,
+	isMyProfile?: boolean,
 }
 
 //when we search users, user card
@@ -43,4 +44,17 @@ export type UserCardType = {
 	uniqueUrlName: string | null,
 	status: string | null,
 	id: number,
+}
+
+//frind name, friend avatar type
+export type FriendCardType = {
+	avatarUrl: string | undefined,
+	name: string | null,
+	id: number,
+}
+
+//link's path and text
+export type LinkType = {
+	path: string,
+	text: string,
 }

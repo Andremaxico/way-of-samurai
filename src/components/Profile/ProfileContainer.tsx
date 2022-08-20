@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { Navigate } from 'react-router-dom';
 import Profile from './Profile';
 import Preloader from '../../UI/Preloader';
@@ -7,18 +7,48 @@ import { toggleIsFetchingAC } from '../../Redux/users-reducer';
 import { setUserById, updateMyStatus, setAvatar, updateMyProfileData } from '../../Redux/profile-reducer';
 import { logout } from '../../Redux/auth-reducer';
 //selectors
-import { getIsAuthed } from '../../Redux/auth-selectors.tsx';
+import { getIsAuthed } from '../../Redux/auth-selectors';
 //hocs
 import withRouter from '../../hocs/withRouter';
-import { compose } from 'redux';
+import { AnyAction, compose } from 'redux';
 import { connect } from 'react-redux';
 import withNetworkRedirect from '../../hocs/withNetworkRedirect';
+import { AppDispatch, RootStateType } from '../../Redux/redux-store';
+import { ProfileInfoType } from '../../types/types';
+import { ThunkDispatch } from 'redux-thunk';
 
-const ProfileContainer = (props) => {
-	const [userId, setUserId] = useState(null);
+
+type MapDispatchPropsType = {
+	toggleIsFetching: (value: boolean) => void,
+	setUserById: any,
+	updateMyStatus: (status: string) => void,
+	logout: () => void,
+	setAvatar: (file: any) => void,
+	updateMyProfileData: (profilaData: ProfileInfoType) => void,
+}
+type MapStatePropsType = {
+	currUserProfileInfo: ProfileInfoType,
+	myProfileInfo: ProfileInfoType,
+	myProfileId: number | null,
+	isFetching: boolean,
+	formError: string | null,
+	captchaUrl: string | null,
+	isAuthed: boolean | null,
+}
+type RouterPropsType = {
+	router: {
+		params: {
+			userId?: number,
+		}
+	}
+}
+type PropsType = MapStatePropsType & MapDispatchPropsType & RouterPropsType;
+
+const ProfileContainer: React.FC<PropsType> = (props: PropsType) => {
+	const [userId, setUserId] = React.useState<number | null>(null);
 	
 	//if we render other user profile, we set const userId
-	useEffect(() => {
+	React.useEffect(() => {
 		if(props.router.params.userId) {
 			//set const for show user profile
 			setUserId(props.router.params.userId);
@@ -30,7 +60,7 @@ const ProfileContainer = (props) => {
 	}, [props.router.params.userId]);
 
 	//set currUserProfileInfo in state if we got userId
-	useEffect(() => {
+	React.useEffect(() => {
 		//if we get other user id, we set this with thunk
 		if(userId) {
 			props.setUserById(userId).then(() => props.toggleIsFetching(false));
@@ -54,9 +84,7 @@ const ProfileContainer = (props) => {
 	)
 }
 
-
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 	return {
 		currUserProfileInfo: state.profilePage.currUserProfileInfo,
 		myProfileInfo: state.profilePage.myProfileInfo,
@@ -67,7 +95,8 @@ const mapStateToProps = (state) => {
 		isAuthed: getIsAuthed(state),
 	}
 }
-const methods = {
+
+const mapDispatchToProps: MapDispatchPropsType = {
 	toggleIsFetching: toggleIsFetchingAC,
 	setUserById,
 	updateMyStatus,
@@ -76,8 +105,8 @@ const methods = {
 	updateMyProfileData,
 }
 
-export default compose(
-	connect(mapStateToProps, methods),
+export default compose<any>(
+	connect<MapStatePropsType, MapDispatchPropsType>(mapStateToProps, mapDispatchToProps),
 	withNetworkRedirect,
 	withRouter,
 )(ProfileContainer);

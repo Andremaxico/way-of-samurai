@@ -1,29 +1,44 @@
-import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import * as React from 'react';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import Field from '../../../../UI/FormControls/Field/Field';
 import Checkbox from '../../../../UI/FormControls/Checkbox';
 import Textarea from '../../../../UI/FormControls/Textarea';
 import classes from '../ProfileBody.module.scss';
 import ProfileStatus from '../ProfileStatus';
-import { login } from '../../../../Redux/auth-reducer';
-import getFormSubmitErrors from 'redux-form/lib/getFormSubmitErrors';
+import { ProfileInfoType } from '../../../../types/types';
 
-const ProfileInfoForm = ({deactivateEdit, profileInfo, myProfileFormError, updateMyProfileData, formError}) => {
+type PropsType = {
+	formError: string | null,
+	profileInfo: ProfileInfoType,
+	updateMyStatus: (status: string) => void,
+	updateMyProfileData: (profileData: ProfileInfoType) => void,
+	deactivateEdit: () => void,
+}
+type FormStateType = {
+	errors: {[index: string]:any},
+}
+
+const ProfileInfoForm: React.FC<PropsType> = ({
+	deactivateEdit, profileInfo, updateMyProfileData, formError
+}) => {
 	const { 
 		register, handleSubmit, watch, 
 		setFocus, formState: { errors }, setError, clearErrors
-	} = useForm({
+	}: {
+		register: any, handleSubmit: any, watch: any, setFocus: any,
+		formState: FormStateType, setError: any, clearErrors: any
+	} = useForm<ProfileInfoType>({
 		defaultValues: {
 			...profileInfo
 		}
 	});
 	
-	useEffect(() => {
+	React.useEffect(() => {
 		setFocus("fullName", {shouldSelect: true});
 	}, [setFocus]);
 
 	//sets {key: value} to [[key, value]]
-	const contactsArr = Object.entries(profileInfo.contacts);
+	const contactsArr: Array<Array<string>> = Object.entries(profileInfo.contacts);
 	//map [[key, value]] to React component
 	const contactsInputsList = contactsArr.map(([title, value]) => {
 		return (
@@ -43,7 +58,7 @@ const ProfileInfoForm = ({deactivateEdit, profileInfo, myProfileFormError, updat
 		)
 	})
 
-	useEffect(() => {
+	React.useEffect(() => {
 		if(formError) {
 			setError('summary', {
 				type: 'custom',
@@ -54,7 +69,7 @@ const ProfileInfoForm = ({deactivateEdit, profileInfo, myProfileFormError, updat
 		}
 	}, [formError])
 
-	const onSubmit = (data) => {
+	const onSubmit: SubmitHandler<ProfileInfoType> = (data) => {
 		updateMyProfileData(data);
 		deactivateEdit();
 	}
@@ -87,8 +102,7 @@ const ProfileInfoForm = ({deactivateEdit, profileInfo, myProfileFormError, updat
 				<div className={classes.lookingForAJobDescription}><b>Description:</b> 
 					<Textarea 
 						register={register} name='lookingForAJobDescription'
-						error={errors.lookingForAJobDescription} placeholder='For job description'
-					/>
+						error={errors.lookingForAJobDescription} placeholder='For job description' validation={undefined}					/>
 				</div>
 			}
 			<div className={classes.contacts}>

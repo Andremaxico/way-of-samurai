@@ -1,23 +1,29 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import classes from './ProfileBody.module.scss';
 import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 import defaultCover from '../../../assests/images/default-cover.png';
 import Preloader from '../../../UI/Preloader';
 import ProfileInfo from './ProfileInfo';
 import ProfileInfoForm from './ProfileInfoForm';
+import { ProfilePropsType } from '../Profile';
 
-function ProfileBody({ logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, formError, updateMyProfileData}) {
-	const [isAvatarUpdating, setIsAvatarUpdating] = useState(false);
-	const [isEdit, setIsEdit] = useState(false);
+const ProfileBody: React.FC<ProfilePropsType> = ({ 
+	logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, 
+	formError, updateMyProfileData
+}) => {
+	const [isAvatarUpdating, setIsAvatarUpdating] = React.useState<boolean>(false);
+	const [isEdit, setIsEdit] = React.useState<boolean>(false);
 	const {userId: id, photos, isMyProfile} = profileInfo;
 
 	const {small: coverImg, large: avatarImg} = photos;
 
 	//change avatar
-	const avatarFileChange = async (e) => {
-		if(e.target.files.length > 0) {
+	const avatarFileChange = async (e: React.SyntheticEvent) => {
+		const target = e.target as HTMLInputElement;
+		if (!target.files) return;
+		if(target.files.length > 0) {
 			setIsAvatarUpdating(true);
-			await setAvatar(e.target.files[0]);
+			await setAvatar(target.files[0]);
 			setIsAvatarUpdating(false);
 		}
 	}
@@ -46,7 +52,7 @@ function ProfileBody({ logout, setAvatar, currUserProfileInfo: profileInfo, upda
 				{isEdit ?
 					<ProfileInfoForm 
 						deactivateEdit={deactivateEdit} formError={formError}
-						profileInfo={profileInfo} formError={formError}
+						profileInfo={profileInfo}
 						updateMyStatus={updateMyStatus} updateMyProfileData={updateMyProfileData}
 					/>
 				:	<ProfileInfo activateEdit={activateEdit} profileInfo={profileInfo} updateMyStatus={updateMyStatus}/>

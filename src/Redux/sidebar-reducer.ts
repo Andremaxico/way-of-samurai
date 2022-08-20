@@ -1,14 +1,5 @@
 import { AnyAction } from "redux";
-
-type FriendCardType = {
-	avatarUrl: string | null,
-	name: string | null,
-	id: number,
-}
-type LinkType = {
-	path: string,
-	text: string,
-}
+import { FriendCardType, LinkType } from "../types/types";
 
 export type SidebarStateType = {
 	friendsData: Array<FriendCardType>,

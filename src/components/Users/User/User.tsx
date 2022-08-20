@@ -13,7 +13,7 @@ type PropsType = {
 
 const User: React.FC<PropsType> = (props: PropsType) => {
 	const {name: name, id: id, status: description, photos: photos, followed: isFollowed} = props.info;
-	const followingInProgress = props.followingInProgress.includes(id);
+	const followingInProgress: boolean = props.followingInProgress.includes(id);
 	
 	const follow = () => props.follow(id);
 	const unfollow = () => props.unfollow(id);
@@ -21,7 +21,7 @@ const User: React.FC<PropsType> = (props: PropsType) => {
 	return (
 		<div className={classes.user}>
 			<Link to={`/profile/${id}`} className={classes.avatar}>
-				<img src={photos.small || defaultAvatar} alt="user avatar" />
+				<img src={photos?.small || defaultAvatar} alt="user avatar" />
 			</Link>
 			<div className={classes.info}>
 				<div className={classes.title}>

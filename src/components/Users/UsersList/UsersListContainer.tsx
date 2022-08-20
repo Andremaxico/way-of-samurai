@@ -23,16 +23,16 @@ type MapDispatchPropsType = {
 	setCurrentPage: (pageNum: number) => void,
 	getUsers: (currPageNum: number, pagesSizeNum: number) => void,
 }
-type PropsType = MapStatePropsType & MapDispatchPropsType;
+export type UsersListPropsType = MapStatePropsType & MapDispatchPropsType;
 
-class UsersListContainer extends React.Component<PropsType> {
-	props: PropsType;
+class UsersListContainer extends React.Component<UsersListPropsType> {
+	props: UsersListPropsType;
 	componentDidMount() {
 		//get users data from server -> set to state
 		this.props.getUsers(this.props.currentPage, this.props.pagesSize);
 	}
 	
-	setCurrentPage = (num: number) => {
+	setCurrPage = (num: number): void => {
 		//changes current users-page number
 		this.props.setCurrentPage(num);
 
@@ -42,7 +42,7 @@ class UsersListContainer extends React.Component<PropsType> {
 
 	render() {
 		return (
-			<UsersList {...this.props} setCurrentPage={this.setCurrentPage}/>
+			<UsersList {...this.props} setCurrentPage={this.setCurrPage}/>
 		)
 	}
 }
