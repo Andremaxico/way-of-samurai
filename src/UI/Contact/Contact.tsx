@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classes from '../ProfileBody.module.scss';
+import classes from './Contact.module.scss';
 
 type ContactPropsType = {
 	title: string,
@@ -8,7 +8,7 @@ type ContactPropsType = {
 
 const Contact: React.FC<ContactPropsType> = ({title, value}) => {
 	return (
-		<div className={classes.contact}>
+		<div className={classes.Contact}>
 			<a href={value || ''} target='_blank'>{title}</a>
 		</div>
 	)

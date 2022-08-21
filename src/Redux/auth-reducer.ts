@@ -5,6 +5,7 @@ import { setMyProfileInfo, setMyStatus } from "./profile-reducer";
 import { toggleIsFetchingAC } from "./users-reducer";
 import { AppDispatch } from './redux-store';
 import { AnyAction } from 'redux';
+import { AuthDataType } from '../types/types';
 
 //=================ACTION TYPES CONSTS=========================
 const SET_AUTH_DATA = 'auth/set-auth-data';
@@ -12,14 +13,9 @@ const GET_CAPTCHA_URL_SUCCESSFUL = 'auth/get-capthca-url-successful';
 
 
 //======================STATE, REDUCER===================
-type AuthDataType = {
-	login: string | null,
-	email: string | null,
-	id: number | null,
-	isAuthed: boolean | null,
-}
 
 export type AuthStateType = {
+	isAuthed: boolean,
 	data: AuthDataType,
 	captchaUrl: string | null,
 }
@@ -29,8 +25,8 @@ const initialState: AuthStateType = {
 		login: null,
 		email: null,
 		id: null,
-		isAuthed: false,
 	},
+	isAuthed: false,
 	captchaUrl: null,
 }
 
@@ -88,6 +84,7 @@ export const setAuthData = () => async (dispatch: any) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await authAPI.getAuthInfo();
+		console.log(res.data);
 
 		if(res.resultCode === 0) {
 			//login, email, id
@@ -130,7 +127,6 @@ export const login = (data: any) => async (dispatch: any) => {
 	try {
 		const res = await authAPI.login(data);
 		dispatch(setNetworkError(false));
-		
 		if(res.resultCode === 0) {
 			dispatch( setAuthData() );
 		} else {

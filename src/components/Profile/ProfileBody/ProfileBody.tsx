@@ -15,7 +15,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
 	const {userId: id, photos, isMyProfile} = profileInfo;
 
-	const {small: coverImg, large: avatarImg} = photos;
+	const {small: coverImg, large: avatarImg} = photos || {};
 
 	//change avatar
 	const avatarFileChange = async (e: React.SyntheticEvent) => {

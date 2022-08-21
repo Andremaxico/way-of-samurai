@@ -4,8 +4,7 @@ import Field from '../../../../UI/FormControls/Field/Field';
 import Checkbox from '../../../../UI/FormControls/Checkbox';
 import Textarea from '../../../../UI/FormControls/Textarea';
 import classes from '../ProfileBody.module.scss';
-import ProfileStatus from '../ProfileStatus';
-import { ProfileInfoType } from '../../../../types/types';
+import { ProfileInfoType, ReactHookFormType } from '../../../../types/types';
 
 type PropsType = {
 	formError: string | null,
@@ -14,9 +13,6 @@ type PropsType = {
 	updateMyProfileData: (profileData: ProfileInfoType) => void,
 	deactivateEdit: () => void,
 }
-type FormStateType = {
-	errors: {[index: string]:any},
-}
 
 const ProfileInfoForm: React.FC<PropsType> = ({
 	deactivateEdit, profileInfo, updateMyProfileData, formError
@@ -24,10 +20,7 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 	const { 
 		register, handleSubmit, watch, 
 		setFocus, formState: { errors }, setError, clearErrors
-	}: {
-		register: any, handleSubmit: any, watch: any, setFocus: any,
-		formState: FormStateType, setError: any, clearErrors: any
-	} = useForm<ProfileInfoType>({
+	}: ReactHookFormType = useForm<ProfileInfoType>({
 		defaultValues: {
 			...profileInfo
 		}
@@ -91,18 +84,19 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 				})}/>
 			</Field>
 			<Textarea 	
-				placeholder='About me' name='aboutMe' 
-				error={errors.aboutMe} validation={{maxLength: {value: 300, message: 'Max status length: 300'}}}
-				register={register}
-			/>
+				placeholder='About me' name='aboutMe'
+				error={errors.aboutMe} validation={{ maxLength: { value: 300, message: 'Max status length: 300' } }}
+				register={register} />
 			<div className={classes.lookingForAJob}><b>Looking for a job:</b> 
-				<Checkbox name='lookingForAJob' register={register} validation={{required: false}} labelText=''/>
+				<Checkbox 
+					name='lookingForAJob' register={register} validation={{ required: false }} 
+					labelText='' error={errors.lookingForAJob}/>
 			</div>
 			{watch('lookingForAJob') &&
 				<div className={classes.lookingForAJobDescription}><b>Description:</b> 
 					<Textarea 
 						register={register} name='lookingForAJobDescription'
-						error={errors.lookingForAJobDescription} placeholder='For job description' validation={undefined}					/>
+						error={errors.lookingForAJobDescription} placeholder='For job description' validation={undefined} rest={undefined}					/>
 				</div>
 			}
 			<div className={classes.contacts}>

@@ -1,3 +1,4 @@
+
 //post on profile page
 export type PostDataType = {
 	text: string,
@@ -57,4 +58,53 @@ export type FriendCardType = {
 export type LinkType = {
 	path: string,
 	text: string,
+}
+
+export type FormFieldErrorType = {
+	message: string | null
+}
+
+//form state of react-hook-form
+export type FormStateType = {
+	errors?: {[index: string]:any},
+	isValidating?: boolean,
+}
+
+//useForm() -> typization
+export type ReactHookFormType = {
+	register: any, 
+	handleSubmit: any, 
+	watch: any, 
+	setFocus: any,
+	formState: FormStateType, 
+	setError: any, 
+	clearErrors: any
+}
+//logjn , email, password
+export type AuthDataType = {
+	login: string | null,
+	email: string | null,
+	id: number | null,
+}
+
+//for login to account
+export type LoginDataType = {
+	email: string, 
+	password: string, 
+	remeberMe: boolean,
+	captcha: string, 
+}
+
+//at messages page, user that you have a chat
+export type UserInfoType = {
+	avatarUrl: string,
+	name: string,
+	id: number
+}
+
+//message in chat
+export type MessageDataType = {
+	text: string,
+	isMy: boolean,
+	id: number,
 }

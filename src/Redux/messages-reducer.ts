@@ -1,20 +1,11 @@
 import { AnyAction } from "redux";
+import { UserInfoType, MessageDataType } from "../types/types";
 
 //=================ACTION TYPES CONST=================
 const ADD_MESSAGE = 'ADD-MESSAGE';
 const DELETE_MESSAGE = 'DELETE_MESSAGE';
 
 //================STATE, TYPES================
-type UserInfoType = {
-	avatarUrl: string,
-	name: string,
-	id: number
-}
-type MessageDataType = {
-	text: string,
-	isMy: boolean,
-	id: number,
-}
 
 export type MessagesStateType = {
 	usersInfo: Array<UserInfoType>,

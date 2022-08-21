@@ -29,8 +29,10 @@ const initialState = {
 }
 
 export type ProfileStateType = typeof initialState;
+type ActionType = AddPostActionType | SetMyStatusActionType | SetFormErrorActionType | SetMyProfileInfoActionType |
+						SetCurrUserStatusActionType | SetUserProfileInfoActionType | SetAvatarSuccessfulActionType
 
-const profileReducer = (state = initialState, action: AnyAction): ProfileStateType => {
+const profileReducer = (state = initialState, action: ActionType): ProfileStateType => {
 	switch (action.type) {
 		case ADD_POST:
 			const id = state.postsData.length+1;

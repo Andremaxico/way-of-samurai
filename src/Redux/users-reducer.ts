@@ -1,6 +1,6 @@
 import { PhotosType, UserCardType } from './../types/types';
 import { usersAPI } from "../api/api";
-import { changeArrayObjProps } from '../utils/helpers/objHelper';
+import { changeObjOfArrayProps } from '../utils/helpers/objHelper';
 import { setNetworkError } from "./app-reducer";
 import { AppDispatch } from './redux-store';
 import { AnyAction } from 'redux';
@@ -52,12 +52,12 @@ const usersReducer = (state = initialState, action: AnyAction): UsersStateType  
 		case FOLLOW:
 			return {
 				...state,
-				usersData: changeArrayObjProps(state.usersData, action.userId, {followed: true}),
+				usersData: changeObjOfArrayProps(state.usersData, action.userId, {followed: true}),
 			};
 		case UNFOLLOW: 
 			return {
 				...state,
-				usersData: changeArrayObjProps(state.usersData, action.userId, {followed: false}),
+				usersData: changeObjOfArrayProps(state.usersData, action.userId, {followed: false}),
 			};
 		case SET_USERS:
 			return {

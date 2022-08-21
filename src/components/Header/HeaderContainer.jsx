@@ -9,7 +9,7 @@ class Headercontainer extends Component {
 	render() {
 		return (
 			<Header 
-				isAuthed={this.props.authData.isAuthed} 
+				isAuthed={this.props.authisAuthed} 
 				login={this.props.authData.login}
 				avatarUrl={this.props.myProfileInfo?.photos ?
 							  this.props.myProfileInfo.photos.small : ''}
