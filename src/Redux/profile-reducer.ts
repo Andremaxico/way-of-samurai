@@ -1,13 +1,11 @@
 import { profileAPI, usersAPI } from "../api/api";
-import { setNetworkError } from "./app-reducer";
-import { toggleIsFetchingAC } from "./users-reducer";
-import { 
-	getCaptchaUrl, getCaptchaUrlSuccessful, 
-	setAuthData 
-} from './auth-reducer';
+import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
+import { toggleIsFetchingAC, ToggleIsFetchingActionType } from "./users-reducer";
+import { getCaptchaUrlSuccessful, setAuthData, GetCaptchaUrlActionType } from './auth-reducer';
 import { PostDataType, ProfileInfoType } from "../types/types";
-import { AppDispatch } from "./redux-store";
-import { AnyAction } from "redux";
+import { RootStateType } from "./redux-store";
+import { ThunkAction } from "redux-thunk";
+import { Dispatch } from "react";
 
 //==================ACTIONS CONST==============
 const ADD_POST = 'ADD-POST';
@@ -29,8 +27,14 @@ const initialState = {
 }
 
 export type ProfileStateType = typeof initialState;
+type ImportedActionsType = ToggleIsFetchingActionType | SetNetworkErrorActionType | GetCaptchaUrlActionType;
+
 type ActionType = AddPostActionType | SetMyStatusActionType | SetFormErrorActionType | SetMyProfileInfoActionType |
 						SetCurrUserStatusActionType | SetUserProfileInfoActionType | SetAvatarSuccessfulActionType
+						| ImportedActionsType;
+
+type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>; 
+type DispatchType = Dispatch<ActionType | ThunkType>;
 
 const profileReducer = (state = initialState, action: ActionType): ProfileStateType => {
 	switch (action.type) {
@@ -119,7 +123,7 @@ export const setUserProfileInfo = (userProfileInfo: any): SetUserProfileInfoActi
 }
 
 //set my profile info
-type SetMyProfileInfoActionType = {
+export type SetMyProfileInfoActionType = {
 	type: typeof SET_MY_PROFILE_INFO,
 	myProfileInfo: any,
 }
@@ -131,7 +135,7 @@ export const setMyProfileInfo = (myProfileInfo: any): SetMyProfileInfoActionType
 }
 
 //set my status
-type SetMyStatusActionType = {
+export type SetMyStatusActionType = {
 	type: typeof SET_MY_STATUS,
 	newStatus: string,
 }
@@ -181,8 +185,9 @@ export const setFormError = (message: string): SetFormErrorActionType => {
 	}
 }
 
-//===================THUNKS CREATORS====================
-export const setUserById = (id: number) => async (dispatch: any) => {
+//===================THUNKS CREATORS=========================================================
+
+export const setUserById = (id: number): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(toggleIsFetchingAC(true));
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	try {
@@ -200,7 +205,7 @@ export const setUserById = (id: number) => async (dispatch: any) => {
 	}
 }
 
-export const updateMyStatus = (newStatus: string) => async (dispatch: any) => {
+export const updateMyStatus = (newStatus: string): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
 		if(resolve.resultCode === 0) {
@@ -215,12 +220,12 @@ export const updateMyStatus = (newStatus: string) => async (dispatch: any) => {
 	}
 }
 
-export const setUserStatus = (userId: number) => async (dispatch: any) => {
+export const setUserStatus = (userId: number): ThunkType => async (dispatch: DispatchType) => {
 	const data = await profileAPI.getUserStatus(userId);
 	dispatch(setCurrUserStatus(data.status));
 }
 
-export const setAvatar = (file: any) => async (dispatch: any) => {
+export const setAvatar = (file: any): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
 		if(res.resultCode === 0) {
@@ -232,7 +237,7 @@ export const setAvatar = (file: any) => async (dispatch: any) => {
 	}
 }
 
-export const updateMyProfileData = (data: any) => async (dispatch: any) => {
+export const updateMyProfileData = (data: any): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const res = await profileAPI.setMyProfileData(data);
 

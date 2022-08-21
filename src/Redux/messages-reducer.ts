@@ -13,6 +13,8 @@ export type MessagesStateType = {
 	newMessageValue: string,
 }
 
+type ActionType = AddMessageActionType | DeleteMessageActionType;
+
 const initalState: MessagesStateType = {
 	usersInfo: [
 		{
@@ -66,7 +68,7 @@ const initalState: MessagesStateType = {
 	newMessageValue: '',
 }
 
-const messagesReducer = (state = initalState, action: AnyAction) => {
+const messagesReducer = (state = initalState, action: ActionType) => {
 	//add post
 	switch (action.type) {
 		case ADD_MESSAGE:
@@ -108,12 +110,12 @@ export const addMessage = (newMessageValue: string): AddMessageActionType => {
 }
 
 //remove message from state
-type DeleteMessageType = {
+type DeleteMessageActionType = {
 	type: typeof DELETE_MESSAGE,
 	messageId: number,
 }
 
-export const deleteMessage = (messageId: number): DeleteMessageType => {
+export const deleteMessage = (messageId: number): DeleteMessageActionType => {
 	return {
 		type: DELETE_MESSAGE,
 		messageId,

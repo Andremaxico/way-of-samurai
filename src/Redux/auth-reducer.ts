@@ -1,11 +1,11 @@
-import { getIsAuthed } from './auth-selectors';
+import { Dispatch } from 'react';
 import { authAPI, profileAPI, usersAPI, securityAPI } from "../api/api";
-import { setNetworkError } from "./app-reducer";
-import { setMyProfileInfo, setMyStatus } from "./profile-reducer";
-import { toggleIsFetchingAC } from "./users-reducer";
-import { AppDispatch } from './redux-store';
-import { AnyAction } from 'redux';
+import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
+import { setMyProfileInfo, SetMyProfileInfoActionType, setMyStatus, SetMyStatusActionType } from "./profile-reducer";
+import { toggleIsFetchingAC, ToggleIsFetchingActionType } from "./users-reducer";
+import { RootStateType } from './redux-store';
 import { AuthDataType } from '../types/types';
+import { ThunkAction } from 'redux-thunk';
 
 //=================ACTION TYPES CONSTS=========================
 const SET_AUTH_DATA = 'auth/set-auth-data';
@@ -19,6 +19,12 @@ export type AuthStateType = {
 	data: AuthDataType,
 	captchaUrl: string | null,
 }
+type ImportedActionsType = GetCaptchaUrlActionType | ToggleIsFetchingActionType | SetNetworkErrorActionType |
+									SetMyProfileInfoActionType | SetMyStatusActionType;
+
+type ActionType = SetAuthDataActionType | ImportedActionsType;
+type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>;
+type DispatchType = Dispatch<ActionType | ThunkType>;
 
 const initialState: AuthStateType = {
 	data: {
@@ -30,7 +36,7 @@ const initialState: AuthStateType = {
 	captchaUrl: null,
 }
 
-const authReducer = (state = initialState, action: AnyAction) => {
+const authReducer = (state = initialState, action: ActionType) => {
 	switch (action.type) {
 		case SET_AUTH_DATA:
 			return {
@@ -65,7 +71,7 @@ export const setAuthDataAC = (data: any, isAuthed: boolean): SetAuthDataActionTy
 }
 
 //get captcha url successful
-type GetCaptchaUrlActionType = {
+export type GetCaptchaUrlActionType = {
 	type: typeof GET_CAPTCHA_URL_SUCCESSFUL,
 	captcha: string,
 }
@@ -80,7 +86,7 @@ export const getCaptchaUrlSuccessful = (captcha: string): GetCaptchaUrlActionTyp
 
 //================THUNKS=================
 
-export const setAuthData = () => async (dispatch: any) => {
+export const setAuthData = (): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await authAPI.getAuthInfo();
@@ -111,19 +117,15 @@ export const setAuthData = () => async (dispatch: any) => {
 	}
 }
 
-export const getCaptchaUrl = () => async (dispatch: any) => {
+export const getCaptchaUrl = (): ThunkType => async (dispatch: DispatchType) => {
 	const captcha = await securityAPI.getCaptchaUrl();
 	if(captcha) dispatch(getCaptchaUrlSuccessful(captcha.url));
 }
 
 
 //login
-type LoginDataType = {
 
-}
-
-export const login = (data: any) => async (dispatch: any) => {
-	console.log(data);
+export const login = (data: any): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const res = await authAPI.login(data);
 		dispatch(setNetworkError(false));
@@ -133,7 +135,7 @@ export const login = (data: any) => async (dispatch: any) => {
 			if(res.resultCode === 10) {
 				dispatch(getCaptchaUrl());
 			}
-			dispatch(getCaptchaUrl)
+			dispatch(getCaptchaUrl())
 			return res.messages[0];
 		}
 	} catch(e) {
@@ -141,7 +143,7 @@ export const login = (data: any) => async (dispatch: any) => {
 	}
 }
 
-export const logout = () => async (dispatch: any) => {
+export const logout = (): ThunkType => async (dispatch: DispatchType) => {
 	const res = await authAPI.logout();
 
 	if(res.resultCode === 0) {

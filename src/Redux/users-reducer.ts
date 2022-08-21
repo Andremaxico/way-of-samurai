@@ -1,9 +1,11 @@
+import { ThunkAction } from 'redux-thunk';
 import { PhotosType, UserCardType } from './../types/types';
 import { usersAPI } from "../api/api";
 import { changeObjOfArrayProps } from '../utils/helpers/objHelper';
-import { setNetworkError } from "./app-reducer";
-import { AppDispatch } from './redux-store';
+import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
 import { AnyAction } from 'redux';
+import { Dispatch } from 'react';
+import { RootStateType } from './redux-store';
 
 //=================ACTIONS VARIABLES=================
 
@@ -29,8 +31,18 @@ const initialState = {
 
 export type UsersStateType = typeof initialState;
 
+type ActionType = FollowSuccessActionType | SetUsersActionType | SetCurrentPageActionType | UnfollowSuccessActionType |
+						ToggleIsFetchingActionType | SetTotalUserCountActionType | SetNetworkErrorActionType |
+						ToggleFollowingInProgressActionType;
+
+type DispatchType = Dispatch<ActionType>;
+type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>;					
+
+
 //flow
-const followUnfollowFlow = async (apiMethod: any, actionCreator: any, dispatch: any, userId: number) => {
+const followUnfollowFlow = async (
+	apiMethod: any, actionCreator: FollowSuccessActionType | UnfollowSuccessActionType, dispatch: DispatchType, userId: number
+) => {
 	try {
 		dispatch(toggleFollowingInProgress(true, userId));
 	
@@ -46,8 +58,8 @@ const followUnfollowFlow = async (apiMethod: any, actionCreator: any, dispatch: 
 	}
 }
 
-//reducer
-const usersReducer = (state = initialState, action: AnyAction): UsersStateType  => {
+//============================REDUCER=================================
+const usersReducer = (state = initialState, action: ActionType): UsersStateType  => {
 	switch (action.type) {
 		case FOLLOW:
 			return {
@@ -92,7 +104,7 @@ const usersReducer = (state = initialState, action: AnyAction): UsersStateType  
 	}
 }
 
-//========================ACTION CREATORS===============
+//========================ACTION CREATORS===============================
 //chnage following status of users in usersData
 type FollowSuccessActionType = {
 	type: typeof FOLLOW,
@@ -129,7 +141,7 @@ export const setUsersAC = (users: Array<UserCardType>): SetUsersActionType => {
 }
 
 //chnage fetching status
-type ToggleIsFetchingActionType = {
+export type ToggleIsFetchingActionType = {
 	type: typeof TOGGLE_IS_FETCHING,
 	isFetching: boolean,
 }
@@ -173,7 +185,7 @@ export const toggleFollowingInProgress = (isInProgress: boolean, userId: number)
 })
 
 //========================THUNKS============================
-export const getUsers = (currentPage: number, pagesSize: number) => async (dispatch: any) => {
+export const getUsers = (currentPage: number, pagesSize: number): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await usersAPI.getUsersPage(currentPage, pagesSize);
@@ -185,10 +197,10 @@ export const getUsers = (currentPage: number, pagesSize: number) => async (dispa
 		if(e.code === "ERR_NETWORK") dispatch(setNetworkError(true));
 	}
 }
-export const follow = (userId: number) => async (dispatch: any) => {
+export const follow = (userId: number): ThunkType => async (dispatch: DispatchType) => {
 	followUnfollowFlow(usersAPI.follow.bind(usersAPI), followSuccess(userId), dispatch, userId);
 }
-export const unfollow = (userId: number) => async (dispatch: any) => {
+export const unfollow = (userId: number): ThunkType => async (dispatch: DispatchType) => {
 	followUnfollowFlow(usersAPI.unfollow, unfollowSuccess(userId), dispatch, userId);
 }
 

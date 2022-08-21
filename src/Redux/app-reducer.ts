@@ -1,6 +1,8 @@
+import { ThunkAction } from 'redux-thunk';
+import { Dispatch } from 'react';
 import { AnyAction } from 'redux';
 import { setAuthData } from './auth-reducer';
-import { AppDispatch } from './redux-store';
+import { RootStateType } from './redux-store';
 
 const INIT_SUCCESS = 'INIT_SUCCESS';
 const SET_NETWORK_ERROR = 'SET_NETWORK_ERROR';
@@ -9,6 +11,10 @@ export type AppStateType = {
 	isInitSuccess: boolean,
 	isNetworkError: boolean,
 }
+
+type ActionType = SetInitSuccessActionType | SetNetworkErrorActionType;
+type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>;
+type DispatchType = Dispatch<ActionType | ThunkType>;
 
 const initialState: AppStateType = {
 	isInitSuccess: false,
@@ -33,20 +39,17 @@ const appReducer = (state = initialState, action: AnyAction): AppStateType => {
 	}
 }
 
-type SetInitSuccessType = {
+
+//==========================ACTION CREATORS======================
+type SetInitSuccessActionType = {
 	type: typeof INIT_SUCCESS,
 }
 
-export const setInitSuccess = (): SetInitSuccessType => {
-	return   {type: INIT_SUCCESS};
+export const setInitSuccess = (): SetInitSuccessActionType => {
+	return  {type: INIT_SUCCESS};
 }
 
-export const initApp = () => async (dispatch: any) => {
-	await dispatch(setAuthData());
-	dispatch( setInitSuccess() );
-}
-
-type SetNetworkErrorActionType = {
+export type SetNetworkErrorActionType = {
 	type: typeof SET_NETWORK_ERROR,
 	isError: boolean,
 }
@@ -56,6 +59,12 @@ export const setNetworkError = (isError: boolean): SetNetworkErrorActionType => 
 		type: SET_NETWORK_ERROR,
 		isError,
 	}
+}
+
+//========================THUNKS====================
+export const initApp = (): ThunkType => async (dispatch: DispatchType) => {
+	await dispatch(setAuthData());
+	dispatch( setInitSuccess() );
 }
 
 export default appReducer;
