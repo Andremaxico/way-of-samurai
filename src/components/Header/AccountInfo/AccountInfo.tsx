@@ -1,9 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import classes from './AccountInfo.module.scss';
 import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 
-const AccountInfo = (props) => {
+type PropsType = {
+	login: string | null,
+	avatarUrl: string,
+}
+
+const AccountInfo: React.FC<PropsType> = (props) => {
 	return (
 		<Link to='/profile' className={classes.AccountInfo}>
 			<div className={classes.avatar}>

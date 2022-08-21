@@ -61,7 +61,7 @@ export type LinkType = {
 }
 
 export type FormFieldErrorType = {
-	message: string | null
+	message?: string | null
 }
 
 //form state of react-hook-form

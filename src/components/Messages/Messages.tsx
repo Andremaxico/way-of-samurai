@@ -1,10 +1,12 @@
-import React from 'react';
+import  * as React from 'react';
 import classes from './Messages.module.scss';
 import ChatsListContainer from './ChatsList';
 import MessagesListContainer from './MessagesList';
 import withLoginRedirect from '../../hocs/withLoginRedirect';
 
-function Messages(props) {
+type PropsType = {}
+
+function Messages(props: PropsType) {
 	return (
 		<div className={classes.messages}>
 			<h2 className={classes.title}>Messages</h2>
