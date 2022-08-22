@@ -108,3 +108,16 @@ export type MessageDataType = {
 	isMy: boolean,
 	id: number,
 }
+
+//==============API TYPES================
+export enum ResultCodeEnum {
+	Success = 0,
+	Error = 1,
+	CaptchaRequired = 10,
+}
+
+export type UsersPageDataType = {
+	items: Array<UserCardType>,
+	totalCount: number,
+	error?: string | null, 
+}

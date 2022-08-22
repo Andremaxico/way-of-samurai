@@ -105,7 +105,7 @@ export const setAuthData = (): ThunkType => async (dispatch: DispatchType) => {
 		}
 
 		//set my status from server to my profileData
-		const status = await profileAPI.getUserStatus(data.userId);
+		const status = await profileAPI.getUserStatus(data.data.userId);
 		if(status && status.length > 0) dispatch(setMyStatus(status));
 		dispatch(toggleIsFetchingAC(false));
 

@@ -189,6 +189,7 @@ export const getUsers = (currentPage: number, pagesSize: number): ThunkType => a
 	dispatch(toggleIsFetchingAC(true));
 	try {
 		const res = await usersAPI.getUsersPage(currentPage, pagesSize);
+		console.log('users page resolve', res);
 		dispatch(setUsersAC(res.items));
 		dispatch(setTotalUsersCountAC(res.totalCount));
 		dispatch(toggleIsFetchingAC(false));

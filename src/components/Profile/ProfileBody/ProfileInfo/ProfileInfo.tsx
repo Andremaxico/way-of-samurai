@@ -17,7 +17,7 @@ const ProfileInfo: React.FC<PropsType> = ({profileInfo, updateMyStatus, activate
 	} = profileInfo;
 
 	//sets {key: value} to [[key, value]]
-	const contactsArr: Array<Array<string>> = Object.entries(contacts);
+	const contactsArr: Array<Array<string>> = Object.entries(contacts || {});
 	//map [[key, value]] to React component
 	const contactsList = contactsArr.map(([title, value]) => {
 		return <Contact key={title} title={title} value={value}/>
