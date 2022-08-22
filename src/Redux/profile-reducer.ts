@@ -1,3 +1,4 @@
+import { ResultCodeEnum } from './../types/types';
 import { profileAPI, usersAPI } from "../api/api";
 import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
 import { toggleIsFetchingAC, ToggleIsFetchingActionType } from "./users-reducer";
@@ -208,7 +209,7 @@ export const setUserById = (id: number): ThunkType => async (dispatch: DispatchT
 export const updateMyStatus = (newStatus: string): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
-		if(resolve.resultCode === 0) {
+		if(resolve.resultCode === ResultCodeEnum.Success) {
 			dispatch(setMyStatus(newStatus));
 			dispatch(setNetworkError(false));
 			dispatch(setFormError(''));
@@ -228,7 +229,7 @@ export const setUserStatus = (userId: number): ThunkType => async (dispatch: Dis
 export const setAvatar = (file: any): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
-		if(res.resultCode === 0) {
+		if(res.resultCode === ResultCodeEnum.Success) {
 			dispatch(setAvatarSuccessful(res.data.photos));
 		}
 		dispatch(setNetworkError(false));
@@ -241,7 +242,7 @@ export const updateMyProfileData = (data: any): ThunkType => async (dispatch: Di
 	try {
 		const res = await profileAPI.setMyProfileData(data);
 
-		if(res.resultCode === 0) {
+		if(res.resultCode === ResultCodeEnum.Success) {
 			await dispatch(updateMyStatus(data.aboutMe));
 			dispatch(setAuthData());
 			dispatch(getCaptchaUrlSuccessful(''));

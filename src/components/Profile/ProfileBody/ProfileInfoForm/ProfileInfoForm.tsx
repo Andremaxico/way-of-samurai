@@ -4,7 +4,7 @@ import Field from '../../../../UI/FormControls/Field/Field';
 import Checkbox from '../../../../UI/FormControls/Checkbox';
 import Textarea from '../../../../UI/FormControls/Textarea';
 import classes from '../ProfileBody.module.scss';
-import { ProfileInfoType, ReactHookFormType } from '../../../../types/types';
+import { ContactsType, ProfileInfoType, ReactHookFormType } from '../../../../types/types';
 
 type PropsType = {
 	formError: string | null,
@@ -19,12 +19,13 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 }) => {
 	const { 
 		register, handleSubmit, watch, 
-		setFocus, formState: { errors }, setError, clearErrors
-	}: ReactHookFormType = useForm<ProfileInfoType>({
+		setFocus, formState: { errors }
+	} = useForm<ProfileInfoType>({
 		defaultValues: {
 			...profileInfo
 		}
 	});
+	const [summaryError, setSummaryError] = React.useState<string | null>(null)
 	
 	React.useEffect(() => {
 		setFocus("fullName", {shouldSelect: true});
@@ -34,12 +35,13 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 	const contactsArr: Array<Array<string>> = Object.entries(profileInfo.contacts);
 	//map [[key, value]] to React component
 	const contactsInputsList = contactsArr.map(([title, value]) => {
+		const name: any =`contacts.${title}`;
 		return (
 			<div className={classes.contact} key={title}>
 				<b>{title}:</b>
-				<Field className={classes.contact} error={errors.contacts && errors.contacts[title]}>
+				<Field className={classes.contact} error={errors.contacts && errors.contacts[title as keyof ContactsType]}>
 					<input key={title}
-						type="url" placeholder={`Input your ${title}'s link`} {...register(`contacts.${title}`, {
+						type="url" placeholder={`Input your ${title}'s link`} {...register(name, {
 							pattern: {
 								value: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
 								message: 'Input valid link, http://www.websiteName.com/...',
@@ -52,14 +54,7 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 	})
 
 	React.useEffect(() => {
-		if(formError) {
-			setError('summary', {
-				type: 'custom',
-				message: formError,
-			});
-		} else {
-			clearErrors('summary');
-		}
+		setSummaryError(formError);
 	}, [formError])
 
 	const onSubmit: SubmitHandler<ProfileInfoType> = (data) => {
@@ -67,14 +62,12 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 		deactivateEdit();
 	}
 
-	const onFormChange = () => {
-		clearErrors('summary');
-	}
+	const onFormChange = () => setSummaryError(null);
 
 	return (
 		<form className={classes.ProfileInfoForm} onChange={onFormChange} onSubmit={handleSubmit(onSubmit)}>
-			{errors.summary &&
-				<p className={classes.errorMessage}>{errors.summary.message}</p>
+			{summaryError &&
+				<p className={classes.errorMessage}>{summaryError}</p>
 			}
 			<Field className={classes.input} error={errors.fullName}>
 				<input type="text" placeholder='Input your login' {...register('fullName', {
@@ -83,7 +76,7 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 					maxLength: {value: 60, message: 'Your login must be shorter than 61 symbol'},
 				})}/>
 			</Field>
-			<Textarea 	
+			<Textarea<keyof ProfileInfoType>
 				placeholder='About me' name='aboutMe'
 				error={errors.aboutMe} validation={{ maxLength: { value: 300, message: 'Max status length: 300' } }}
 				register={register} />

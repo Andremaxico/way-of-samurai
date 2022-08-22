@@ -1,16 +1,19 @@
 import * as React from 'react'
+import { DeepRequired, FieldError, FieldErrorsImpl, FieldNamesMarkedBoolean, Merge } from 'react-hook-form';
 import classes from './Checkbox.module.scss';
 
-type PropsType = {
+type PropsType<FieldsNames> = {
 	register: any,
-	name: string,
+	name: FieldsNames,
 	validation?: object,
 	className?:string | undefined,
-	error: string | undefined | null,
+	error: FieldError | undefined,
 	labelText: string | null
 }
 
-const Checkbox: React.FC<PropsType> = ({register, name, validation, className, error, labelText}) => {
+const Checkbox = <FieldsNames extends string>({
+	register, name, validation, className, error, labelText
+}: PropsType<FieldsNames>) => {
 	return (
 		<div className={`${classes.Checkbox} ${className}`}>
 			<input 

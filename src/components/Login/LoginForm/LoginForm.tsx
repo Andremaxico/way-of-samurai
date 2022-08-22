@@ -9,7 +9,7 @@ import { Navigate } from 'react-router-dom'
 import Preloader from '../../../UI/Preloader';
 import EmailField from '../../../UI/FormControls/Field/EmailField';
 import PasswordField from '../../../UI/FormControls/Field/PasswordField';
-import { LoginDataType, ReactHookFormType } from '../../../types/types';
+import { LoginDataType } from '../../../types/types';
 import { RootStateType } from '../../../Redux/redux-store';
 
 type MapStateToPropsType = {
@@ -17,31 +17,27 @@ type MapStateToPropsType = {
 	captcha: string | null,
 }
 type MapDispatchToPropsType = {
-	login: any,
+	login: (data: LoginDataType) => any,
 }
 
 type PropsType = MapDispatchToPropsType & MapStateToPropsType;
+
+type LoginFormValuesType = LoginDataType;
 
 const LoginForm: React.FC<PropsType> = (props) => {
 	const { 
 		register, handleSubmit, setError, clearErrors, 
 		formState: { errors, isValidating}
-	}: ReactHookFormType = useForm();
+	} = useForm<LoginFormValuesType>();
 
-	const onSubmit = async (data: LoginDataType) => {
+	const [summaryError, setSummaryError] = React.useState<string | null>(null);
+
+	const onSubmit = async (data: LoginFormValuesType) => {
 		//login return error or null
-		const err = await props.login({...data});
-
-		if(err) {
-			setError('summary', {
-				type: 'custom',
-				message: err,
-			})
-		}
+		const err = await props.login(data);
+		setSummaryError(err || null);
 	}
-	const clearSummaryError = () => {
-		if(errors.summary) clearErrors('summary');
-	}
+	const clearSummaryError = () => setSummaryError(null);
 
 
 	if(props.isAuthed) return <Navigate  to='/profile' replace/>
@@ -51,7 +47,7 @@ const LoginForm: React.FC<PropsType> = (props) => {
 		<form action="#" className={classes.LoginForm} onSubmit={handleSubmit(onSubmit)}>
 			<EmailField className={classes.inputWrapper} error={errors.email} register={register}/>
 			<PasswordField className={classes.inputWrapper} error={errors.password} register={register}/>
-			<Checkbox 
+			<Checkbox<keyof LoginFormValuesType>
 				register={register}
 				error={errors.rememberMe} name='rememberMe' labelText='Remember me'
 			/>
@@ -62,7 +58,7 @@ const LoginForm: React.FC<PropsType> = (props) => {
 				/>
 			}
 			<button className={classes.submitBtn} onClick={clearSummaryError}>Sumbit</button>
-			{errors.summary && <p className={classes.errorMessage}>{errors.summary.message}</p>}
+			{summaryError && <p className={classes.errorMessage}>{summaryError}</p>}
 		</form>
 	)
 }

@@ -1,3 +1,4 @@
+import { DeepMap, FieldError, FieldValues } from "react-hook-form"
 
 //post on profile page
 export type PostDataType = {
@@ -64,22 +65,31 @@ export type FormFieldErrorType = {
 	message?: string | null
 }
 
+//========================FORM TYPIZATION=====================
 //form state of react-hook-form
 export type FormStateType = {
-	errors?: {[index: string]:any},
+	errors?: {[index: string]:any} & FieldErrors,
 	isValidating?: boolean,
 }
 
-//useForm() -> typization
 export type ReactHookFormType = {
 	register: any, 
 	handleSubmit: any, 
-	watch: any, 
-	setFocus: any,
-	formState: FormStateType, 
-	setError: any, 
-	clearErrors: any
+	watch?: (name: string) => string, 
+	setFocus?: any,
+	formState?: FormStateType, 
+	setError?: any, 
+	clearErrors?: any
 }
+
+export interface HookFormInterface {
+
+}
+
+export type FieldErrors<
+  TFieldValues extends FieldValues = FieldValues
+> = DeepMap<TFieldValues, FieldError>;
+
 //logjn , email, password
 export type AuthDataType = {
 	login: string | null,
@@ -87,11 +97,13 @@ export type AuthDataType = {
 	id: number | null,
 }
 
+
+
 //for login to account
 export type LoginDataType = {
 	email: string, 
 	password: string, 
-	remeberMe: boolean,
+	rememberMe: boolean,
 	captcha: string, 
 }
 

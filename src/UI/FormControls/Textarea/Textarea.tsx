@@ -3,9 +3,9 @@ import * as React from 'react';
 import { FormFieldErrorType } from '../../../types/types';
 import classes from './Textarea.module.scss';
 
-type PropsType = {
+type PropsType<FormFieldNames> = {
 	register: any,
-	name: string,
+	name: FormFieldNames,
 	validation?: object,
 	error: FormFieldErrorType | undefined /*| Merge<FieldErrors, FieldErrorsImpl<DeepRequired<any>>> */,
 	className?: string,
@@ -13,7 +13,9 @@ type PropsType = {
 	rest?: object,
 }
 
-const Textarea: React.FC<PropsType> = ({register, name, validation, error, className, placeholder, ...rest}) => {
+const Textarea = <FieldsNamesType extends string>({
+	register, name, validation, error, className, placeholder, ...rest
+}: PropsType<FieldsNamesType>): JSX.Element => {
 	return (
 		<div className={classes.Textarea}>
 			<textarea {...register(name, {...validation, 

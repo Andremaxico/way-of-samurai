@@ -89,11 +89,12 @@ export const profileAPI = {
 	}
 }
 
-export type getCaptchaResponseType = {
+export type GetCaptchaResponseType = {
 	url: string,
 } 
 export const securityAPI = {
 	async getCaptchaUrl() {
-		return instance.get<getCaptchaResponseType>('/security/get-captcha-url').then(res => res.data);
+		const res = await instance.get<GetCaptchaResponseType>('/security/get-captcha-url')
+		return res.data;
 	}
 }

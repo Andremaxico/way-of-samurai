@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FormFieldErrorType } from '../../../types/types';
 import Field, { FieldPropsType } from './Field';
 import classes from './Field.module.scss';
 

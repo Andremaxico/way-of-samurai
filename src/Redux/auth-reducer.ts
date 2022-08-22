@@ -1,3 +1,4 @@
+import { LoginDataType, ResultCodeEnum } from './../types/types';
 import { Dispatch } from 'react';
 import { authAPI, profileAPI, usersAPI, securityAPI } from "../api/api";
 import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
@@ -36,12 +37,13 @@ const initialState: AuthStateType = {
 	captchaUrl: null,
 }
 
-const authReducer = (state = initialState, action: ActionType) => {
+const authReducer = (state = initialState, action: ActionType): AuthStateType => {
 	switch (action.type) {
 		case SET_AUTH_DATA:
 			return {
 				...state,
-				data: {...action.data, isAuthed: action.isAuthed},
+				data: {...action.data},
+				isAuthed: action.isAuthed,
 			}
 		case GET_CAPTCHA_URL_SUCCESSFUL: 
 			return {
@@ -62,7 +64,7 @@ type SetAuthDataActionType = {
 	isAuthed: boolean,
 }
 
-export const setAuthDataAC = (data: any, isAuthed: boolean): SetAuthDataActionType => {
+export const setAuthDataAC = (data: AuthDataType | null, isAuthed: boolean): SetAuthDataActionType => {
 	return {
 		type: SET_AUTH_DATA,
 		data,
@@ -92,7 +94,7 @@ export const setAuthData = (): ThunkType => async (dispatch: DispatchType) => {
 		const res = await authAPI.getAuthInfo();
 		console.log(res.data);
 
-		if(res.resultCode === 0) {
+		if(res.resultCode === ResultCodeEnum.Success) {
 			//login, email, id
 			dispatch(setAuthDataAC(res.data, true));
 		}
@@ -125,14 +127,14 @@ export const getCaptchaUrl = (): ThunkType => async (dispatch: DispatchType) => 
 
 //login
 
-export const login = (data: any): ThunkType => async (dispatch: DispatchType) => {
+export const login = (data: LoginDataType): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const res = await authAPI.login(data);
 		dispatch(setNetworkError(false));
-		if(res.resultCode === 0) {
+		if(res.resultCode === ResultCodeEnum.Success) {
 			dispatch( setAuthData() );
 		} else {
-			if(res.resultCode === 10) {
+			if(res.resultCode === ResultCodeEnum.CaptchaRequired) {
 				dispatch(getCaptchaUrl());
 			}
 			dispatch(getCaptchaUrl())
@@ -146,7 +148,7 @@ export const login = (data: any): ThunkType => async (dispatch: DispatchType) =>
 export const logout = (): ThunkType => async (dispatch: DispatchType) => {
 	const res = await authAPI.logout();
 
-	if(res.resultCode === 0) {
+	if(res.resultCode === ResultCodeEnum.Success) {
 		dispatch( setAuthDataAC(null, false) );
 		dispatch( setMyProfileInfo(null) );
 	}

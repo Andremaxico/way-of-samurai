@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import { PhotosType, UserCardType } from './../types/types';
+import { PhotosType, UserCardType, ResultCodeEnum } from './../types/types';
 import { usersAPI } from "../api/api";
 import { changeObjOfArrayProps } from '../utils/helpers/objHelper';
 import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
@@ -48,7 +48,7 @@ const followUnfollowFlow = async (
 	
 		const res = await apiMethod(userId);
 	
-		if(res.resultCode === 0) {
+		if(res.resultCode === ResultCodeEnum.Success) {
 			dispatch(actionCreator);
 			dispatch(toggleFollowingInProgress(false, userId));
 			dispatch(setNetworkError(false));

@@ -10,7 +10,7 @@ export type FieldPropsType = {
 } 
 
 type PropsType = {
-	children: any,
+	children: React.ReactNode,
 } & FieldPropsType;
 
 const Field: React.FC<PropsType> = ({className, error, children }) => {
