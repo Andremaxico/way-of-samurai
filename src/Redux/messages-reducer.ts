@@ -1,10 +1,5 @@
-import { AnyAction } from "redux";
+import { InferActionsType } from './redux-store';
 import { UserInfoType, MessageDataType } from "../types/types";
-
-//=================ACTION TYPES CONST=================
-const ADD_MESSAGE = 'ADD-MESSAGE';
-const DELETE_MESSAGE = 'DELETE_MESSAGE';
-
 //================STATE, TYPES================
 
 export type MessagesStateType = {
@@ -13,7 +8,7 @@ export type MessagesStateType = {
 	newMessageValue: string,
 }
 
-type ActionType = AddMessageActionType | DeleteMessageActionType;
+type ActionType = InferActionsType<typeof messagesActions>;
 
 const initalState: MessagesStateType = {
 	usersInfo: [
@@ -71,7 +66,7 @@ const initalState: MessagesStateType = {
 const messagesReducer = (state = initalState, action: ActionType) => {
 	//add post
 	switch (action.type) {
-		case ADD_MESSAGE:
+		case 'ADD_MESSAGE':
 			const messageText = action.newMessageValue;
 			const id = state.messagesData.length+1;
 			const newMessageData: MessageDataType = {
@@ -85,7 +80,7 @@ const messagesReducer = (state = initalState, action: ActionType) => {
 				messagesData: [...state.messagesData, newMessageData],
 				newMessageValue: '',
 			}
-		case DELETE_MESSAGE: 
+		case 'DELETE_MESSAGE': 
 			return {
 				...state,
 				messagesData: state.messagesData.filter(mess => mess.id !== action.messageId),
@@ -96,30 +91,18 @@ const messagesReducer = (state = initalState, action: ActionType) => {
 }
 
 //==============ACTION CREATORS===========
-//add message to state
-type AddMessageActionType = {
-	type: typeof ADD_MESSAGE,
-	newMessageValue: string,
-}
-
-export const addMessage = (newMessageValue: string): AddMessageActionType => {
-	return {
-		type: ADD_MESSAGE,
+export const messagesActions = {
+	//add message to state
+	addMessage: (newMessageValue: string) => ({
+		type: 'ADD_MESSAGE',
 		newMessageValue,
-	}
-}
+	} as const),
 
-//remove message from state
-type DeleteMessageActionType = {
-	type: typeof DELETE_MESSAGE,
-	messageId: number,
-}
-
-export const deleteMessage = (messageId: number): DeleteMessageActionType => {
-	return {
-		type: DELETE_MESSAGE,
+	//remove message from state
+	deleteMessage: (messageId: number) => ({
+		type: 'DELETE_MESSAGE',
 		messageId,
-	}
+	} as const)
 }
 
 export default messagesReducer;

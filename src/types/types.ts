@@ -35,7 +35,7 @@ export type ProfileInfoType = {
 	contacts: ContactsType,
 	photos: PhotosType,
 	followed: boolean,
-	isMyProfile?: boolean,
+	isMyProfile: boolean,
 }
 
 //when we search users, user card
@@ -98,7 +98,6 @@ export type AuthDataType = {
 }
 
 
-
 //for login to account
 export type LoginDataType = {
 	email: string, 
@@ -120,6 +119,7 @@ export type MessageDataType = {
 	isMy: boolean,
 	id: number,
 }
+
 
 //==============API TYPES================
 export enum ResultCodeEnum {

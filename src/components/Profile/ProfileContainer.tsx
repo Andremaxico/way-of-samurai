@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Profile from './Profile';
 import Preloader from '../../UI/Preloader';
 //reducers
-import { toggleIsFetchingAC } from '../../Redux/users-reducer';
+import { usersActions } from '../../Redux/users-reducer';
 import { setUserById, updateMyStatus, setAvatar, updateMyProfileData } from '../../Redux/profile-reducer';
 import { logout } from '../../Redux/auth-reducer';
 //selectors
@@ -97,7 +97,7 @@ const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 }
 
 const mapDispatchToProps: MapDispatchPropsType = {
-	toggleIsFetching: toggleIsFetchingAC,
+	toggleIsFetching: usersActions.toggleIsFetchingAC,
 	setUserById,
 	updateMyStatus,
 	logout,

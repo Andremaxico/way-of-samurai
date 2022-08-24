@@ -1,8 +1,8 @@
 import  * as React from 'react';
 import { connect } from 'react-redux';
 import Header from './Header';
-import { setAuthData } from '../../Redux/auth-reducer';
-import { setMyProfileInfo } from '../../Redux/profile-reducer';
+import { authActions } from '../../Redux/auth-reducer';
+import { profileActions } from '../../Redux/profile-reducer';
 import {RootStateType} from  '../../Redux/redux-store';
 import { AuthDataType, ProfileInfoType } from '../../types/types';
 
@@ -13,7 +13,7 @@ type MapStateToPropsType = {
 }
 
 type MapDispatchToPropsType = {
-	setAuthData: (data: AuthDataType) => void,
+	setAuthData: (data: AuthDataType, isAuthed: boolean) => void,
 	setMyProfileInfo: (profileInfo: ProfileInfoType) => void,
 }
 
@@ -42,8 +42,8 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
 	}
 }
 
-const MapDispatchToProps = {
-	setAuthData,
-	setMyProfileInfo,
+const mapDispatchToProps = {
+	setAuthData: authActions.setAuthDataAC,
+	setMyProfileInfo: profileActions.setMyProfileInfo,
 }
-export default connect<MapStateToPropsType, MapDispatchToPropsType>(mapStateToProps, MapDispatchToProps)(Headercontainer);
+export default connect<MapStateToPropsType, MapDispatchToPropsType>(mapStateToProps, mapDispatchToProps)(Headercontainer);

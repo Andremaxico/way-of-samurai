@@ -1,47 +1,42 @@
-import { ResultCodeEnum } from './../types/types';
+import { ResultCodeEnum, PhotosType } from './../types/types';
 import { profileAPI, usersAPI } from "../api/api";
-import { setNetworkError, SetNetworkErrorActionType } from "./app-reducer";
-import { toggleIsFetchingAC, ToggleIsFetchingActionType } from "./users-reducer";
-import { getCaptchaUrlSuccessful, setAuthData, GetCaptchaUrlActionType } from './auth-reducer';
+import { appActions } from "./app-reducer";
+import { usersActions } from "./users-reducer";
+import { authActions, setAuthData, getCaptchaUrl } from './auth-reducer';
 import { PostDataType, ProfileInfoType } from "../types/types";
-import { RootStateType } from "./redux-store";
+import { InferActionsType, RootStateType } from "./redux-store";
 import { ThunkAction } from "redux-thunk";
 import { Dispatch } from "react";
 
 //==================ACTIONS CONST==============
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_VALUE = 'UPDATE-NEW-POST-VALUE';
-const SET_USER_PROFILE_INFO = 'set-user-profile-info';
-const SET_MY_PROFILE_INFO = 'set-my-profile-info';
-const SET_MY_STATUS = 'set-my-status';
-const SET_CURR_USER_STATUS = 'set-curr-user-status';
-const SET_AVATAR = 'set-avatar';
-const SET_FORM_ERROR = 'profile/SET_FORM_ERROR';
 
 //====================STATE, REDUCER===============
 
 const initialState = {
 	postsData: [{}] as Array<PostDataType>,
-	myProfileInfo: {} as ProfileInfoType,
+	myProfileInfo: {} as ProfileInfoType ,
 	currUserProfileInfo: {} as ProfileInfoType,
 	myProfileFormError: null as string | null
 }
 
 export type ProfileStateType = typeof initialState;
-type ImportedActionsType = ToggleIsFetchingActionType | SetNetworkErrorActionType | GetCaptchaUrlActionType;
+const { getCaptchaUrlSuccessful } = authActions;
+const { setNetworkError } = appActions;
+const { toggleIsFetchingAC } = usersActions;
 
-type ActionType = AddPostActionType | SetMyStatusActionType | SetFormErrorActionType | SetMyProfileInfoActionType |
-						SetCurrUserStatusActionType | SetUserProfileInfoActionType | SetAvatarSuccessfulActionType
-						| ImportedActionsType;
+type ImportedActionsType = ReturnType<typeof getCaptchaUrlSuccessful> | ReturnType<typeof setNetworkError> |
+									ReturnType<typeof toggleIsFetchingAC>;
 
-type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>; 
-type DispatchType = Dispatch<ActionType | ThunkType>;
+type ProfileActionsType = InferActionsType<typeof profileActions>;
 
-const profileReducer = (state = initialState, action: ActionType): ProfileStateType => {
+type ThunkType = ThunkAction<void, RootStateType, unknown, ProfileActionsType>; 
+type DispatchType = Dispatch<ProfileActionsType | ThunkType | ImportedActionsType>;
+
+const profileReducer = (state = initialState, action: ProfileActionsType): ProfileStateType => {
 	switch (action.type) {
-		case ADD_POST:
+		case 'ADD_POST':
 			const id = state.postsData.length+1;
-			const postText = action.newPostValue;
+			const postText = action.type;
 			const newPostData: PostDataType = {
 				text: postText,
 				likesCount: 0,
@@ -51,17 +46,19 @@ const profileReducer = (state = initialState, action: ActionType): ProfileStateT
 				...state,
 				postsData: [newPostData, ...state.postsData],
 			}
-		case SET_USER_PROFILE_INFO:
+		case 'SET_USER_PROFILE_INFO':
 			return {
 				...state,
 				currUserProfileInfo: action.userProfileInfo,
 			}
-		case SET_MY_PROFILE_INFO: 
+		case 'SET_MY_PROFILE_INFO': 
+			const info: ProfileInfoType = Object.assign({isMyProfile: true}, action.myProfileInfo);
+			console.log(info);
 			return {
 				...state, 
-				myProfileInfo: {...action.myProfileInfo,  isMyProfile: true},
+				myProfileInfo: info,
 			}
-		case SET_MY_STATUS: 
+		case 'SET_MY_STATUS': 
 			return {
 				...state,
 				myProfileInfo: {
@@ -69,7 +66,7 @@ const profileReducer = (state = initialState, action: ActionType): ProfileStateT
 					aboutMe: action.newStatus,
 				}
 			}
-		case SET_CURR_USER_STATUS:
+		case 'SET_CURR_USER_STATUS':
 			return {
 				...state,
 				currUserProfileInfo: {
@@ -77,7 +74,7 @@ const profileReducer = (state = initialState, action: ActionType): ProfileStateT
 					aboutMe: action.newStatus,
 				}
 			}
-		case SET_AVATAR: 
+		case 'SET_AVATAR': 
 			return {
 				...state,
 				myProfileInfo: {
@@ -87,7 +84,7 @@ const profileReducer = (state = initialState, action: ActionType): ProfileStateT
 					}
 				}
 			}
-		case SET_FORM_ERROR:
+		case 'SET_FORM_ERROR':
 			return {
 				...state,
 				myProfileFormError: action.message,
@@ -99,91 +96,46 @@ const profileReducer = (state = initialState, action: ActionType): ProfileStateT
 }
 
 //===============ACTION CREATORS===============
-//add post to state
-type AddPostActionType = {
-	type: typeof ADD_POST,
-	newPostValue: string,
-}
-export const addPost = (newPostValue: string): AddPostActionType => {
-	return {
-		type: ADD_POST,
-		newPostValue,
-	}
-}
 
-//set another profile info
-type SetUserProfileInfoActionType = {
-	type: typeof SET_USER_PROFILE_INFO,
-	userProfileInfo: any,
-}
-export const setUserProfileInfo = (userProfileInfo: any): SetUserProfileInfoActionType => {
-	return {
-		type: SET_USER_PROFILE_INFO,
+export const profileActions = {
+	//add post to state
+	addPost: (newPostValue: string) => ({
+		type: 'ADD_POST',
+		newPostValue: newPostValue,
+	} as const),
+
+	//set another profile info
+	setUserProfileInfo: (userProfileInfo: ProfileInfoType) => ({
+		type: 'SET_USER_PROFILE_INFO',
 		userProfileInfo,
-	}
-}
+	} as const),
 
-//set my profile info
-export type SetMyProfileInfoActionType = {
-	type: typeof SET_MY_PROFILE_INFO,
-	myProfileInfo: any,
-}
-export const setMyProfileInfo = (myProfileInfo: any): SetMyProfileInfoActionType => {
-	return {
-		type: SET_MY_PROFILE_INFO,
+	//set my profile info
+	setMyProfileInfo: (myProfileInfo: ProfileInfoType | null) => ({
+		type: 'SET_MY_PROFILE_INFO',
 		myProfileInfo,
-	}
-}
+	} as const),
 
-//set my status
-export type SetMyStatusActionType = {
-	type: typeof SET_MY_STATUS,
-	newStatus: string,
-}
-export const setMyStatus = (newStatus: string): SetMyStatusActionType => {
-	return {
-		type: SET_MY_STATUS,
+	//set my status
+	setMyStatus: (newStatus: string) => ({
+		type: 'SET_MY_STATUS',
 		newStatus,
-	}
-}
+	} as const),
 
-//set avatar success
-type SetAvatarSuccessfulActionType = {
-	type: typeof SET_AVATAR,
-	photos: any,
-}
-
-export const setAvatarSuccessful = (photos: any): SetAvatarSuccessfulActionType => {
-	return {
-		type: SET_AVATAR,
+	//set avatar success
+	setAvatarSuccessful: (photos: PhotosType) => ({
+		type: 'SET_AVATAR',
 		photos,
-	}
-}
+	} as const),
 
-//set current(another) user status
-type SetCurrUserStatusActionType = {
-	type: typeof SET_CURR_USER_STATUS,
-	newStatus: string,
-}
-
-export const setCurrUserStatus = (newStatus: string): SetCurrUserStatusActionType => {
-	return {
-		type: SET_CURR_USER_STATUS,
+	//set current(another) user status
+	setCurrUserStatus: (newStatus: string) => ({
+		type: 'SET_CURR_USER_STATUS',
 		newStatus,
-	}
-}
+	} as const),
 
-//set form error
-type SetFormErrorActionType = {
-	type: typeof SET_FORM_ERROR,
-	message: string,
-}
-
-export const setFormError = (message: string): SetFormErrorActionType => {
-	return {
-		type: SET_FORM_ERROR,
-		message,
-	}
+	//set form error
+	setFormError: (message: string) => ({type: 'SET_FORM_ERROR', message,} as const),
 }
 
 //===================THUNKS CREATORS=========================================================
@@ -194,11 +146,11 @@ export const setUserById = (id: number): ThunkType => async (dispatch: DispatchT
 	try {
 		const data = await usersAPI.getUserById(id);
 		if(data) {
-			dispatch(setUserProfileInfo(data));
+			dispatch(profileActions.setUserProfileInfo(data.data));
 		}
 	
 		const status = await profileAPI.getUserStatus(id);
-		dispatch(setCurrUserStatus(status));
+		dispatch(profileActions.setCurrUserStatus(status));
 		dispatch(setNetworkError(false));
 	
 	} catch(e) {
@@ -210,11 +162,11 @@ export const updateMyStatus = (newStatus: string): ThunkType => async (dispatch:
 	try {
 		const resolve = await profileAPI.updateMyStatus(newStatus);
 		if(resolve.resultCode === ResultCodeEnum.Success) {
-			dispatch(setMyStatus(newStatus));
+			dispatch(profileActions.setMyStatus(newStatus));
 			dispatch(setNetworkError(false));
-			dispatch(setFormError(''));
+			dispatch(profileActions.setFormError(''));
 		} else {
-			dispatch(setFormError(resolve.messages[0]));
+			dispatch(profileActions.setFormError(resolve.messages[0]));
 		}
 	} catch(e) {
 		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true))
@@ -223,14 +175,14 @@ export const updateMyStatus = (newStatus: string): ThunkType => async (dispatch:
 
 export const setUserStatus = (userId: number): ThunkType => async (dispatch: DispatchType) => {
 	const data = await profileAPI.getUserStatus(userId);
-	dispatch(setCurrUserStatus(data.status));
+	dispatch(profileActions.setCurrUserStatus(data.status));
 }
 
 export const setAvatar = (file: any): ThunkType => async (dispatch: DispatchType) => {
 	try {
 		const res = await profileAPI.setAvatar(file);
 		if(res.resultCode === ResultCodeEnum.Success) {
-			dispatch(setAvatarSuccessful(res.data.photos));
+			dispatch(profileActions.setAvatarSuccessful(res.data.photos));
 		}
 		dispatch(setNetworkError(false));
 	} catch(e) {

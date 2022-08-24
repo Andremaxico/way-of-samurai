@@ -35,6 +35,10 @@ const store = createStore(reducer, composeEnhancers(applyMiddleware(ThunkMiddlew
 //types
 export type RootStateType = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
+export type AppDispatch = typeof store.dispatch;
+//actions types
+export type InferActionsType<T extends {[key: string]: (...args: any[]) => any}> = ReturnType<PropertiesType<T>>;
+
+type PropertiesType<T> = T extends {[key: string]: infer U } ? U : never;
 
 export default store;

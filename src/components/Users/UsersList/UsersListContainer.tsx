@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from "react-redux"
 import withNetworkRedirect from '../../../hocs/withNetworkRedirect';
 import { RootStateType } from '../../../Redux/redux-store';
-import { follow, unfollow, setCurrentPageAC, getUsers
+import { follow, unfollow, usersActions, getUsers
 } from "../../../Redux/users-reducer";
 import { selectPageSize, selectPagesNumbers, selectTotalUsersCount, selectUsersData } from '../../../Redux/users-selectors';
 import { UserCardType } from '../../../types/types';
@@ -35,7 +35,6 @@ class UsersListContainer extends React.Component<UsersListPropsType> {
 	setCurrPage = (num: number): void => {
 		//changes current users-page number
 		this.props.setCurrentPage(num);
-
 		this.props.getUsers(num, this.props.pagesSize);
 
 	}
@@ -64,7 +63,7 @@ const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 const mapDispatchToProps: MapDispatchPropsType = {
 	follow,
 	unfollow,
-	setCurrentPage: setCurrentPageAC,
+	setCurrentPage: usersActions.setCurrentPageAC,
 	getUsers,
 }
 export default connect<MapStatePropsType, MapDispatchPropsType>(mapStateToProps, mapDispatchToProps)( 
