@@ -12,7 +12,7 @@ type PropsType = {
 
 const ProfileInfo: React.FC<PropsType> = ({profileInfo, updateMyStatus, activateEdit}) => {
 	const {
-		fullName, aboutMe, isMyProfile, contacts, 
+		fullName = '', aboutMe, isMyProfile, contacts, 
 		lookingForAJob, lookingForAJobDescription,
 	} = profileInfo;
 

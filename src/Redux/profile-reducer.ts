@@ -1,5 +1,6 @@
 import { ResultCodeEnum, PhotosType } from './../types/types';
-import { profileAPI, usersAPI } from "../api/api";
+import { profileAPI } from "../api/profileApi";
+import { usersAPI } from "../api/usersApi";
 import { appActions } from "./app-reducer";
 import { usersActions } from "./users-reducer";
 import { authActions, setAuthData, getCaptchaUrl } from './auth-reducer';
@@ -9,7 +10,48 @@ import { ThunkAction } from "redux-thunk";
 import { Dispatch } from "react";
 
 //==================ACTIONS CONST==============
+//===============ACTION CREATORS===============
 
+export const profileActions = {
+	//add post to state
+	addPost: (newPostValue: string) => ({
+		type: 'ADD_POST',
+		newPostValue: newPostValue,
+	} as const),
+
+	//set another profile info
+	setUserProfileInfo: (userProfileInfo: ProfileInfoType) => ({
+		type: 'SET_USER_PROFILE_INFO',
+		userProfileInfo,
+	} as const),
+
+	//set my profile info
+	setMyProfileInfo: (myProfileInfo: ProfileInfoType | null) => ({
+		type: 'SET_MY_PROFILE_INFO',
+		myProfileInfo,
+	} as const),
+
+	//set my status
+	setMyStatus: (newStatus: string) => ({
+		type: 'SET_MY_STATUS',
+		newStatus,
+	} as const),
+
+	//set avatar success
+	setAvatarSuccessful: (photos: PhotosType) => ({
+		type: 'SET_AVATAR',
+		photos,
+	} as const),
+
+	//set current(another) user status
+	setCurrUserStatus: (newStatus: string) => ({
+		type: 'SET_CURR_USER_STATUS',
+		newStatus,
+	} as const),
+
+	//set form error
+	setFormError: (message: string) => ({type: 'SET_FORM_ERROR', message,} as const),
+}
 //====================STATE, REDUCER===============
 
 const initialState = {
@@ -52,6 +94,7 @@ const profileReducer = (state = initialState, action: ProfileActionsType): Profi
 				currUserProfileInfo: action.userProfileInfo,
 			}
 		case 'SET_MY_PROFILE_INFO': 
+			console.log('action', action.myProfileInfo);
 			const info: ProfileInfoType = Object.assign({isMyProfile: true}, action.myProfileInfo);
 			console.log(info);
 			return {
@@ -95,56 +138,16 @@ const profileReducer = (state = initialState, action: ProfileActionsType): Profi
 	}
 }
 
-//===============ACTION CREATORS===============
-
-export const profileActions = {
-	//add post to state
-	addPost: (newPostValue: string) => ({
-		type: 'ADD_POST',
-		newPostValue: newPostValue,
-	} as const),
-
-	//set another profile info
-	setUserProfileInfo: (userProfileInfo: ProfileInfoType) => ({
-		type: 'SET_USER_PROFILE_INFO',
-		userProfileInfo,
-	} as const),
-
-	//set my profile info
-	setMyProfileInfo: (myProfileInfo: ProfileInfoType | null) => ({
-		type: 'SET_MY_PROFILE_INFO',
-		myProfileInfo,
-	} as const),
-
-	//set my status
-	setMyStatus: (newStatus: string) => ({
-		type: 'SET_MY_STATUS',
-		newStatus,
-	} as const),
-
-	//set avatar success
-	setAvatarSuccessful: (photos: PhotosType) => ({
-		type: 'SET_AVATAR',
-		photos,
-	} as const),
-
-	//set current(another) user status
-	setCurrUserStatus: (newStatus: string) => ({
-		type: 'SET_CURR_USER_STATUS',
-		newStatus,
-	} as const),
-
-	//set form error
-	setFormError: (message: string) => ({type: 'SET_FORM_ERROR', message,} as const),
-}
-
 //===================THUNKS CREATORS=========================================================
 
 export const setUserById = (id: number): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(toggleIsFetchingAC(true));
+
+	console.log('get user by id: ', id)
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	try {
 		const data = await usersAPI.getUserById(id);
+		console.log('userData', data);
 		if(data) {
 			dispatch(profileActions.setUserProfileInfo(data.data));
 		}

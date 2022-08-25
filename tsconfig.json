@@ -16,7 +16,7 @@
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.module.scss", 
 					"src/**/*.scss", "src/**/*.png", "src/**/*.jpg", "src/**/*.gif",
-					"src/declaration.d.ts"],
+					"src/declaration.d.ts", "src/utils/helpers/objHelper.js"],
 	"exclude": [
 	  "node_modules",
 	  "build",

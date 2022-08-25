@@ -10,9 +10,15 @@ type PropsType = {
 }
 
 const MyPosts: React.FC<PropsType> = ({postsData, avatarUrl}) => {
-	const postsList = postsData.map((data: PostDataType) => {
-		return <Post avatarUrl={avatarUrl || defaultAvatar} data={data} key={data.id}/>;
-	});
+	let postsList;
+	if(postsData.length > 0) {
+		postsList = postsData.map((data: PostDataType) => {
+			console.log(data);
+			return <Post avatarUrl={avatarUrl || defaultAvatar} data={data} key={data.id}/>;
+		});
+	} else {
+		postsList = '';
+	}
 	return (
 		<div className={classes.myPosts}>
 			{ postsList }

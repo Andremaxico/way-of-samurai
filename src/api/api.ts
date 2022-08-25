@@ -2,7 +2,7 @@ import { ProfileInfoType, ResultCodeEnum, UserCardType, AuthDataType, LoginDataT
 import axios, { AxiosResponse } from "axios";
 import { setAvatar } from "../Redux/profile-reducer";
 
-const instance = axios.create({
+export const instance = axios.create({
 	baseURL: 'https://social-network.samuraijs.com/api/1.0',
 	withCredentials: true,
 	headers: {
@@ -16,85 +16,25 @@ type ResponseDataType<DataType> = {
 	resultCode: ResultCodeEnum,
 }
 
-type GetUsersResponseDataType = UsersPageDataType;
-type FollowResponseDataType = ResponseDataType<boolean>;
-type UnfollowResponseDataType = ResponseDataType<any>
-type GetUserResponseDataType = ResponseDataType<ProfileInfoType>
+export type GetUsersResponseDataType = UsersPageDataType;
+export type FollowResponseDataType = ResponseDataType<boolean>;
+export type UnfollowResponseDataType = ResponseDataType<any>
+export type GetUserResponseDataType = ResponseDataType<ProfileInfoType>
 
-export const usersAPI = {
-	async getUsersPage(pageNum: number, pagesSize: number)  {
-		return instance.get<GetUsersResponseDataType>(`/users?page=${pageNum}&count=${pagesSize}`).then(res => {
-			return res.data;
-		});
-	},
-	async follow(userId: number) {
-		return instance.post<FollowResponseDataType>(`/follow/${userId}`).then(res => res.data);
-	},
-	async unfollow(userId: number) {
-		return instance.delete<UnfollowResponseDataType>(`/follow/${userId}`).then(res => res.data);
-	},
-	async getUserById(userId: number | null) {
-		return instance.get<GetUserResponseDataType>(`/profile/${userId}`).then(res => res.data);
-	},
-}
 
-type GetAuthInfoResponseDataType = ResponseDataType<AuthDataType>;
-type LoginResponseDataType = ResponseDataType<{userId: number}>;
-type LogoutResponseDataType = ResponseDataType<{}>;
 
-export const authAPI = {
-	async getAuthInfo() {
-		return instance.get<GetAuthInfoResponseDataType>('/auth/me').then(res => res.data);
-	},
+export type GetAuthInfoResponseDataType = ResponseDataType<AuthDataType>;
+export type LoginResponseDataType = ResponseDataType<{userId: number}>;
+export type LogoutResponseDataType = ResponseDataType<{}>;
 
-	async login(data: LoginDataType) {
-		return instance.post<LoginResponseDataType>(`/auth/login`, {...data}).then(res => res.data);
-	},
+	
 
-	async logout() {
-		return instance.delete<LogoutResponseDataType>('/auth/login').then(res => res.data);
-	}
-}	
+export type UpdateMyStatusResponseDataType = ResponseDataType<{}>;
+export type GetUserStatusResponseDataType = ResponseDataType<string>;
+export type SetAvatarResponseDataType = ResponseDataType<{photos: PhotosType}>;
+export type SetMyProfileDataResponseType = ResponseDataType<{}>;
 
-type UpdateMyStatusResponseDataType = ResponseDataType<{}>;
-type GetUserStatusResponseDataType = ResponseDataType<string>;
-type SetAvatarResponseDataType = ResponseDataType<{photos: PhotosType}>;
-type SetMyProfileDataResponseType = ResponseDataType<{}>;
-
-export const profileAPI = {
-	async updateMyStatus(status: string) {
-		const res = await instance.put<UpdateMyStatusResponseDataType>('/profile/status', {status})
-		return res.data;
-	},
-
-	async getUserStatus(userId: number) {
-		return instance.get<GetUserStatusResponseDataType>(`/profile/status/${userId}`)
-		.then(res => res.data).catch(e => e.message);
-	},
-
-	async setAvatar(file: any) {
-		const formData = new FormData();
-		formData.append('image', file);
-
-		return instance.put<SetAvatarResponseDataType>('/profile/photo', formData, {
-			headers: {
-				'Content-type':'multiport/form-data',
-			}
-		}).then(res => res.data);
-	},
-
-	async setMyProfileData(data: ProfileInfoType) {
-		const res = await instance.put<SetMyProfileDataResponseType>('/profile', {...data})
-		return res.data;
-	}
-}
 
 export type GetCaptchaResponseType = {
 	url: string,
 } 
-export const securityAPI = {
-	async getCaptchaUrl() {
-		const res = await instance.get<GetCaptchaResponseType>('/security/get-captcha-url')
-		return res.data;
-	}
-}
