@@ -31,10 +31,10 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 		setFocus("fullName", {shouldSelect: true});
 	}, [setFocus]);
 
-	//sets {key: value} to [[key, value]]
+	//sets {key: value} -> [[key, value]]
 	const contactsArr: Array<Array<string>> = Object.entries(profileInfo.contacts);
-	//map [[key, value]] to React component
-	const contactsInputsList = contactsArr.map(([title, value]) => {
+	//map [[key, value]] -> React component
+	const contactsInputsList = contactsArr.map(([title, value]: Array<string>) => {
 		const name: any =`contacts.${title}`;
 		return (
 			<div className={classes.contact} key={title}>
@@ -44,7 +44,7 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 						type="url" placeholder={`Input your ${title}'s link`} {...register(name, {
 							pattern: {
 								value: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
-								message: 'Input valid link, http://www.websiteName.com/...',
+								message: 'Input valid link, https://www.websiteName.com/...',
 							},
 						})}
 					/>
@@ -58,8 +58,10 @@ const ProfileInfoForm: React.FC<PropsType> = ({
 	}, [formError])
 
 	const onSubmit: SubmitHandler<ProfileInfoType> = (data) => {
-		updateMyProfileData(data);
-		deactivateEdit();
+		if(!summaryError) {
+			updateMyProfileData(data);
+			deactivateEdit();
+		}
 	}
 
 	const onFormChange = () => setSummaryError(null);

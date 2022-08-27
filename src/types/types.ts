@@ -133,3 +133,18 @@ export type UsersPageDataType = {
 	totalCount: number,
 	error?: string | null, 
 }
+
+//with router
+export type RouterParamsType = {
+	userId?: number,
+}
+export type RouterPropsType = {
+	router: {
+		params: RouterParamsType
+	}
+}
+
+//=======================USERS TYPES===================
+export type GetUsersParamsType = {
+	pageNum: number, pagesSize: number, term?: string, friend?: boolean
+}

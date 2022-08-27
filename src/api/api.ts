@@ -19,7 +19,7 @@ type ResponseDataType<DataType> = {
 export type GetUsersResponseDataType = UsersPageDataType;
 export type FollowResponseDataType = ResponseDataType<boolean>;
 export type UnfollowResponseDataType = ResponseDataType<any>
-export type GetUserResponseDataType = ResponseDataType<ProfileInfoType>
+export type GetUserResponseDataType = ProfileInfoType;
 
 
 

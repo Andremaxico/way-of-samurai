@@ -10,12 +10,11 @@ import { logout } from '../../Redux/auth-reducer';
 import { getIsAuthed } from '../../Redux/auth-selectors';
 //hocs
 import withRouter from '../../hocs/withRouter';
-import { AnyAction, compose } from 'redux';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withNetworkRedirect from '../../hocs/withNetworkRedirect';
-import { AppDispatch, RootStateType } from '../../Redux/redux-store';
-import { ProfileInfoType } from '../../types/types';
-import { ThunkDispatch } from 'redux-thunk';
+import { RootStateType } from '../../Redux/redux-store';
+import { ProfileInfoType, RouterPropsType } from '../../types/types';
 
 
 type MapDispatchPropsType = {
@@ -35,13 +34,7 @@ type MapStatePropsType = {
 	captchaUrl: string | null,
 	isAuthed: boolean | null,
 }
-type RouterPropsType = {
-	router: {
-		params: {
-			userId?: number,
-		}
-	}
-}
+
 type PropsType = MapStatePropsType & MapDispatchPropsType & RouterPropsType;
 
 const ProfileContainer: React.FC<PropsType> = (props: PropsType) => {
@@ -95,7 +88,6 @@ const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 		isAuthed: getIsAuthed(state),
 	}
 }
-
 const mapDispatchToProps: MapDispatchPropsType = {
 	toggleIsFetching: usersActions.toggleIsFetchingAC,
 	setUserById,
@@ -105,7 +97,7 @@ const mapDispatchToProps: MapDispatchPropsType = {
 	updateMyProfileData,
 }
 
-export default compose<any>(
+export default compose(
 	connect<MapStatePropsType, MapDispatchPropsType>(mapStateToProps, mapDispatchToProps),
 	withNetworkRedirect,
 	withRouter,

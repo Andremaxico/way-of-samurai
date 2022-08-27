@@ -1,6 +1,6 @@
 import { FollowResponseDataType, UnfollowResponseDataType } from './../api/api';
 import { ThunkAction } from 'redux-thunk';
-import { UserCardType, ResultCodeEnum } from './../types/types';
+import { UserCardType, ResultCodeEnum, GetUsersParamsType } from './../types/types';
 import { usersAPI } from "../api/usersApi";
 import changeArrayObjProps from '../utils/helpers/objHelper';
 import { appActions } from "./app-reducer";
@@ -147,10 +147,10 @@ export const usersActions = {
 	} as const),
 }
 //========================THUNKS============================
-export const getUsers = (currentPage: number, pagesSize: number): ThunkType => async (dispatch: DispatchType) => {
+export const getUsers = ({...params}: GetUsersParamsType): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(usersActions.toggleIsFetchingAC(true));
 	try {
-		const res = await usersAPI.getUsersPage(currentPage, pagesSize);
+		const res = await usersAPI.getUsersPage(params);
 		dispatch(usersActions.setUsersAC(res.items));
 		dispatch(usersActions.setTotalUsersCountAC(res.totalCount));
 		dispatch(usersActions.toggleIsFetchingAC(false));

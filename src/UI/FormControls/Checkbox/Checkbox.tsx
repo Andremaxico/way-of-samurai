@@ -18,7 +18,7 @@ const Checkbox = <FieldsNames extends string>({
 		<div className={`${classes.Checkbox} ${className}`}>
 			<input 
 				type="checkbox" id={name} 
-				{...register(name, {required: true, ...validation} )} 
+				{...register(name, {...validation} )} 
 				className={classes.checkboxInput}
 			/>
 			<label 

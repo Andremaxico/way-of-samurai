@@ -33,7 +33,11 @@ const UsersList: React.FC<PropsType> = (props) => {
 				setCurrentPage={props.setCurrentPage}
 			/>
 			<div className={classes.UsersList}>
-				{ list }
+				{ list.length > 0 ? list : 
+					<div className={classes.noUsersMessage}>
+						No users founded
+					</div> 
+				}
 			</div>
 		</div>
 	)

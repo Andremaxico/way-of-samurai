@@ -1,0 +1,19 @@
+@import '../../../global-styles';
+
+
+.UsersSearch {
+	@include row-align;
+	.input {
+		max-width: 250px;
+		margin-right: 12px;
+		input {
+			width: 100%;
+		}
+	}
+	.isFriend {
+		margin-right: 12px;
+	}
+	.searchBtn {
+		@include formBtn;
+	}
+}

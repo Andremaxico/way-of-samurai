@@ -1,25 +1,27 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, DispatchProp, Matching } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import { AnyAction } from 'redux';
 import { RootStateType } from '../Redux/redux-store';
 
-type MapStateToPropsType = {
+type MapStatePropsType = {
 	isAuthed: boolean,
 }
 
-const mapStateToPropsRedirect = (state: RootStateType): MapStateToPropsType => {
+const mapStateToPropsRedirect = (state: RootStateType): MapStatePropsType => {
 	return {
 		isAuthed: state.auth.isAuthed,
 	}
 }
 
-const withLoginRedirect = (Component: React.FC) => {
-	const ComponentContainer = (props: any) => {
-		if (!props.isAuthed) return <Navigate to='/login' replace />
+function withLoginRedirect <P extends MapStatePropsType>(Component: React.ComponentType<P>)  {
+	const ComponentContainer: React.FC<MapStatePropsType> = (props) => {
+		const {isAuthed, ...restProps} = props;
+		if (!isAuthed) return <Navigate to='/login' replace /> 
 
-		return <Component {...props} />
+		return <Component {...restProps as P} />
 	}
-	return connect<MapStateToPropsType>(mapStateToPropsRedirect)(ComponentContainer);
+	return connect<MapStatePropsType>(mapStateToPropsRedirect)(ComponentContainer);
 }
 
 export default withLoginRedirect;

@@ -5,7 +5,7 @@ import { RootStateType } from '../../../Redux/redux-store';
 import { follow, unfollow, usersActions, getUsers
 } from "../../../Redux/users-reducer";
 import { selectPageSize, selectPagesNumbers, selectTotalUsersCount, selectUsersData } from '../../../Redux/users-selectors';
-import { UserCardType } from '../../../types/types';
+import { GetUsersParamsType, UserCardType } from '../../../types/types';
 import UsersList from './UsersList';
 
 type MapStatePropsType = {
@@ -21,7 +21,7 @@ type MapDispatchPropsType = {
 	follow: (userId: number) => void,
 	unfollow: (userId: number) => void,
 	setCurrentPage: (pageNum: number) => void,
-	getUsers: (currPageNum: number, pagesSizeNum: number) => void,
+	getUsers: ({pageNum, ...params}: GetUsersParamsType) => void,
 }
 export type UsersListPropsType = MapStatePropsType & MapDispatchPropsType;
 
@@ -29,13 +29,21 @@ class UsersListContainer extends React.Component<UsersListPropsType> {
 	props: UsersListPropsType;
 	componentDidMount() {
 		//get users data from server -> set to state
-		this.props.getUsers(this.props.currentPage, this.props.pagesSize);
+		const getUsersParams: GetUsersParamsType = {
+			pageNum: this.props.currentPage,
+			pagesSize: this.props.pagesSize
+		}
+		this.props.getUsers(getUsersParams);
 	}
 	
 	setCurrPage = (num: number): void => {
+		const getUsersParams: GetUsersParamsType = {
+			pageNum: num,
+			pagesSize: this.props.pagesSize,
+		}
 		//changes current users-page number
 		this.props.setCurrentPage(num);
-		this.props.getUsers(num, this.props.pagesSize);
+		this.props.getUsers(getUsersParams);
 
 	}
 

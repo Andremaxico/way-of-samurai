@@ -6,7 +6,13 @@
 		margin-bottom: 28px;
 	}
 }
-.UsersList {}
+.UsersList {
+	.noUsersMessage {
+		margin: 0 auto;
+		@include title;
+		color: $mainCol;
+	}
+}
 .UsersPagination {
 	display: flex;
 	justify-content: center;

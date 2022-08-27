@@ -8,7 +8,7 @@ import usersReducer, { UsersStateType } from './users-reducer';
 import authReducer, { AuthStateType } from './auth-reducer';
 import appReducer, { AppStateType } from './app-reducer';
 
-type ReducerType = {
+export type ReducerType = {
 	profilePage: ProfileStateType,
 	messagesPage: MessagesStateType,
 	usersPage: UsersStateType,

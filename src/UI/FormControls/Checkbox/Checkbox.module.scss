@@ -18,6 +18,7 @@
 	}
 	label {
 		@include row-align;
+		@include text;
 		&.error {
 			color: $mainCol;
 			&::before {

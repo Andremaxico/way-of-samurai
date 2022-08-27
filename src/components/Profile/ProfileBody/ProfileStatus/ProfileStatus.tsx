@@ -32,8 +32,8 @@ const ProfileStatus: React.FC<PropsType> = (props) => {
 		setIsEdit(false);
 	}
 
-	const changeStatusText = (event: React.SyntheticEvent) => {
-		const target = event.target as HTMLInputElement;
+	const changeStatusText = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+		const target = event.target as HTMLTextAreaElement;
 		const newValue = target.value;
 		setStatusText(newValue);
 	}

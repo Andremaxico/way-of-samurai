@@ -11,13 +11,13 @@ const NetworkRedirectMstp = (state: RootStateType): MapStateToPropsType => {
 	return {isNetworkError: state.app.isNetworkError};
 }
 
-const withNetworkRedirect = (Component: any ) => {
-	console.log(Component);
-	return connect<MapStateToPropsType>(NetworkRedirectMstp)((props: any) => {
+function withNetworkRedirect <T>(Component: React.ComponentType<T>)  {
+	return connect<MapStateToPropsType>(NetworkRedirectMstp)((props: MapStateToPropsType) => {
+		const {isNetworkError, ...restProps} = props;
 		if (props.isNetworkError)
 			return <NetworkError />;
 
-		return <Component { ...props } /> ;
+		return <Component { ...restProps as T} /> ;
 	});
 };
 

@@ -77,24 +77,23 @@ export const setAuthData = (): ThunkType => async (dispatch: DispatchType) => {
 		if(res.resultCode === ResultCodeEnum.Success) {
 			//login, email, id
 			dispatch(authActions.setAuthDataAC(res.data, true));
+		} else if(res.resultCode === ResultCodeEnum.CaptchaRequired) {
+			//set captcha
+			dispatch(getCaptchaUrl());
 		}
 	
 		const data = await usersAPI.getUserById(res.data.id);
 		if(data) {
 			//all info
-			console.log('my profile info data:', data.data)
-			dispatch(profileActions.setMyProfileInfo(data.data));
+			dispatch(profileActions.setMyProfileInfo(data));
 		}
 
 		//set my status from server to my profileData
-		const status = await profileAPI.getUserStatus(data.data.userId);
+		const status = await profileAPI.getUserStatus(data.userId);
 		if(status && status.length > 0) dispatch(profileActions.setMyStatus(status));
 		dispatch(usersActions.toggleIsFetchingAC(false));
-
-		//set captcha
-		dispatch(getCaptchaUrl());
 	} catch(e) {
-		console.log(e.code);
+		console.error(e);
 		if	(e.code === "ERR_NETWORK") dispatch(appActions.setNetworkError(true))
 	}
 }

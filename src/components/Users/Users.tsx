@@ -1,14 +1,19 @@
-import React from 'react';
+import * as React from 'react';
 import classes from './Users.module.scss';
+import UsersHeader from './UsersHeader';
 import UsersListContainer from './UsersList';
 
-const Users = (props) => {
+type PropsType = {}
+
+const Users: React.FC<PropsType> = (props) => {
 	return (
 		<div className={classes.Users}>
-			<h1 className={classes.title}>Users</h1>
+			<UsersHeader />
 			<UsersListContainer />
 		</div>
 	)
 }
+
+
 
 export default Users;
