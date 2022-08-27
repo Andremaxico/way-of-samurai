@@ -3,20 +3,14 @@ import classes from './User.module.scss';
 import defaultAvatar from '../../../assests/images/default-user-avatar.png';
 import { Link } from 'react-router-dom';
 import { UserCardType } from '../../../types/types';
+import FollowBtn from '../../../UI/FollowBtn';
 
 type PropsType = {
 	info: UserCardType,
-	followingInProgress: Array<number>,
-	follow: (id: number) => void,
-	unfollow: (id: number) => void,
 }
 
 const User: React.FC<PropsType> = (props: PropsType) => {
-	const {name: name, id: id, status: description, photos: photos, followed: isFollowed} = props.info;
-	const followingInProgress: boolean = props.followingInProgress.includes(id);
-	
-	const follow = () => props.follow(id);
-	const unfollow = () => props.unfollow(id);
+	const {name, id, status: description, photos: photos, followed: isFollowed} = props.info;
 
 	return (
 		<div className={classes.user}>
@@ -33,10 +27,7 @@ const User: React.FC<PropsType> = (props: PropsType) => {
 				</div>
 				<p className={classes.description}>{description}</p>
 			</div>
-			<button 
-				className={classes.followBtn} 
-				onClick={!followingInProgress ? (isFollowed ? unfollow : follow) : undefined }
-			>{followingInProgress ? 'Processing...' :  isFollowed ? 'Unfollow' : 'Follow'}</button>
+			<FollowBtn isFollowed={isFollowed} userId={id} />
 		</div>
 	)
 }

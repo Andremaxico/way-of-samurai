@@ -1,0 +1,32 @@
+@import '../../global-styles';
+
+.Pagination {
+	display: flex;
+	justify-content: center;
+	margin: 0 auto 24px;
+	max-width: 600px;
+	overflow: hidden;
+	.paginationBtn {
+		@include text;
+		transition: 0.15s;
+		margin-right: 8px;
+		&._white {
+			color: #fff;
+		}
+		&:last-child {
+			margin-right: 0;
+		}
+		&._active, &:hover {
+			font-weight: 500;
+			color: $mainCol;
+		}
+		&._active._white, &._white:hover {
+			color: rgba($color: #fff, $alpha: 0.6)
+		} 
+	}
+	.navBtn {
+		margin: 0 10px;
+		@include formBtn;
+		text-transform: uppercase;
+	}
+}

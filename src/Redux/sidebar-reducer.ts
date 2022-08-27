@@ -1,34 +1,28 @@
+import { usersAPI } from './../api/usersApi';
+import { ThunkAction } from 'redux-thunk';
+import { InferActionsType, RootStateType } from './redux-store';
+import { UserCardType, GetUsersParamsType } from './../types/types';
 import { AnyAction } from "redux";
 import { FriendCardType, LinkType } from "../types/types";
+import { Dispatch } from 'react';
 
 export type SidebarStateType = {
-	friendsData: Array<FriendCardType>,
+	friendsData: Array<UserCardType> | null,
+	friendsPageNum: number,
+	friendsTotalCount: number | null,
+	friendsPageSize: number,
 	linksData: Array<LinkType>,
 }
 
+type ActionType = InferActionsType<typeof sidebarActions>;
+type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>;
+type DispatchType = Dispatch<ActionType | ThunkType>
+
 const initialState: SidebarStateType = {
-	friendsData: [
-		{
-			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
-			name: 'Andriy',
-			id: 1,
-		},
-		{
-			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
-			name: 'Ivan',
-			id: 2,
-		},
-		{
-			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
-			name: 'Vasya',
-			id: 3,
-		},
-		{
-			avatarUrl: 'https://icon-library.com/images/avatar-icon-png/avatar-icon-png-25.jpg',
-			name: 'David',
-			id: 4,
-		},
-	],
+	friendsData: null,
+	friendsPageNum: 1,
+	friendsPageSize: 6,
+	friendsTotalCount: null,
 	linksData: [
 		{
 			path: '/profile',
@@ -53,8 +47,45 @@ const initialState: SidebarStateType = {
 	]
 };
 
-const sidebarReducer = (state = initialState, action: AnyAction) => {
-	return state;
+const sidebarReducer = (state = initialState, action: ActionType) => {
+	switch (action.type) {
+		case 'SET_FRIENDS':
+			return {...state, friendsData: action.friendsData}
+		case "SET_CURRENT_PAGE": 
+			return {...state, friendsPageNum: action.pageNum}
+		case 'SET_TOTAL_FRIENDS_COUNT':
+			return {...state, friendsTotalCount: action.count}
+		default:
+			return state;
+	}
 }
+
+//===============ACTIONS=================
+export const sidebarActions = {
+	setFriends: (friendsData: Array<UserCardType> | null) => (
+		{type: 'SET_FRIENDS', friendsData} as const
+	),
+	setCurrrentPage: (pageNum : number) => (
+		{type: 'SET_CURRENT_PAGE', pageNum} as const
+	),
+	setTotalFriendsCount: (count: number) => (
+		{type: 'SET_TOTAL_FRIENDS_COUNT', count} as const
+	)
+}
+
+//===============THUNKS===================
+export const getFriends = (params: GetUsersParamsType): ThunkType => async (dispatch: DispatchType) => {
+	try {
+		const data = await usersAPI.getUsersPage({friend: true, ...params});
+		console.log(data);
+		if(data) {
+			dispatch(sidebarActions.setFriends(data.items));
+			dispatch(sidebarActions.setTotalFriendsCount(data.totalCount));
+		}
+	} catch(e) {
+		console.log(e);
+	}
+}
+
 
 export default sidebarReducer;

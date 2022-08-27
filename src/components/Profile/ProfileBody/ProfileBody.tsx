@@ -6,6 +6,7 @@ import Preloader from '../../../UI/Preloader';
 import ProfileInfo from './ProfileInfo';
 import ProfileInfoForm from './ProfileInfoForm';
 import { ProfilePropsType } from '../Profile';
+import FollowBtn from '../../../UI/FollowBtn';
 
 const ProfileBody: React.FC<ProfilePropsType> = ({ 
 	logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, 
@@ -13,7 +14,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 }) => {
 	const [isAvatarUpdating, setIsAvatarUpdating] = React.useState<boolean>(false);
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
-	const {userId: id, photos, isMyProfile} = profileInfo;
+	const {userId: id, photos, isMyProfile, followed} = profileInfo;
 
 	const {small: coverImg, large: avatarImg} = photos || {};
 
@@ -58,6 +59,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 				:	<ProfileInfo activateEdit={activateEdit} profileInfo={profileInfo} updateMyStatus={updateMyStatus}/>
 				}
 				{ isMyProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
+				{ !isMyProfile && <FollowBtn isFollowed={followed} userId={id} /> }
 			</div>
 		</div>
 	)

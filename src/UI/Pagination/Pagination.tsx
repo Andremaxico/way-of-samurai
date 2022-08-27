@@ -1,5 +1,5 @@
 import * as ReactAll from 'react';
-import classes from '../Users.module.scss';
+import classes from './Pagination.module.scss';
 
 const { useEffect, useState, ...React } = ReactAll;
 
@@ -7,11 +7,12 @@ type PropsType = {
 	pagesNumbers: Array<number>,
 	currentPage: number,
 	portionSize?: number,
-	setCurrentPage: (num: number) => void;
+	whiteTheme?: boolean,
+	setCurrentPage: (num: number) => void,
 }
 
 const UsersPagination: React.FC<PropsType> = (
-	{ pagesNumbers, setCurrentPage, currentPage, portionSize = 10 }
+	{ pagesNumbers, setCurrentPage, currentPage,  whiteTheme, portionSize = 10 }
 ) => {
 	const portionsCount: number = Math.ceil(pagesNumbers.length / portionSize);
 	const portionNumber: number = Math.ceil(currentPage / portionSize);
@@ -29,7 +30,9 @@ const UsersPagination: React.FC<PropsType> = (
 	const buttons = currentNumbers.map((num: number) => {
 		return (
 			<button 
-				className={currentPage === num ? `${classes.paginationBtn} ${classes._active}` : classes.paginationBtn} 
+				className={ `${currentPage === num ? 
+					`${classes.paginationBtn} ${classes._active}` 
+					: classes.paginationBtn} ${whiteTheme && classes._white}`} 
 				key={num}
 				onClick={() => setCurrentPage(num)}
 			>
@@ -39,7 +42,7 @@ const UsersPagination: React.FC<PropsType> = (
 	});
 
 	return (
-		<div className={classes.UsersPagination}>
+		<div className={classes.Pagination}>
 			{portionNum > 1 && 
 				<button className={classes.navBtn} onClick={ setPrevPortion }>Prev</button>
 			}

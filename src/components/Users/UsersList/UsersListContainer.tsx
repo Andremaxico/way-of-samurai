@@ -15,11 +15,8 @@ type MapStatePropsType = {
 	pagesSize: number,
 	currentPage: number,
 	isFetching: boolean,
-	followingInProgress: Array<number>,
 }
 type MapDispatchPropsType = {
-	follow: (userId: number) => void,
-	unfollow: (userId: number) => void,
 	setCurrentPage: (pageNum: number) => void,
 	getUsers: ({pageNum, ...params}: GetUsersParamsType) => void,
 }
@@ -63,14 +60,11 @@ const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 		pagesSize: selectPageSize(state),
 		currentPage: state.usersPage.currentPage,
 		isFetching: state.usersPage.isFetching,
-		followingInProgress: state.usersPage.followingInProgress,
 	}
 }
 
 
 const mapDispatchToProps: MapDispatchPropsType = {
-	follow,
-	unfollow,
 	setCurrentPage: usersActions.setCurrentPageAC,
 	getUsers,
 }

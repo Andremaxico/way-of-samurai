@@ -3,7 +3,7 @@
 .Users {
 	.title {
 		@include title;
-		margin-bottom: 28px;
+		margin-right: 16px;
 	}
 }
 .UsersList {
@@ -13,27 +13,8 @@
 		color: $mainCol;
 	}
 }
-.UsersPagination {
-	display: flex;
-	justify-content: center;
-	margin: 0 auto 24px;
-	max-width: 600px;
-	overflow: hidden;
-	.paginationBtn {
-		@include text;
-		transition: 0.15s;
-		margin-right: 8px;
-		&:last-child {
-			margin-right: 0;
-		}
-		&._active, &:hover {
-			font-weight: 500;
-			color: $mainCol;
-		}
-	}
-	.navBtn {
-		margin: 0 10px;
-		@include formBtn;
-		text-transform: uppercase;
-	}
+.UsersHeader {
+	margin-bottom: 32px;
+	@include row-align;
+	justify-content: space-between;
 }

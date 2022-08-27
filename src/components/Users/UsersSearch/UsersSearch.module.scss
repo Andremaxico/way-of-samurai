@@ -3,6 +3,7 @@
 
 .UsersSearch {
 	@include row-align;
+	flex: 1 1 auto ;
 	.input {
 		max-width: 250px;
 		margin-right: 12px;

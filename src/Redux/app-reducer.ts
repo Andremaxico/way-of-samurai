@@ -1,3 +1,4 @@
+import { getFriends } from './sidebar-reducer';
 import { ThunkAction } from 'redux-thunk';
 import { Dispatch } from 'react';
 import { setAuthData } from './auth-reducer';

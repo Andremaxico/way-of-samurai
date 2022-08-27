@@ -2,7 +2,7 @@ import * as React from 'react';
 import User from '../User/User';
 import classes from '../Users.module.scss';
 import Preloader from '../../../UI/Preloader/Preloader';
-import UsersPagination from '../UsersPagination/UsersPagination';
+import Pagination from '../../../UI/Pagination';
 import { UsersListPropsType } from './UsersListContainer';
 
 type OwnProps = {
@@ -15,8 +15,6 @@ const UsersList: React.FC<PropsType> = (props) => {
 		return (
 			<User 
 				info={data} key={data.id} 
-				follow={props.follow} unfollow={props.unfollow}
-				followingInProgress={props.followingInProgress}
 			/>
 		)
 	});
@@ -27,7 +25,7 @@ const UsersList: React.FC<PropsType> = (props) => {
 	}
 	return (
 		<div className={classes.UsersList}>
-			<UsersPagination 
+			<Pagination 
 				pagesNumbers={props.usersPagesNumbers}
 				currentPage={props.currentPage}
 				setCurrentPage={props.setCurrentPage}
