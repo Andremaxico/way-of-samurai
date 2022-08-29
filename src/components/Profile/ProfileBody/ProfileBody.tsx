@@ -7,17 +7,25 @@ import ProfileInfo from './ProfileInfo';
 import ProfileInfoForm from './ProfileInfoForm';
 import { ProfilePropsType } from '../Profile';
 import FollowBtn from '../../../UI/FollowBtn';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
 const ProfileBody: React.FC<ProfilePropsType> = ({ 
 	logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, 
-	formError, updateMyProfileData
+	formError, updateMyProfileData, followed
 }) => {
+	const navigate = useNavigate();
 	const [isAvatarUpdating, setIsAvatarUpdating] = React.useState<boolean>(false);
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
-	const {userId: id, photos, isMyProfile, followed} = profileInfo;
-
+	const [isFollowed, setIsFollowed] = React.useState<'true' | 'false' | boolean>(followed);
+	
+	const {userId: id, photos, isMyProfile } = profileInfo;
 	const {small: coverImg, large: avatarImg} = photos || {};
 
+	//isFollowed: true(false) -> isFollowed: false(true)
+	const changeFollowingStatus = (value: boolean) => {
+		setIsFollowed(value);
+		navigate(`/profile/${id}/${value}`, {replace: true});
+	}
 	//change avatar
 	const avatarFileChange = async (e: React.SyntheticEvent) => {
 		const target = e.target as HTMLInputElement;
@@ -59,7 +67,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 				:	<ProfileInfo activateEdit={activateEdit} profileInfo={profileInfo} updateMyStatus={updateMyStatus}/>
 				}
 				{ isMyProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
-				{ !isMyProfile && <FollowBtn isFollowed={followed} userId={id} /> }
+				{ !isMyProfile && <FollowBtn isFollowed={isFollowed} userId={id}  setIsFollowed={changeFollowingStatus}/> }
 			</div>
 		</div>
 	)

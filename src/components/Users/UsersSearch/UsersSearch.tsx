@@ -12,27 +12,30 @@ type CallbacksType = {
 	getUsers: (params: GetUsersParamsType) => void,
 }
 type PropsType = {
-	currentPage: number,
-	pagesSize: number,
+	usersRequestData: GetUsersParamsType,
 }
 type SearchUsersFormType = {
-	username: string,
+	username: string | null,
 	isFriend: boolean,
 }
 
-const UsersSearch: React.FC<PropsType & CallbacksType> = ({getUsers, currentPage, pagesSize}) => {
-	const { handleSubmit, register, formState: { errors } } = useForm<SearchUsersFormType>();
+const UsersSearch: React.FC<PropsType & CallbacksType> = ({getUsers, usersRequestData}) => {
+	const { handleSubmit, register, formState: { errors } } = useForm<SearchUsersFormType>({
+		defaultValues: {
+			username: usersRequestData.term,
+			isFriend: usersRequestData.friend,
+		}
+	});
 
 	const onSubmit = (data: SearchUsersFormType) => {
 		const getUsersParams: GetUsersParamsType = {
-			pageNum: currentPage,
-			pagesSize,
+			...usersRequestData,
 			term: data.username,
 			friend: data.isFriend,
 		}
 		getUsers(getUsersParams);
 	}
-	console.log(errors);
+
 	return (
 		<form className={classes.UsersSearch} onSubmit={handleSubmit(onSubmit)}>
 			<Field error={errors.username} className={classes.input}>
@@ -53,9 +56,8 @@ const UsersSearch: React.FC<PropsType & CallbacksType> = ({getUsers, currentPage
 	)
 }
 
-const mapStateToProps = (state: RootStateType) => ({	
-	currentPage: state.usersPage.currentPage,
-	pagesSize: state.usersPage.pagesSize,
+const mapStateToProps = (state: RootStateType): PropsType => ({	
+	usersRequestData: state.usersPage.requestData,
 });
 
 const mapDispatchToProps = {

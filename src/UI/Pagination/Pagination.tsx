@@ -18,6 +18,9 @@ const UsersPagination: React.FC<PropsType> = (
 	const portionNumber: number = Math.ceil(currentPage / portionSize);
 	const [portionNum, setPortionNum] = useState(portionNumber);
 
+
+	console.log('pagination: ', setCurrentPage);
+
 	const portionLeftBorder = (portionNum - 1) * portionSize;
 	const portionRightBorder = portionNum * portionSize + 1;
 

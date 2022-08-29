@@ -9,11 +9,10 @@ import { GetUsersParamsType, UserCardType } from '../../../types/types';
 import UsersList from './UsersList';
 
 type MapStatePropsType = {
+	usersRequestData: GetUsersParamsType,
 	usersData: Array<UserCardType>,
 	usersPagesNumbers: Array<number>,
 	totalUsersCount: number,
-	pagesSize: number,
-	currentPage: number,
 	isFetching: boolean,
 }
 type MapDispatchPropsType = {
@@ -27,16 +26,15 @@ class UsersListContainer extends React.Component<UsersListPropsType> {
 	componentDidMount() {
 		//get users data from server -> set to state
 		const getUsersParams: GetUsersParamsType = {
-			pageNum: this.props.currentPage,
-			pagesSize: this.props.pagesSize
+			...this.props.usersRequestData,
 		}
 		this.props.getUsers(getUsersParams);
 	}
 	
 	setCurrPage = (num: number): void => {
 		const getUsersParams: GetUsersParamsType = {
+			...this.props.usersRequestData,
 			pageNum: num,
-			pagesSize: this.props.pagesSize,
 		}
 		//changes current users-page number
 		this.props.setCurrentPage(num);
@@ -54,11 +52,10 @@ class UsersListContainer extends React.Component<UsersListPropsType> {
 
 const mapStateToProps = (state: RootStateType): MapStatePropsType => {
 	return {
-		usersData: selectUsersData(state),
+		usersData: state.usersPage.usersData,
 		usersPagesNumbers: selectPagesNumbers(state),
+		usersRequestData: state.usersPage.requestData,
 		totalUsersCount: selectTotalUsersCount(state),
-		pagesSize: selectPageSize(state),
-		currentPage: state.usersPage.currentPage,
 		isFetching: state.usersPage.isFetching,
 	}
 }

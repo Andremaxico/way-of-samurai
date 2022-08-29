@@ -11,6 +11,7 @@ type OwnProps = {
 type PropsType = UsersListPropsType & OwnProps;
 
 const UsersList: React.FC<PropsType> = (props) => {
+	//console.log('update users data: ', props.usersData);
 	const list = props.usersData.map(data => {
 		return (
 			<User 
@@ -27,7 +28,7 @@ const UsersList: React.FC<PropsType> = (props) => {
 		<div className={classes.UsersList}>
 			<Pagination 
 				pagesNumbers={props.usersPagesNumbers}
-				currentPage={props.currentPage}
+				currentPage={props.usersRequestData.pageNum}
 				setCurrentPage={props.setCurrentPage}
 			/>
 			<div className={classes.UsersList}>

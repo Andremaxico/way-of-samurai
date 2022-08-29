@@ -5,8 +5,9 @@ import { follow, unfollow } from '../../Redux/users-reducer';
 import classes from './FollowBtn.module.scss';
 
 type OwnPropsType = {
-	isFollowed: boolean,
+	isFollowed: 'true' | 'false' | boolean,
 	userId: number,
+	setIsFollowed?: (value: boolean) => void
 };
 type PropsType = {
 	followingInProgress: Array<number>,
@@ -17,18 +18,35 @@ type CallbacksType = {
 }
 
 const FollowBtn: React.FC<OwnPropsType & PropsType & CallbacksType> = ({
-	isFollowed, followingInProgress, userId, ...restProps
+	isFollowed, followingInProgress, userId, setIsFollowed, ...restProps
 }) => {
-	const follow = () => restProps.follow(userId);
-	const unfollow = () => restProps.unfollow(userId);
+	let isFollowing = isFollowed;
+	if(typeof isFollowed !== 'boolean') {
+		isFollowing = (isFollowed === 'true') ? true : false;
+	}
+	const follow = async () => {
+		await restProps.follow(userId);
+		if(setIsFollowed) {
+			setIsFollowed(true);
+		}
+	};
+	const unfollow = async () => {
+		await restProps.unfollow(userId);
+		if(setIsFollowed) {
+			setIsFollowed(false);
+		}
+	};
+	console.log('follow btn is followed: ', isFollowing);
+	const handleButtonClick = () => {
+		return !isFollowingInProgress ? (Boolean(isFollowing) ? unfollow() : follow()) : undefined
+	}
 
-	const isFollowingInProgress: boolean = followingInProgress.includes(userId);
-
+	const isFollowingInProgress: boolean = followingInProgress.includes(userId); 
 	return (
 		<button 
 			className={classes.followBtn} 
-			onClick={!isFollowingInProgress ? (isFollowed ? unfollow : follow) : undefined }
-		>{isFollowingInProgress ? 'Processing...' :  isFollowed ? 'Unfollow' : 'Follow'}</button>
+			onClick={handleButtonClick}
+		>{isFollowingInProgress ? 'Processing...' :  Boolean(isFollowing) ? 'Unfollow' : 'Follow'}</button>
 	)
 }
 

@@ -51,7 +51,7 @@ const sidebarReducer = (state = initialState, action: ActionType) => {
 	switch (action.type) {
 		case 'SET_FRIENDS':
 			return {...state, friendsData: action.friendsData}
-		case "SET_CURRENT_PAGE": 
+		case "sidebar/SET_CURRENT_PAGE": 
 			return {...state, friendsPageNum: action.pageNum}
 		case 'SET_TOTAL_FRIENDS_COUNT':
 			return {...state, friendsTotalCount: action.count}
@@ -66,7 +66,7 @@ export const sidebarActions = {
 		{type: 'SET_FRIENDS', friendsData} as const
 	),
 	setCurrrentPage: (pageNum : number) => (
-		{type: 'SET_CURRENT_PAGE', pageNum} as const
+		{type: 'sidebar/SET_CURRENT_PAGE', pageNum} as const
 	),
 	setTotalFriendsCount: (count: number) => (
 		{type: 'SET_TOTAL_FRIENDS_COUNT', count} as const

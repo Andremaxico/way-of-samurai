@@ -65,7 +65,9 @@ const App: React.FC<PropsType> = (props) => {
         <div className='content'>
             <Routes>
                 <Route path='/profile' element={<ProfileSuspensed />}>
-                  <Route path=':userId'/>
+                  <Route path=':userId'>
+                    <Route path=':isFollowed' />
+                  </Route>
                 </Route>
                 <Route path='/messages/*' element={<MessagesSuspensed />} />
                 <Route path='/users/*' element={<Users />}/>

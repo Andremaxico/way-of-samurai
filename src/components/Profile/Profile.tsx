@@ -4,11 +4,12 @@ import MyPosts from './MyPosts';
 import NewPost from './NewPost'
 import classes from './Profile.module.scss'
 import Preloader from '../../UI/Preloader';
-import { ProfileInfoType } from '../../types/types';
+import { ProfileInfoType, UserCardType } from '../../types/types';
 
 export type ProfilePropsType = {
 	currUserProfileInfo: ProfileInfoType,
 	formError: string | null,
+	followed: 'true' | 'false' | boolean,
 	updateMyStatus: (status: string) => void,
 	logout: () => void,
 	setAvatar: (file: any) => void, 
@@ -16,10 +17,6 @@ export type ProfilePropsType = {
 }
 
 const Profile: React.FC<ProfilePropsType> = (props) => {
-	if(!props.currUserProfileInfo) {
-		return <Preloader />
-	}
-
 	return (
 		<div className={classes.profile}>
 			<ProfileBody 

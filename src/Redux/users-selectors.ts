@@ -14,7 +14,7 @@ export const selectTotalUsersCount = (state: RootStateType): number => {
 	return state.usersPage.totalUsersCount;
 }
 export const selectPageSize = (state: RootStateType): number => {
-	return state.usersPage.pagesSize;
+	return state.usersPage.requestData.pagesSize;
 }
 
 export const selectPagesNumbers = createSelector(

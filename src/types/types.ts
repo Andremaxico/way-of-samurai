@@ -1,4 +1,5 @@
 import { DeepMap, FieldError, FieldValues } from "react-hook-form"
+import { To } from "react-router-dom"
 
 //post on profile page
 export type PostDataType = {
@@ -135,16 +136,35 @@ export type UsersPageDataType = {
 }
 
 //with router
+declare function useNavigate(): NavigateFunction;
+
+interface NavigateFunction {
+  (
+    to: To,
+    options?: { replace?: boolean; state?: any }
+  ): void;
+  (delta: number): void;
+}
 export type RouterParamsType = {
 	userId?: number,
+	isFollowed: 'true' | 'false' | boolean,
 }
+interface Location {
+	pathname: string;
+	search: string;
+	hash: string;
+	state: unknown;
+	key: string;
+ }
 export type RouterPropsType = {
 	router: {
-		params: RouterParamsType
+		params: RouterParamsType,
+		location?: Location,
+		navigate?: NavigateFunction,
 	}
 }
 
 //=======================USERS TYPES===================
 export type GetUsersParamsType = {
-	pageNum: number, pagesSize: number, term?: string, friend?: boolean
+	pageNum: number, pagesSize: number, term?: string | null, friend?: boolean
 }

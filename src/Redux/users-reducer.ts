@@ -12,9 +12,13 @@ import { RootStateType, InferActionsType } from './redux-store';
 //==================INIT STATE, REDUCER================
 const initialState = {
 	usersData: [{}] as Array<UserCardType>,
-	pagesSize: 6 as number,
+	requestData: {
+		pagesSize: 6,
+		currentPage: 1,
+		term: null,
+		friend: false,
+	} as unknown as GetUsersParamsType,
 	totalUsersCount: 0 as number,
-	currentPage: 2 as number,
 	isFetching: false as boolean,
 	followingInProgress : [] as Array<number>,
 }
@@ -41,8 +45,8 @@ const followUnfollowFlow = async (
 		dispatch(usersActions.toggleFollowingInProgress(true, userId));
 	
 		const res = await apiMethod(userId);
-	
 		if(res.resultCode === ResultCodeEnum.Success) {
+			console.log('follow dispatching start');
 			dispatch(actionCreator);
 			dispatch(usersActions.toggleFollowingInProgress(false, userId));
 			dispatch(appActions.setNetworkError(false));
@@ -51,29 +55,28 @@ const followUnfollowFlow = async (
 		if(e.code === "ERR_NETWORK") dispatch(appActions.setNetworkError(true));
 	}
 }
-
 //============================REDUCER=================================
 const usersReducer = (state   = initialState, action: ActionType): UsersStateType  => {
 	switch (action.type) {
 		case 'FOLLOW':
 			return {
 				...state,
-				usersData: changeArrayObjProps(state.usersData, action.userId, {followed: true}),
+				usersData: changeArrayObjProps(state.usersData, action.userId, {followed: true}, 'id'),
 			};
 		case 'UNFOLLOW': 
 			return {
 				...state,
-				usersData: changeArrayObjProps(state.usersData, action.userId, {followed: false}),
+				usersData: changeArrayObjProps(state.usersData, action.userId, {followed: false}, 'id'),
 			};
 		case 'SET_USERS':
 			return {
 				...state, 
 				usersData: [...action.users],
 			};
-		case 'SET_CURRENT_PAGE': 
+		case 'users/SET_CURRENT_PAGE': 
 			return {
 				...state,
-				currentPage: action.pageNumber,
+				requestData: {...state.requestData, pageNum: action.pageNumber},
 			};
 		case 'SET_TOTAL_USERS_COUNT': 
 			return {
@@ -93,6 +96,11 @@ const usersReducer = (state   = initialState, action: ActionType): UsersStateTyp
 					: state.followingInProgress.filter(id => id != action.userId),
 					
 			};
+		case "users/SET_REQUEST_DATA": 
+			return {...state, requestData: {
+				...state.requestData,
+				...action.data,
+			}}
 		default:
 			return state
 	}
@@ -128,7 +136,7 @@ export const usersActions = {
 
 	//change pages number: number in state
 	setCurrentPageAC: (pageNumber: number) => ({
-		type: 'SET_CURRENT_PAGE',
+		type: 'users/SET_CURRENT_PAGE',
 		pageNumber,
 	} as const),
 
@@ -139,6 +147,11 @@ export const usersActions = {
 		totalCount,
 	} as const),
 
+	setRequestData: (data: GetUsersParamsType) => ({
+		type: 'users/SET_REQUEST_DATA',
+		data,
+	} as const),
+
 	// change fething status of following progress in elements array[]
 	toggleFollowingInProgress:  (isInProgress: boolean, userId: number) => ({
 		type: 'TOGGLE_FOLLOWING_IN_PROGRESS',
@@ -147,8 +160,9 @@ export const usersActions = {
 	} as const),
 }
 //========================THUNKS============================
-export const getUsers = ({...params}: GetUsersParamsType): ThunkType => async (dispatch: DispatchType) => {
+export const getUsers = (params: GetUsersParamsType): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(usersActions.toggleIsFetchingAC(true));
+	dispatch(usersActions.setRequestData(params));
 	try {
 		const res = await usersAPI.getUsersPage(params);
 		dispatch(usersActions.setUsersAC(res.items));
@@ -160,10 +174,10 @@ export const getUsers = ({...params}: GetUsersParamsType): ThunkType => async (d
 	}
 }
 export const follow = (userId: number): ThunkType => async (dispatch: DispatchType) => {
-	followUnfollowFlow(usersAPI.follow.bind(usersAPI), usersActions.followSuccess(userId), dispatch, userId);
+	await followUnfollowFlow(usersAPI.follow, usersActions.followSuccess(userId), dispatch, userId);
 }
 export const unfollow = (userId: number): ThunkType => async (dispatch: DispatchType) => {
-	followUnfollowFlow(usersAPI.unfollow, usersActions.unfollowSuccess(userId), dispatch, userId);
+	await followUnfollowFlow(usersAPI.unfollow, usersActions.unfollowSuccess(userId), dispatch, userId);
 }
 
 export default usersReducer;

@@ -9,12 +9,13 @@ type PropsType = {
 	info: UserCardType,
 }
 
-const User: React.FC<PropsType> = (props: PropsType) => {
+const User: React.FC<PropsType> = React.memo((props) => {
+	console.log('rerender user card', props.info.id,'is followed', props.info.followed);
 	const {name, id, status: description, photos: photos, followed: isFollowed} = props.info;
 
 	return (
 		<div className={classes.user}>
-			<Link to={`/profile/${id}`} className={classes.avatar}>
+			<Link to={`/profile/${id}/${isFollowed}`} className={classes.avatar}>
 				<img src={photos?.small || defaultAvatar} alt="user avatar" />
 			</Link>
 			<div className={classes.info}>
@@ -30,6 +31,6 @@ const User: React.FC<PropsType> = (props: PropsType) => {
 			<FollowBtn isFollowed={isFollowed} userId={id} />
 		</div>
 	)
-}
+});
 
 export default User;

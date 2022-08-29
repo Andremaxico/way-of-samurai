@@ -10,7 +10,7 @@ type PropsType = {
 
 export const FriendLink: React.FC<PropsType> = (props) => {
   return (
-    <NavLink to={`/profile/${props.friendInfo.id}`} className={classes.friendLink}>
+    <NavLink to={`/profile/${props.friendInfo.id}/${props.friendInfo.followed}`} className={classes.friendLink}>
       <div className={classes.avatar}>
         <img src={props.friendInfo.photos?.small || defaultAvatar} alt="Ypur friend's avatar" />
       </div>

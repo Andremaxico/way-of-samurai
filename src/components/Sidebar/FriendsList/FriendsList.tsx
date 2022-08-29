@@ -36,6 +36,7 @@ const FriendsList: React.FC<PropsType & CallbacksType & OwnProps> = ({
 		fetchFriends();
 	}, [friendsPageNum]);
 
+	//2 -> [1, 2]
 	let pagesNumbers = [];
 	if(friendsTotalCount) {
 		const pagesCount = Math.ceil(friendsTotalCount / friendsPageSize);
@@ -43,14 +44,17 @@ const FriendsList: React.FC<PropsType & CallbacksType & OwnProps> = ({
 			pagesNumbers.push(i);
 		}
 	}
+
+	//when fetching, show preloader
 	if(isLoading) return <Preloader />
+
 	return ( 
 		<div className={classes.friends}>
 			<h2 className={classes.title}>Friends</h2>
 			<div className={classes.grid}>
 				{/* Render friends about data */}
 				{
-					friendsData?.map(data => {
+					friendsData?.map((data: UserCardType) => {
 						return <FriendLink friendInfo={data} key={data.id}/>
 					})
 				}

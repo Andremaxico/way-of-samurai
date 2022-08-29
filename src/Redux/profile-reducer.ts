@@ -3,7 +3,7 @@ import { profileAPI } from "../api/profileApi";
 import { usersAPI } from "../api/usersApi";
 import { appActions } from "./app-reducer";
 import { usersActions } from "./users-reducer";
-import { authActions, setAuthData, getCaptchaUrl } from './auth-reducer';
+import { authActions, setAuthData } from './auth-reducer';
 import { PostDataType, ProfileInfoType } from "../types/types";
 import { InferActionsType, RootStateType } from "./redux-store";
 import { ThunkAction } from "redux-thunk";
@@ -20,12 +20,9 @@ const initialState = {
 }
 
 export type ProfileStateType = typeof initialState;
-const { getCaptchaUrlSuccessful } = authActions;
-const { setNetworkError } = appActions;
-const { toggleIsFetchingAC } = usersActions;
 
-type ImportedActionsType = ReturnType<typeof getCaptchaUrlSuccessful> | ReturnType<typeof setNetworkError> |
-									ReturnType<typeof toggleIsFetchingAC>;
+type ImportedActionsType = ReturnType<typeof authActions.getCaptchaUrlSuccessful> | ReturnType<typeof appActions.setNetworkError> |
+									ReturnType<typeof usersActions.toggleIsFetchingAC>;
 
 type ProfileActionsType = InferActionsType<typeof profileActions>;
 
@@ -142,7 +139,7 @@ export const profileActions = {
 //===================THUNKS CREATORS=========================================================
 
 export const setUserById = (id: number): ThunkType => async (dispatch: DispatchType) => {
-	dispatch(toggleIsFetchingAC(true));
+	dispatch(usersActions.toggleIsFetchingAC(true));
 	//for disable fetching after request (in ProfileContiner.componentDidMount);
 	try {
 		const data = await usersAPI.getUserById(id);
@@ -152,10 +149,10 @@ export const setUserById = (id: number): ThunkType => async (dispatch: DispatchT
 	
 		const status = await profileAPI.getUserStatus(id);
 		dispatch(profileActions.setCurrUserStatus(status));
-		dispatch(setNetworkError(false));
+		dispatch(appActions.setNetworkError(false));
 	
 	} catch(e) {
-		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true))
+		if(e.code === 'ERR_NETWORK') dispatch(appActions.setNetworkError(true))
 	}
 }
 
@@ -164,13 +161,13 @@ export const updateMyStatus = (newStatus: string): ThunkType => async (dispatch:
 		const resolve = await profileAPI.updateMyStatus(newStatus);
 		if(resolve.resultCode === ResultCodeEnum.Success) {
 			dispatch(profileActions.setMyStatus(newStatus));
-			dispatch(setNetworkError(false));
+			dispatch(appActions.setNetworkError(false));
 			dispatch(profileActions.setFormError(''));
 		} else {
 			dispatch(profileActions.setFormError(resolve.messages[0]));
 		}
 	} catch(e) {
-		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true))
+		if(e.code === 'ERR_NETWORK') dispatch(appActions.setNetworkError(true))
 	}
 }
 
@@ -185,9 +182,9 @@ export const setAvatar = (file: any): ThunkType => async (dispatch: DispatchType
 		if(res.resultCode === ResultCodeEnum.Success) {
 			dispatch(profileActions.setAvatarSuccessful(res.data.photos));
 		}
-		dispatch(setNetworkError(false));
+		dispatch(appActions.setNetworkError(false));
 	} catch(e) {
-		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true));
+		if(e.code === 'ERR_NETWORK') dispatch(appActions.setNetworkError(true));
 	}
 }
 
@@ -198,11 +195,11 @@ export const updateMyProfileData = (data: any): ThunkType => async (dispatch: Di
 		if(res.resultCode === ResultCodeEnum.Success) {
 			await dispatch(updateMyStatus(data.aboutMe));
 			dispatch(setAuthData());
-			dispatch(getCaptchaUrlSuccessful(''));
+			dispatch(authActions.getCaptchaUrlSuccessful(''));
 		}
-		dispatch(setNetworkError(false));
+		dispatch(appActions.setNetworkError(false));
 	} catch(e) {
-		if(e.code === 'ERR_NETWORK') dispatch(setNetworkError(true));
+		if(e.code === 'ERR_NETWORK') dispatch(appActions.setNetworkError(true));
 	}
 }
 export default profileReducer;
