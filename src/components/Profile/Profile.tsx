@@ -4,12 +4,12 @@ import MyPosts from './MyPosts';
 import NewPost from './NewPost'
 import classes from './Profile.module.scss'
 import Preloader from '../../UI/Preloader';
-import { ProfileInfoType, UserCardType } from '../../types/types';
+import { isFollowedType, ProfileInfoType, UserCardType } from '../../types/types';
 
 export type ProfilePropsType = {
 	currUserProfileInfo: ProfileInfoType,
 	formError: string | null,
-	followed: 'true' | 'false' | boolean,
+	followed: isFollowedType,
 	updateMyStatus: (status: string) => void,
 	logout: () => void,
 	setAvatar: (file: any) => void, 

@@ -8,6 +8,7 @@ import ProfileInfoForm from './ProfileInfoForm';
 import { ProfilePropsType } from '../Profile';
 import FollowBtn from '../../../UI/FollowBtn';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { isFollowedType as IsFollowedType } from '../../../types/types';
 
 const ProfileBody: React.FC<ProfilePropsType> = ({ 
 	logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, 
@@ -16,7 +17,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 	const navigate = useNavigate();
 	const [isAvatarUpdating, setIsAvatarUpdating] = React.useState<boolean>(false);
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
-	const [isFollowed, setIsFollowed] = React.useState<'true' | 'false' | boolean>(followed);
+	const [isFollowed, setIsFollowed] = React.useState<IsFollowedType>(followed);
 	
 	const {userId: id, photos, isMyProfile } = profileInfo;
 	const {small: coverImg, large: avatarImg} = photos || {};

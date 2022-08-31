@@ -147,7 +147,7 @@ interface NavigateFunction {
 }
 export type RouterParamsType = {
 	userId?: number,
-	isFollowed: 'true' | 'false' | boolean,
+	isFollowed: isFollowedType,
 }
 interface Location {
 	pathname: string;
@@ -166,5 +166,8 @@ export type RouterPropsType = {
 
 //=======================USERS TYPES===================
 export type GetUsersParamsType = {
-	pageNum: number, pagesSize: number, term?: string | null, friend?: boolean
+	pageNum: number, pagesSize: number, 
+	term: string, friend: isFriendType
 }
+export type isFriendType = boolean | null;
+export type isFollowedType = 'true' | 'false' | boolean | null;

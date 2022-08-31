@@ -2,10 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RootStateType } from '../../Redux/redux-store';
 import { follow, unfollow } from '../../Redux/users-reducer';
+import { isFollowedType } from '../../types/types';
 import classes from './FollowBtn.module.scss';
 
 type OwnPropsType = {
-	isFollowed: 'true' | 'false' | boolean,
+	isFollowed: isFollowedType,
 	userId: number,
 	setIsFollowed?: (value: boolean) => void
 };
@@ -35,8 +36,7 @@ const FollowBtn: React.FC<OwnPropsType & PropsType & CallbacksType> = ({
 		if(setIsFollowed) {
 			setIsFollowed(false);
 		}
-	};
-	console.log('follow btn is followed: ', isFollowing);
+	}
 	const handleButtonClick = () => {
 		return !isFollowingInProgress ? (Boolean(isFollowing) ? unfollow() : follow()) : undefined
 	}

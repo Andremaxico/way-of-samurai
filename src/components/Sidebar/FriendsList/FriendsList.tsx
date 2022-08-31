@@ -30,7 +30,7 @@ const FriendsList: React.FC<PropsType & CallbacksType & OwnProps> = ({
 	React.useEffect(() => {
 		const fetchFriends = async () => {
 			setIsLoading(true);
-			await getFriends({pageNum: friendsPageNum, pagesSize: friendsPageSize});
+			await getFriends({pageNum: friendsPageNum, pagesSize: friendsPageSize, friend: true, term: ''});
 			setIsLoading(false);
 		}	
 		fetchFriends();

@@ -38,6 +38,7 @@ class UsersListContainer extends React.Component<UsersListPropsType> {
 		}
 		//changes current users-page number
 		this.props.setCurrentPage(num);
+		//request users page
 		this.props.getUsers(getUsersParams);
 
 	}

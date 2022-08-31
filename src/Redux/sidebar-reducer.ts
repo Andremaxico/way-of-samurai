@@ -76,7 +76,7 @@ export const sidebarActions = {
 //===============THUNKS===================
 export const getFriends = (params: GetUsersParamsType): ThunkType => async (dispatch: DispatchType) => {
 	try {
-		const data = await usersAPI.getUsersPage({friend: true, ...params});
+		const data = await usersAPI.getUsersPage(params);
 		console.log(data);
 		if(data) {
 			dispatch(sidebarActions.setFriends(data.items));

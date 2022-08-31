@@ -15,7 +15,7 @@ const initialState = {
 	requestData: {
 		pagesSize: 6,
 		currentPage: 1,
-		term: null,
+		term: '',
 		friend: false,
 	} as unknown as GetUsersParamsType,
 	totalUsersCount: 0 as number,
@@ -163,6 +163,7 @@ export const usersActions = {
 export const getUsers = (params: GetUsersParamsType): ThunkType => async (dispatch: DispatchType) => {
 	dispatch(usersActions.toggleIsFetchingAC(true));
 	dispatch(usersActions.setRequestData(params));
+	//dispatch(usersActions.setCurrentPageAC(params.pageNum));
 	try {
 		const res = await usersAPI.getUsersPage(params);
 		dispatch(usersActions.setUsersAC(res.items));
