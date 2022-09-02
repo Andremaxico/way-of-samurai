@@ -10,7 +10,6 @@ type PropsType = {
 }
 
 const User: React.FC<PropsType> = React.memo((props) => {
-	console.log('rerender user card', props.info.id,'is followed', props.info.followed);
 	const {name, id, status: description, photos: photos, followed: isFollowed} = props.info;
 
 	return (

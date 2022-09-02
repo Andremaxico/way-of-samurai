@@ -28,6 +28,7 @@ const initialState = {
 	data: {} as AuthDataType,
 	isAuthed: false as boolean,
 	captchaUrl: null as string | null,
+	loginError: null as string | null,
 }
 export type AuthStateType = typeof initialState;
 
@@ -44,6 +45,8 @@ const authReducer = (state = initialState, action: AuthActionsType): AuthStateTy
 				...state,
 				captchaUrl: action.captcha
 			}
+		case 'SET_LOGIN_ERROR': 
+			return {...state, loginError: action.value}
 		default:
 			return state
 	}
@@ -57,13 +60,16 @@ export const authActions = {
 		data,
 		isAuthed,
 	} as const),
-	
+	setLoginError: (value: string) => ({
+		type: 'SET_LOGIN_ERROR',
+		value,
+	} as const),
 	getCaptchaUrlSuccessful: (captcha: string) => (
 		{
 			type: 'GET_CAPTCHA_URL_SUCCESSFUL',
 			captcha,
 		} as const
-	)
+	),
 }
 
 //================THUNKS=================
@@ -92,8 +98,7 @@ export const setAuthData = (): ThunkType => async (dispatch: DispatchType) => {
 		const status = await profileAPI.getUserStatus(data.userId);
 		if(status && status.length > 0) dispatch(profileActions.setMyStatus(status));
 		dispatch(usersActions.toggleIsFetchingAC(false));
-	} catch(e) {
-		console.error(e);
+	} catch(e) { 
 		if	(e.code === "ERR_NETWORK") dispatch(appActions.setNetworkError(true))
 	}
 }
@@ -116,8 +121,8 @@ export const login = (data: LoginDataType): ThunkType => async (dispatch: Dispat
 			if(res.resultCode === ResultCodeEnum.CaptchaRequired) {
 				dispatch(getCaptchaUrl());
 			}
-			dispatch(getCaptchaUrl())
-			return res.messages[0];
+			dispatch(getCaptchaUrl());
+			dispatch(authActions.setLoginError(res.messages[0]));
 		}
 	} catch(e) {
 		if(e.code === "ERR_NETWORK") dispatch(appActions.setNetworkError(true));

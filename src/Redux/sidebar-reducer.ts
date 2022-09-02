@@ -65,7 +65,7 @@ export const sidebarActions = {
 	setFriends: (friendsData: Array<UserCardType> | null) => (
 		{type: 'SET_FRIENDS', friendsData} as const
 	),
-	setCurrrentPage: (pageNum : number) => (
+	setCurrentPage: (pageNum : number) => (
 		{type: 'sidebar/SET_CURRENT_PAGE', pageNum} as const
 	),
 	setTotalFriendsCount: (count: number) => (

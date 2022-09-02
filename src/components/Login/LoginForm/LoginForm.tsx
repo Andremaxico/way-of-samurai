@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classes from './LoginForm.module.scss';
 import { useForm } from "react-hook-form";
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { login } from '../../../Redux/auth-reducer';
 import Checkbox from '../../../UI/FormControls/Checkbox';
 import Captcha from '../../../UI/FormControls/Captcha';
@@ -10,38 +10,41 @@ import Preloader from '../../../UI/Preloader';
 import EmailField from '../../../UI/FormControls/Field/EmailField';
 import PasswordField from '../../../UI/FormControls/Field/PasswordField';
 import { LoginDataType } from '../../../types/types';
-import { RootStateType } from '../../../Redux/redux-store';
+import { selectCaptcha, selectIsAuthed, selectLoginError } from '../../../Redux/auth-selectors';
+import { AnyAction } from 'redux';
 
-type MapStateToPropsType = {
-	isAuthed: boolean,
-	captcha: string | null,
-}
-type MapDispatchToPropsType = {
-	login: (data: LoginDataType) => any,
-}
-
-type PropsType = MapDispatchToPropsType & MapStateToPropsType;
+type PropsType = {};
 
 type LoginFormValuesType = LoginDataType;
 
-const LoginForm: React.FC<PropsType> = (props) => {
+const LoginForm: React.FC<PropsType> = React.memo((props) => {
+	const isAuthed = useSelector(selectIsAuthed);
+	const captcha = ''// useSelector(selectCaptcha);
+	const loginError = useSelector(selectLoginError);
+
+	const dispatch = useDispatch();
+	const loginToProfile = async (data: LoginDataType) => {
+		await dispatch(login(data) as unknown as AnyAction);
+	}
+
 	const { 
-		register, handleSubmit, setError, clearErrors, 
-		formState: { errors, isValidating}
+		register, handleSubmit, formState: { errors, isValidating, isSubmitting}
 	} = useForm<LoginFormValuesType>();
 
 	const [summaryError, setSummaryError] = React.useState<string | null>(null);
+	console.log('form rerender');
 
 	const onSubmit = async (data: LoginFormValuesType) => {
-		//login return error or null
-		const err = await props.login(data);
-		setSummaryError(err || null);
+		//login dispatch error or null
+		await loginToProfile(data);
+		setSummaryError(loginError);
+		console.log('sum error: ', summaryError);
+		console.log('login error: ', loginError);
 	}
-	const clearSummaryError = () => setSummaryError(null);
 
 
-	if(props.isAuthed) return <Navigate  to='/profile' replace/>
-	if(isValidating) return <Preloader />
+	if(isAuthed) return <Navigate  to='/profile' replace/>
+	if(isSubmitting || isValidating) return <Preloader />
 
 	return (
 		<form action="#" className={classes.LoginForm} onSubmit={handleSubmit(onSubmit)}>
@@ -51,25 +54,16 @@ const LoginForm: React.FC<PropsType> = (props) => {
 				register={register}
 				error={errors.rememberMe} name='rememberMe' labelText='Remember me'
 			/>
-			{props.captcha &&
+			{captcha &&
 				<Captcha 
-					register={register} captchaUrl={props.captcha} 
+					register={register} captchaUrl={captcha} 
 					className={classes.captcha} error={errors.captcha}
 				/>
 			}
-			<button className={classes.submitBtn} onClick={clearSummaryError}>Sumbit</button>
+			<button className={classes.submitBtn}>Sumbit</button>
 			{summaryError && <p className={classes.errorMessage}>{summaryError}</p>}
 		</form>
 	)
-}
+});
 
-const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
-	return {
-		isAuthed: state.auth.isAuthed,
-		captcha: state.auth.captchaUrl,
-	}
-}
-
-const mapDispatchToProps: MapDispatchToPropsType = {login};
-
-export default connect<MapStateToPropsType, MapDispatchToPropsType>(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginForm;

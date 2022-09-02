@@ -1,20 +1,16 @@
 import * as React from 'react'
-import { useForm } from 'react-hook-form'
-import { RootStateType } from '../../../Redux/redux-store';
-import { isFollowedType, GetUsersParamsType, isFriendType } from '../../../types/types';
-import CustomField from '../../../UI/FormControls/Field/Field'
+import { GetUsersParamsType, isFriendType } from '../../../types/types';
 import classes from './UsersSearch.module.scss';
 import { getUsers } from '../../../Redux/users-reducer';
-import { connect } from 'react-redux';
-import Checkbox from '../../../UI/FormControls/Checkbox';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik, Form, Field } from 'formik';
+import { selectUsersRequestData } from '../../../Redux/users-selectors';
+import { AnyAction } from 'redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { stringToBoolean } from '../../../utils/helpers/converters';
+import { parseQueryString } from '../../../utils/parsers';
 
-type CallbacksType = {
-	getUsers: (params: GetUsersParamsType) => void,
-}
-type PropsType = {
-	usersRequestData: GetUsersParamsType,
-}
+type PropsType = {}
 type SearchUsersFormType = {
 	username: string | '';
 	friend: isFriendType | '';
@@ -24,19 +20,18 @@ type Errors = {
 	friend?: string;
 }
 
-const UsersSearch: React.FC<PropsType & CallbacksType> = React.memo(({getUsers, usersRequestData}) => {
-	/*const { handleSubmit, register, formState: { errors } } = useForm<SearchUsersFormType>({
-		defaultValues: {
-			username: usersRequestData.term,
-			isFriend: usersRequestData.friend,
-		}
-	});*/
+const UsersSearch: React.FC<PropsType> = React.memo((props) => {
+	const usersRequestData = useSelector(selectUsersRequestData);
+
+	const dispatch = useDispatch();
+	const requestUsers =  (requestData: GetUsersParamsType) => {
+		dispatch(getUsers(requestData) as unknown as AnyAction);
+	}
 
 	const submit = async (
 		values: SearchUsersFormType, { setSubmitting }: 
 		{setSubmitting: (isSubmitting: boolean) => void}
 	) => {
-		console.log('submit, values:' , values);
 		setSubmitting(true);
 		const getUsersParams: GetUsersParamsType = {
 			...usersRequestData,
@@ -44,30 +39,42 @@ const UsersSearch: React.FC<PropsType & CallbacksType> = React.memo(({getUsers, 
 			friend: values.friend === '' ? null : values.friend,
 			pageNum: 1,
 		}
-		await getUsers(getUsersParams);
+		await requestUsers(getUsersParams);
 		setSubmitting(false);
 	}
 
 	const validate = (values: SearchUsersFormType) => {
 		const errors: Errors = {};
 		const username: string = values.username;
-		if(username.length < 3) {
+		if( username.length > 0 && username.length < 3) {
 			errors.username = 'Name is too short';
 		}
 		return errors;
 	}
 
+	//synchronization with address line
+	const navigate = useNavigate();
+
+	React.useEffect(() => {
+		const {term, friend, pageNum} = usersRequestData;
+		const friendQueryParam = friend !== null && friend !== undefined && `&friend=${friend}` || '';
+		navigate(`?${`term=${term}`}${friendQueryParam}&pageNum=${pageNum || 1}`);
+	}, [usersRequestData]);
+	
 	const initialValues: SearchUsersFormType = { username: usersRequestData.term, friend: usersRequestData.friend };
 	return (
 		<Formik
-       initialValues={initialValues}
-       validate={validate}
-       onSubmit={submit}
+			enableReinitialize={true}
+			initialValues={initialValues}
+			validate={validate}
+			onSubmit={submit}
      >
        {({ isSubmitting, errors, touched }) => (
          <Form className={classes.UsersSearch}>
-           <Field type="text" name="username" placeholder={`User's name`}  className={classes.input}/>
-			  {touched.username && errors.username && <div>Error message: {errors.username}</div>}
+				<div className={classes.field}>
+					<Field type="text" name="username" placeholder={`User's name`}  className={classes.input}/>
+					{touched.username && errors.username && <div>Error message: {errors.username}</div>}
+				</div>	
 			  <Field as="select" name="friend">
              <option value="">All users</option>
              <option value="true">Only friends</option>
@@ -101,13 +108,4 @@ const UsersSearch: React.FC<PropsType & CallbacksType> = React.memo(({getUsers, 
 	)*/
 });
 
-const mapStateToProps = (state: RootStateType): PropsType => ({	
-	usersRequestData: state.usersPage.requestData,
-});
-
-const mapDispatchToProps = {
-	getUsers,
-}
-
-
-export default connect<PropsType, CallbacksType>(mapStateToProps, mapDispatchToProps)(UsersSearch);
+export default UsersSearch;

@@ -6,14 +6,36 @@ import Preloader from '../../../UI/Preloader';
 import ProfileInfo from './ProfileInfo';
 import ProfileInfoForm from './ProfileInfoForm';
 import { ProfilePropsType } from '../Profile';
+import { useDispatch, useSelector } from 'react-redux'
 import FollowBtn from '../../../UI/FollowBtn';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { isFollowedType as IsFollowedType } from '../../../types/types';
+import { isFollowedType as IsFollowedType, ProfileInfoType } from '../../../types/types';
+import { selectCurrentUserProfileInfo, selectFormError } from '../../../Redux/profile-selectors';
+import { profileActions, setAvatar } from '../../../Redux/profile-reducer';
+import { AnyArray } from 'immer/dist/internal';
+import { AnyAction } from 'redux';
+import { logout } from '../../../Redux/auth-reducer';
 
-const ProfileBody: React.FC<ProfilePropsType> = ({ 
-	logout, setAvatar, currUserProfileInfo: profileInfo, updateMyStatus, 
-	formError, updateMyProfileData, followed
-}) => {
+const ProfileBody: React.FC<ProfilePropsType> = ({followed, currUserProfileInfo: profileInfo}) => {
+	//get data from state
+	const formError = useSelector(selectFormError);
+	
+	//state callbacks
+	const dispatch = useDispatch();
+	const updateMyStatus = (value: string) => {
+		dispatch(profileActions.setMyStatus(value));
+	}
+	const logoutFromProfile = () => {
+		dispatch(logout() as unknown as AnyAction);
+	}
+	const setMyAvatar = (file: any) => {
+		dispatch(setAvatar(file) as unknown as AnyAction);
+	}
+	const updateMyProfileData = (profileData: ProfileInfoType) => {
+		dispatch(profileActions.setMyProfileInfo(profileData));
+	}
+
+
 	const navigate = useNavigate();
 	const [isAvatarUpdating, setIsAvatarUpdating] = React.useState<boolean>(false);
 	const [isEdit, setIsEdit] = React.useState<boolean>(false);
@@ -33,7 +55,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 		if (!target.files) return;
 		if(target.files.length > 0) {
 			setIsAvatarUpdating(true);
-			await setAvatar(target.files[0]);
+			await setMyAvatar(target.files[0]);
 			setIsAvatarUpdating(false);
 		}
 	}
@@ -67,7 +89,7 @@ const ProfileBody: React.FC<ProfilePropsType> = ({
 					/>
 				:	<ProfileInfo activateEdit={activateEdit} profileInfo={profileInfo} updateMyStatus={updateMyStatus}/>
 				}
-				{ isMyProfile && <button className={classes.logoutBtn} onClick={ logout }>Logout</button>}
+				{ isMyProfile && <button className={classes.logoutBtn} onClick={ logoutFromProfile }>Logout</button>}
 				{ !isMyProfile && <FollowBtn isFollowed={isFollowed} userId={id}  setIsFollowed={changeFollowingStatus}/> }
 			</div>
 		</div>

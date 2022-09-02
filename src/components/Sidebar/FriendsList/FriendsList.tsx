@@ -1,48 +1,51 @@
 import * as React from 'react'
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { AnyAction } from 'redux';
 import { RootStateType } from '../../../Redux/redux-store';
 import { getFriends, sidebarActions } from '../../../Redux/sidebar-reducer';
+import { selectFriendsData, selectFriendsRequestData, selectTotalFriendsCount } from '../../../Redux/sidebar-selectors';
 import { FriendCardType, GetUsersParamsType, UserCardType } from '../../../types/types';
 import Pagination from '../../../UI/Pagination';
 import Preloader from '../../../UI/Preloader';
 import { FriendLink } from './FriendLink/FriendLink';
 import classes from './FriendsList.module.scss';
 
-type OwnProps = {
+type PropsType = {
 	friendsData: Array<UserCardType> | null,
 }
 
-type PropsType = {
-	friendsTotalCount: number | null,
-	friendsPageSize: number,
-	friendsPageNum: number,
-}
-type CallbacksType = {
-	setCurrentPage: (pageNum: number) => void,
-	getFriends: (params: GetUsersParamsType) => void,
-}
+const FriendsList: React.FC<PropsType> = ({friendsData}) => {
+	const friendsRequestData = useSelector(selectFriendsRequestData);
+	const friendsTotalCount = useSelector(selectTotalFriendsCount);
 
-const FriendsList: React.FC<PropsType & CallbacksType & OwnProps> = ({
-	friendsData, setCurrentPage, friendsTotalCount, friendsPageNum, friendsPageSize, getFriends
-}) => {
-	const [isLoading, setIsLoading] = React.useState<boolean>(false)
+	const dispatch = useDispatch();
+	const requestFriends = (requestData: GetUsersParamsType) => {
+		dispatch(getFriends(requestData) as unknown as AnyAction);
+	}
+
+	const [isLoading, setIsLoading] = React.useState<boolean>(false);
 	//set users
 	React.useEffect(() => {
 		const fetchFriends = async () => {
 			setIsLoading(true);
-			await getFriends({pageNum: friendsPageNum, pagesSize: friendsPageSize, friend: true, term: ''});
+			await requestFriends({...friendsRequestData, friend: true, term: ''});
 			setIsLoading(false);
 		}	
 		fetchFriends();
-	}, [friendsPageNum]);
+	}, []);
 
 	//2 -> [1, 2]
 	let pagesNumbers = [];
 	if(friendsTotalCount) {
-		const pagesCount = Math.ceil(friendsTotalCount / friendsPageSize);
+		const pagesCount = Math.ceil(friendsTotalCount / friendsRequestData.pagesSize);
 		for(let i = 1; i < pagesCount; i++) {
 			pagesNumbers.push(i);
 		}
+	}
+
+	//set current page
+	const setCurrPage = (pageNum: number) => {
+		dispatch(sidebarActions.setCurrentPage(pageNum));
 	}
 
 	//when fetching, show preloader
@@ -59,22 +62,12 @@ const FriendsList: React.FC<PropsType & CallbacksType & OwnProps> = ({
 					})
 				}
 				<Pagination 
-					pagesNumbers={pagesNumbers} currentPage={friendsPageNum} 
-					setCurrentPage={setCurrentPage} whiteTheme={true} portionSize={6}
+					pagesNumbers={pagesNumbers} currentPage={friendsRequestData.pageNum} 
+					setCurrentPage={setCurrPage} whiteTheme={true} portionSize={6}
 				/>
 			</div>
 		</div>
 	)
 }
 
-const mapStateToProps = (state: RootStateType) => ({
-	friendsTotalCount: state.sidebar.friendsTotalCount,
-	friendsPageSize: state.sidebar.friendsPageSize,
-	friendsPageNum: state.sidebar.friendsPageNum,
-})
-const mapDispatchToProps = { 
-	setCurrentPage: sidebarActions.setCurrrentPage,
-	getFriends,
-}
-
-export default connect<PropsType, CallbacksType>(mapStateToProps, mapDispatchToProps)(FriendsList);
+export default FriendsList;

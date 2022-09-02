@@ -4,41 +4,43 @@ import { RootStateType } from '../../Redux/redux-store';
 import { follow, unfollow } from '../../Redux/users-reducer';
 import { isFollowedType } from '../../types/types';
 import classes from './FollowBtn.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectFollowingInProgress } from '../../Redux/users-selectors';
+import { AnyAction, Dispatch } from 'redux';
+
 
 type OwnPropsType = {
 	isFollowed: isFollowedType,
 	userId: number,
 	setIsFollowed?: (value: boolean) => void
 };
-type PropsType = {
-	followingInProgress: Array<number>,
-}
-type CallbacksType = {
-	unfollow: (id: number) => void,
-	follow: (id: number) => void
-}
 
-const FollowBtn: React.FC<OwnPropsType & PropsType & CallbacksType> = ({
-	isFollowed, followingInProgress, userId, setIsFollowed, ...restProps
+const FollowBtn: React.FC<OwnPropsType> = React.memo(({
+	isFollowed, userId, setIsFollowed, ...restProps
 }) => {
-	let isFollowing = isFollowed;
-	if(typeof isFollowed !== 'boolean') {
-		isFollowing = (isFollowed === 'true') ? true : false;
-	}
-	const follow = async () => {
-		await restProps.follow(userId);
+	const followingInProgress = useSelector(selectFollowingInProgress);
+	
+	const dispatch = useDispatch();
+	const followUser = async () => {
+		dispatch(follow(userId) as unknown as AnyAction);
 		if(setIsFollowed) {
 			setIsFollowed(true);
 		}
 	};
-	const unfollow = async () => {
-		await restProps.unfollow(userId);
+	const unfollowUser = async () => {
+		await dispatch(unfollow(userId) as unknown as AnyAction);
 		if(setIsFollowed) {
 			setIsFollowed(false);
 		}
 	}
+
+	let isFollowing = isFollowed;
+	if(typeof isFollowed !== 'boolean') {
+		isFollowing = (isFollowed === 'true') ? true : false;
+	}
+
 	const handleButtonClick = () => {
-		return !isFollowingInProgress ? (Boolean(isFollowing) ? unfollow() : follow()) : undefined
+		return !isFollowingInProgress ? (isFollowing ? unfollowUser() : followUser()) : undefined
 	}
 
 	const isFollowingInProgress: boolean = followingInProgress.includes(userId); 
@@ -46,18 +48,8 @@ const FollowBtn: React.FC<OwnPropsType & PropsType & CallbacksType> = ({
 		<button 
 			className={classes.followBtn} 
 			onClick={handleButtonClick}
-		>{isFollowingInProgress ? 'Processing...' :  Boolean(isFollowing) ? 'Unfollow' : 'Follow'}</button>
+		>{isFollowingInProgress ? 'Processing...' :  isFollowing ? 'Unfollow' : 'Follow'}</button>
 	)
-}
+});
 
-const mapDispatchToProps: CallbacksType = {
-	follow,
-	unfollow,
-}
-const mapStateToProps = (state: RootStateType): PropsType => {
-	return {
-		followingInProgress: state.usersPage.followingInProgress,
-	}
-}
-
-export default connect<PropsType, CallbacksType>(mapStateToProps, mapDispatchToProps)(FollowBtn);
+export default FollowBtn;

@@ -16,7 +16,7 @@ const initialState = {
 		pagesSize: 6,
 		currentPage: 1,
 		term: '',
-		friend: false,
+		friend: '',
 	} as unknown as GetUsersParamsType,
 	totalUsersCount: 0 as number,
 	isFetching: false as boolean,

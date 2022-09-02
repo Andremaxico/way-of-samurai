@@ -30,3 +30,12 @@ export const selectPagesNumbers = createSelector(
 		return pagesNumbers;
 	} 
 );
+export const selectFollowingInProgress = (state: RootStateType) => {
+	return state.usersPage.followingInProgress;
+}
+export const selectUsersRequestData = (state: RootStateType) => {
+	return state.usersPage.requestData;
+}
+export const selectIsFetching = (state: RootStateType) => {
+	return state.usersPage.isFetching;
+}

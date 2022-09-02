@@ -4,11 +4,15 @@
 .UsersSearch {
 	@include row-align;
 	flex: 1 1 auto ;
-	.input {
-		max-width: 250px;
+	.field {
+		@include column-align;
 		margin-right: 12px;
-		width: 100%;
-		@include input;
+		.input {
+			max-width: 250px;
+			margin-bottom: 8px;
+			width: 100%;
+			@include input;
+		}
 	}
 	.isFriend {
 		margin-right: 12px;
