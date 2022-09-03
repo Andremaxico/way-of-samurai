@@ -12,3 +12,7 @@ export const selectFriendsRequestData = (state: RootStateType) => {
 export const selectTotalFriendsCount = (state: RootStateType) => {
 	return state.sidebar.friendsTotalCount
 }
+
+export const selectLinksData = (state: RootStateType) => {
+	return state.sidebar.linksData;
+}
