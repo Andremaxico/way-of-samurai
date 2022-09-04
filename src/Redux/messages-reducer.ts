@@ -4,7 +4,7 @@ import { UserInfoType, MessageDataType } from "../types/types";
 
 export type MessagesStateType = {
 	usersInfo: Array<UserInfoType>,
-	messagesData: Array<MessageDataType>,
+	messagesData: Array<MessageDataType> | [],
 	newMessageValue: string,
 }
 
@@ -33,40 +33,18 @@ const initalState: MessagesStateType = {
 			id: 4,
 		},
 	],
-	messagesData: [
-		{
-			text: 'Hi',
-			isMy: true,
-			id: 1
-		},
-		{
-			text: 'How are you?',
-			isMy: true,
-			id: 2
-		},
-		{
-			text: 'Where are you?',
-			isMy: false,
-			id: 3
-		},
-		{
-			text: 'Want to home?...',
-			isMy: true,
-         id: 4
-		},
-		{
-			text: 'Me too...:(',
-			isMy: false,
-			id: 5,
-		},
-	],
+	messagesData: [],
 	newMessageValue: '',
 }
 
 const messagesReducer = (state = initalState, action: ActionType) => {
 	//add post
 	switch (action.type) {
-		case 'ADD_MESSAGE':
+		case 'SET_MESSAGES_DATA': 
+			return {
+				...state, messagesData: [...state.messagesData, ...action.data],
+			}
+		/*case 'ADD_MESSAGE':
 			const messageText = action.newMessageValue;
 			const id = state.messagesData.length+1;
 			const newMessageData: MessageDataType = {
@@ -79,12 +57,12 @@ const messagesReducer = (state = initalState, action: ActionType) => {
 				...state,
 				messagesData: [...state.messagesData, newMessageData],
 				newMessageValue: '',
-			}
-		case 'DELETE_MESSAGE': 
+			}*/
+		/*case 'DELETE_MESSAGE': 
 			return {
 				...state,
 				messagesData: state.messagesData.filter(mess => mess.id !== action.messageId),
-			}
+			}*/
 		default:
 			return state
 	}
@@ -97,6 +75,11 @@ export const messagesActions = {
 		type: 'ADD_MESSAGE',
 		newMessageValue,
 	} as const),
+
+	setMessagesData: (data: Array<MessageDataType>) => ({
+		type: 'SET_MESSAGES_DATA',
+		data,
+	} as const ),
 
 	//remove message from state
 	deleteMessage: (messageId: number) => ({

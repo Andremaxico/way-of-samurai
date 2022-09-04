@@ -10,13 +10,12 @@ import Preloader from '../../../UI/Preloader';
 import { FriendLink } from './FriendLink/FriendLink';
 import classes from './FriendsList.module.scss';
 
-type PropsType = {
-	friendsData: Array<UserCardType> | null,
-}
+type PropsType = {}
 
-const FriendsList: React.FC<PropsType> = ({friendsData}) => {
+const FriendsList: React.FC<PropsType> = (props) => {
 	const friendsRequestData = useSelector(selectFriendsRequestData);
 	const friendsTotalCount = useSelector(selectTotalFriendsCount);
+	const friendsData = useSelector(selectFriendsData);
 
 	const dispatch = useDispatch();
 	const requestFriends = (requestData: GetUsersParamsType) => {

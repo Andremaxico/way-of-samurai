@@ -14,9 +14,16 @@
 	}
 
 	.currChatWrap {
-		position: relative;
-		height: 100%;
-		flex: 1 1 auto;
+		@include column-align;
+		flex: 0 0 70%;
+		.currChat {
+			position: relative;
+			width: 100%;
+			height: 400px;
+			flex: 1 1 auto;
+			margin-bottom: 24px;
+			overflow-y: auto;
+		}
 		.message {}
 	}
 }

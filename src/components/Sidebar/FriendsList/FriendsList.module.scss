@@ -1,14 +1,16 @@
 @import '../../../global-styles';
 
 .friends {
+	width: 100%;
 	.title {
 		margin-bottom: 28px;
 		@include title;
 		color: #fff;
 	}
 	.grid {
+		width: 100%;
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, minmax(65px, 170px));
 		gap: 24px 20px;
 	}
 	.friendLink {

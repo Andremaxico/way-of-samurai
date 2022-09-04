@@ -2,20 +2,25 @@ import * as React from 'react';
 import classes from './WriteMessage.module.scss';
 import { useForm } from 'react-hook-form';
 import Textarea from '../../../UI/FormControls/Textarea';
+import { useDispatch } from 'react-redux';
+import { messagesActions } from '../../../Redux/messages-reducer';
+import { wsChannel } from '../MessagesList/MessagesList';
 
-type PropsType = {
-	addMessage: (value: string) => void,
-}
+type PropsType = {}
 type NewMessageFormType = {
 	messageValue: string,
 }
 
-const WriteMessage: React.FC<PropsType> = (props) => {
+const WriteMessage: React.FC<PropsType> = ({}) => {
 	const { register, resetField, handleSubmit, watch, formState: { errors } 
-		} = useForm<NewMessageFormType>();
+	} = useForm<NewMessageFormType>();
+
+	const addMessage = (value: string) => {
+		wsChannel.send(value);
+	}
 
 	const onSubmit = () => {
-		props.addMessage(watch('messageValue'))
+		addMessage(watch('messageValue'));
 		resetField('messageValue');
 	};
 

@@ -33,6 +33,10 @@ const initialState: SidebarStateType = {
 			text: 'Messages',
 		},
 		{
+			path: '/users',
+			text: 'Users',
+		},
+		{
 			path: '/news',
 			text: 'News',
 		},

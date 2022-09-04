@@ -1,7 +1,7 @@
 import  * as React from 'react';
 import classes from './Messages.module.scss';
 import ChatsListContainer from './ChatsList';
-import MessagesListContainer from './MessagesList';
+import MessagesList from './MessagesList';
 import withLoginRedirect from '../../hocs/withLoginRedirect';
 
 type PropsType = {}
@@ -12,7 +12,7 @@ function Messages(props: PropsType) {
 			<h2 className={classes.title}>Messages</h2>
 			<div className={classes.content}>
 				<ChatsListContainer />
-				<MessagesListContainer />
+				<MessagesList />
 			</div>
 		</div>
 	)

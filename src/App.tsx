@@ -29,18 +29,12 @@ import { Col, Row } from 'antd';
 
 
 import { selectLinksData } from './Redux/sidebar-selectors';
-import { LinkType } from './types/types';
-import AccountInfo from './components/Header/AccountInfo';
-import { selectAuthData, selectIsAuthed } from './Redux/auth-selectors';
-import { selectMyProfileInfo } from './Redux/profile-selectors';
 import AppHeader from './components/Header';
 
 //lazy components
 const ProfileContainer = React.lazy(() => import('./components/Profile'));
 const Login = React.lazy(() => import('./components/Login'));
 const Messages = React.lazy(() => import('./components/Messages'));
-
-
 
 const { Header, Content, Sider } = Layout;
 
@@ -55,34 +49,8 @@ type MapDispatchPropsType = {
 }
 type PropsType = MapStatePropsType & MapDispatchPropsType;
 
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-function getItem(
-  label: React.ReactNode,
-  key?: React.Key | null,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  theme?: 'light' | 'dark',
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    theme,
-  } as MenuItem;
-}
-
 //==================APP COMPONENT=================
 const App: React.FC<PropsType> = (props) => {
-
-  const linksData = useSelector(selectLinksData);
-  const { login } = useSelector(selectAuthData);
-  const isAuthed = useSelector(selectIsAuthed);
-  const myProfileInfo = useSelector(selectMyProfileInfo);
-  const avatarUrl = myProfileInfo?.photos?.small || '';
-
   //handle uncauthed errors
   const handlePromiseReject = (PromiseRejectionEvent: any) => {
     console.log(PromiseRejectionEvent);
@@ -99,34 +67,14 @@ const App: React.FC<PropsType> = (props) => {
   const MessagesSuspensed = withSuspense(Messages);
   const LoginSuspensed = withSuspense(Login);
 
-  //location
-  const location = useLocation();
-
   //when loading, show preloader
   if(!props.isInitSuccess) return <Preloader />;
-  
-  //app navigation items
-  const navItems: Array<MenuItem> = linksData.map((data: LinkType, i) => {
-    return getItem(
-      <Link to={data.path} >
-        {data.text}
-		  </Link>,
-      data.path,
-    )
-  });
 
   return (
       <Layout>
         <AppHeader />
         <Layout>
-          <Sider width={200} className="site-layout-background">
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={[location.pathname]}
-              style={{ height: '100%', borderRight: 0 }}
-              items={navItems}
-            />
-          </Sider>
+          <Sidebar />
           <Layout style={{ padding: '0 24px 24px' }}>
             <Content
               className="site-layout-background"

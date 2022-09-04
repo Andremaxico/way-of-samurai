@@ -1,20 +1,18 @@
 import * as React from 'react';
 import FriendsList from './FriendsList/FriendsList';
-import classes from './Sidebar.module.scss';
-import { LinkType, FriendCardType, UserCardType } from '../../types/types';
 import { Sidenav } from './Sidenav/Sidenav';
-import { SidebarStateType } from '../../Redux/sidebar-reducer';
+import { Layout } from 'antd';
 
-type PropsType = {
-	data: SidebarStateType,
-}
+const { Sider } = Layout;
 
-const Sidebar: React.FC<PropsType> = ({data: {linksData, friendsData}}) => {
+type PropsType = {}
+
+const Sidebar: React.FC<PropsType> = (props) => {
 	return (
-		<aside className={classes.sidebar}>
-			<Sidenav linksData={linksData}/>
-			<FriendsList friendsData={friendsData}/>
-		</aside>
+		<Sider style={{padding: '20px'}} className="site-layout-background">
+			<Sidenav />
+			<FriendsList />
+		</Sider>
 	);
 }
 

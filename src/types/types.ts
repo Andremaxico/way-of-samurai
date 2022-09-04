@@ -116,9 +116,11 @@ export type UserInfoType = {
 
 //message in chat
 export type MessageDataType = {
-	text: string,
-	isMy: boolean,
-	id: number,
+	message: string,
+	photo: string,
+	userId: number,
+	username: string,
+	isMy?: boolean,
 }
 
 
