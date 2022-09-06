@@ -1,4 +1,7 @@
-import { InferActionsType } from './redux-store';
+import { chatAPI } from './../api/chatApi';
+import { Dispatch } from 'react';
+import { ThunkAction } from 'redux-thunk';
+import { InferActionsType, RootStateType } from './redux-store';
 import { UserInfoType, MessageDataType } from "../types/types";
 //================STATE, TYPES================
 
@@ -8,7 +11,6 @@ export type MessagesStateType = {
 	newMessageValue: string,
 }
 
-type ActionType = InferActionsType<typeof messagesActions>;
 
 const initalState: MessagesStateType = {
 	usersInfo: [
@@ -37,12 +39,16 @@ const initalState: MessagesStateType = {
 	newMessageValue: '',
 }
 
+type ActionType = InferActionsType<typeof messagesActions>;
+type ThunkType = ThunkAction<void, RootStateType, unknown, ActionType>;
+type DispatchType = Dispatch<ActionType | ThunkType>;
+
 const messagesReducer = (state = initalState, action: ActionType) => {
 	//add post
 	switch (action.type) {
-		case 'SET_MESSAGES_DATA': 
+		case 'MESSAGES_RECEIVED': 
 			return {
-				...state, messagesData: [...state.messagesData, ...action.data],
+				...state, messagesData: [...action.data],
 			}
 		/*case 'ADD_MESSAGE':
 			const messageText = action.newMessageValue;
@@ -76,8 +82,8 @@ export const messagesActions = {
 		newMessageValue,
 	} as const),
 
-	setMessagesData: (data: Array<MessageDataType>) => ({
-		type: 'SET_MESSAGES_DATA',
+	messagesReceived: (data: Array<MessageDataType>) => ({
+		type: 'MESSAGES_RECEIVED',
 		data,
 	} as const ),
 
@@ -86,6 +92,36 @@ export const messagesActions = {
 		type: 'DELETE_MESSAGE',
 		messageId,
 	} as const)
+}
+
+
+//==========================THUNKS================
+
+let _onMessageReceive: ((messages: MessageDataType[]) => void) | null = null;
+
+const onMessageReceiveCreator = (dispatch: DispatchType) => {
+	console.log('on message receive creator');
+	if(_onMessageReceive === null) {
+		_onMessageReceive = (messages) => {
+			console.log('on message receive function');
+			dispatch(messagesActions.messagesReceived(messages));
+		}		
+	}
+
+	return _onMessageReceive;
+}
+
+export const startMessagesListening = (): ThunkType => (dispatch: DispatchType): void => {
+	console.log('thunk start message listening');
+	chatAPI.createChannel();
+	chatAPI.subscribe(onMessageReceiveCreator(dispatch));
+}
+export const stopMessagesListening = (): ThunkType => (dispatch: DispatchType): void => {
+	chatAPI.unsubscribe(onMessageReceiveCreator(dispatch));
+	chatAPI.close();
+}
+export const sendMessage = (message: string): ThunkType => (dispatch: DispatchType) => {
+	chatAPI.sendMessage(message);
 }
 
 export default messagesReducer;

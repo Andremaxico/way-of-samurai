@@ -119,7 +119,7 @@ export type MessageDataType = {
 	message: string,
 	photo: string,
 	userId: number,
-	username: string,
+	userName: string,
 	isMy?: boolean,
 }
 

@@ -3,8 +3,8 @@ import classes from './WriteMessage.module.scss';
 import { useForm } from 'react-hook-form';
 import Textarea from '../../../UI/FormControls/Textarea';
 import { useDispatch } from 'react-redux';
-import { messagesActions } from '../../../Redux/messages-reducer';
-import { wsChannel } from '../MessagesList/MessagesList';
+import { messagesActions, sendMessage } from '../../../Redux/messages-reducer';
+import { AnyAction } from 'redux';
 
 type PropsType = {}
 type NewMessageFormType = {
@@ -15,12 +15,13 @@ const WriteMessage: React.FC<PropsType> = ({}) => {
 	const { register, resetField, handleSubmit, watch, formState: { errors } 
 	} = useForm<NewMessageFormType>();
 
+	const dispatch = useDispatch();
 	const addMessage = (value: string) => {
-		wsChannel.send(value);
+		dispatch(sendMessage(value) as unknown as AnyAction);
 	}
 
-	const onSubmit = () => {
-		addMessage(watch('messageValue'));
+	const onSubmit = (data: NewMessageFormType) => {
+		addMessage(data.messageValue);
 		resetField('messageValue');
 	};
 
@@ -32,9 +33,9 @@ const WriteMessage: React.FC<PropsType> = ({}) => {
 					minLength: {value: 2, message: 'You don`t type anything'},
 				}}
 				register={register} name='messageValue' className={classes.textarea}
-				error={errors.messageValue}
+				error={errors.messageValue} placeholder='Your message'
 			/>
-			<button className={classes.button}>Send</button>
+			<button disabled={false} className={classes.button}>Send</button>
 		</form>
 	)
 }

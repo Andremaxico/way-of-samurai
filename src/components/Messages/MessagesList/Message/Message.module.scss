@@ -2,19 +2,30 @@
 
 .message {
 	display: flex;
-	margin-bottom: 7px;
+	margin-bottom: 15px;
 	&._myMessage {
 		justify-content: flex-end;
 		.text {
 			border-radius: 12px 12px 0 12px;
 		}
 	}
-	.text {
+	.userAvatar {
+		@include userAvatar;
+		width: 45px;
+		height: 45px;
+		margin-right: 8px;
+	}
+	.messageBody {
 		margin: 0;
 		padding: 12px 15px;
-		max-width: 200px;
-		@include text;
+		max-width: 300px;
 		background-color: rgba(223, 223, 223, 0.5);
 		border-radius: 12px 12px 12px 0;
+		.username {
+			@include font-style(14px, 16px, 500, $gray);
+		}
+		.text {
+			@include text;
+		}
 	}
 }
