@@ -5,9 +5,11 @@ import { messagesActions, startMessagesListening, stopMessagesListening } from '
 import { selectMessagesData, selectWsStatus } from '../../../Redux/messages-selectors';
 import { MessageDataType } from '../../../types/types';
 import Preloader from '../../../UI/Preloader';
+import { scrollElementToBottom } from '../../../utils/helpers/events';
 import classes from '../Messages.module.scss';
 import WriteMessageForm from '../WriteMessage';
 import Message from './Message';
+import ScrollToBottomBtn from './ScrollToBottomBtn';
 
 
 type PropsType = {};
@@ -15,6 +17,8 @@ type PropsType = {};
 const MessagesList: React.FC<PropsType> = React.memo(({}) => {
 	const messagesData = useSelector(selectMessagesData);
 	const connectionStatus = useSelector(selectWsStatus);
+	
+	const [isAutoscroll, setIsAutoscroll] = React.useState<boolean>(false)
 
 	const listRef = React.useRef<HTMLDivElement>(null);
 
@@ -27,7 +31,13 @@ const MessagesList: React.FC<PropsType> = React.memo(({}) => {
 	const stopMessagesListener = () => {
 		dispatch(stopMessagesListening() as unknown as AnyAction);
 	}
-
+	
+	const messagesListHeight = listRef.current?.scrollHeight;
+	//on scroll
+	const handleScroll = () => {
+		const listScroll = (listRef.current?.scrollTop || 0)  + (listRef.current?.clientHeight || 0);
+		setIsAutoscroll((messagesListHeight || 0) - listScroll + 20 < 300);
+	}
 
 	//connecting to channel 
 	React.useEffect(() => {
@@ -38,15 +48,9 @@ const MessagesList: React.FC<PropsType> = React.memo(({}) => {
 	}, []);
 
 	React.useEffect(() => {
-		const messagesListHeight = listRef.current?.scrollHeight;
-		const listScroll = (listRef.current?.scrollTop || 0)  + (listRef.current?.clientHeight || 0);
-		const isAutoScroll = (messagesListHeight || 0) - listScroll + 20 < 300;
-		
-		if(isAutoScroll) {
-			listRef.current?.scrollTo({
-				top: messagesListHeight,
-				behavior: 'smooth',
-			});
+
+		if(isAutoscroll) {
+			scrollElementToBottom(listRef.current);
 		}
 	}, [messagesData]);
 
@@ -57,8 +61,9 @@ const MessagesList: React.FC<PropsType> = React.memo(({}) => {
 		<div className={classes.currChatWrap}> 
 			{connectionStatus === 'ready' ?
 				<>
-					<div className={classes.currChat} ref={listRef}>
+					<div className={classes.currChat} ref={listRef} onScroll={handleScroll}>
 						{ list }
+						{!isAutoscroll && <ScrollToBottomBtn element={listRef.current}/> }
 					</div>
 					<WriteMessageForm isConnecting={false}/>
 				</> 
