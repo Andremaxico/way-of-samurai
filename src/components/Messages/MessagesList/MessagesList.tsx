@@ -2,8 +2,9 @@ import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction } from 'redux';
 import { messagesActions, startMessagesListening, stopMessagesListening } from '../../../Redux/messages-reducer';
-import { selectMessagesData } from '../../../Redux/messages-selectors';
+import { selectMessagesData, selectWsStatus } from '../../../Redux/messages-selectors';
 import { MessageDataType } from '../../../types/types';
+import Preloader from '../../../UI/Preloader';
 import classes from '../Messages.module.scss';
 import WriteMessageForm from '../WriteMessage';
 import Message from './Message';
@@ -13,15 +14,14 @@ type PropsType = {};
 
 const MessagesList: React.FC<PropsType> = React.memo(({}) => {
 	const messagesData = useSelector(selectMessagesData);
+	const connectionStatus = useSelector(selectWsStatus);
+
 	const listRef = React.useRef<HTMLDivElement>(null);
 
-	const [currData, setCurrData] = React.useState<MessageDataType[] | null>(null);
-
-	console.log('messages data', messagesData);
+	console.log('connection status', connectionStatus);  
 
 	const dispatch = useDispatch();
 	const startMessagesListener = () => {
-		console.log('messgaes list start messgaes listener');
 		dispatch(startMessagesListening() as unknown as AnyAction);
 	}
 	const stopMessagesListener = () => {
@@ -31,34 +31,39 @@ const MessagesList: React.FC<PropsType> = React.memo(({}) => {
 
 	//connecting to channel 
 	React.useEffect(() => {
-		console.log('messages list use effect');
 		startMessagesListener();
 		return () => {
 			stopMessagesListener();
 		}
-	}, [currData]);
+	}, []);
 
 	React.useEffect(() => {
 		const messagesListHeight = listRef.current?.scrollHeight;
-		listRef.current?.scrollTo({
-			top: messagesListHeight,
-			behavior: 'smooth',
-		});
+		const listScroll = (listRef.current?.scrollTop || 0)  + (listRef.current?.clientHeight || 0);
+		const isAutoScroll = (messagesListHeight || 0) - listScroll + 20 < 300;
+		
+		if(isAutoScroll) {
+			listRef.current?.scrollTo({
+				top: messagesListHeight,
+				behavior: 'smooth',
+			});
+		}
 	}, [messagesData]);
 
-	const list = messagesData.map((data, index) => {
-		if(data.isMy) {
-			return <Message data={data} key={index}/>
-		} else {
-			return <Message data={data} key={index}/>
-		}
+	const list = messagesData.map((data) => {
+		return <Message data={data} key={data.id}/>
 	});
 	return (
 		<div className={classes.currChatWrap}> 
-			<div className={classes.currChat} ref={listRef}>
-				{ list }
-			</div>
-			<WriteMessageForm />
+			{connectionStatus === 'ready' ?
+				<>
+					<div className={classes.currChat} ref={listRef}>
+						{ list }
+					</div>
+					<WriteMessageForm isConnecting={false}/>
+				</> 
+			: <Preloader />
+			}
 		</div>
 	)
 });

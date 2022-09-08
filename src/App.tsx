@@ -49,6 +49,11 @@ type MapDispatchPropsType = {
 }
 type PropsType = MapStatePropsType & MapDispatchPropsType;
 
+//get suspensed components
+const ProfileSuspensed = withSuspense(ProfileContainer);
+const MessagesSuspensed = withSuspense(Messages);
+const LoginSuspensed = withSuspense(Login);
+
 //==================APP COMPONENT=================
 const App: React.FC<PropsType> = (props) => {
   //handle uncauthed errors
@@ -62,10 +67,6 @@ const App: React.FC<PropsType> = (props) => {
     return window.removeEventListener('unhandledrejection', handlePromiseReject);
   }, []);
 
-  //get suspensed components
-  const ProfileSuspensed = withSuspense(ProfileContainer);
-  const MessagesSuspensed = withSuspense(Messages);
-  const LoginSuspensed = withSuspense(Login);
 
   //when loading, show preloader
   if(!props.isInitSuccess) return <Preloader />;

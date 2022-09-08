@@ -6,12 +6,14 @@ import { useDispatch } from 'react-redux';
 import { messagesActions, sendMessage } from '../../../Redux/messages-reducer';
 import { AnyAction } from 'redux';
 
-type PropsType = {}
+type PropsType = {
+	isConnecting: boolean,
+}
 type NewMessageFormType = {
 	messageValue: string,
 }
 
-const WriteMessage: React.FC<PropsType> = ({}) => {
+const WriteMessage: React.FC<PropsType> = ({isConnecting}) => {
 	const { register, resetField, handleSubmit, watch, formState: { errors } 
 	} = useForm<NewMessageFormType>();
 

@@ -115,13 +115,13 @@ export type UserInfoType = {
 }
 
 //message in chat
-export type MessageDataType = {
+export type MessageDataApiType = {
 	message: string,
 	photo: string,
 	userId: number,
 	userName: string,
-	isMy?: boolean,
 }
+export type MessageDataType = MessageDataApiType & {id: string};
 
 
 //==============API TYPES================
